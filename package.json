@@ -4,6 +4,8 @@
   "description": "Project EDEN: e-commerce web application for selling courses",
   "main": "index.js",
   "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --config webpack.dev.config.js  --port 3200 --host 0.0.0.0 --watch-poll",
     "test": "npm test"
   },
   "repository": {
