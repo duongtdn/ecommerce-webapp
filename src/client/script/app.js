@@ -6,7 +6,9 @@ import { render } from 'react-dom'
 import AccountClient from 'account-realm-client'
 import { UserProvider } from 'react-user'
 
-import env from './env'
+import _c_env from './env'
+
+const env = _s_env ? _s_env : _c_env
 
 const acc = new AccountClient({
   realm: env.realm,
