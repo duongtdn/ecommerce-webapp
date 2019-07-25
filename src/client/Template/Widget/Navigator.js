@@ -10,7 +10,7 @@ export default class Navigator extends Component {
     this.routes =[]
   }
   render() {
-    const activeRoute = this.props.activeRoute
+    const activeRoute = this.props.routes[this.props.activeRoute] ? this.props.activeRoute : 'error'
     if (this.routes.indexOf(activeRoute) === -1) { this.routes.push(activeRoute)}
     return (
       <div className="w3-cell-row" >

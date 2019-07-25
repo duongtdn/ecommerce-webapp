@@ -6,13 +6,15 @@ import Navigator from './Widget/Navigator'
 import Home from './Page/Home'
 import Browse from './Page/Browse'
 import Course from './Page/Course'
+import Error from './Page/Error'
 
 import href from '../lib/href'
 
 const routes = {
   home: Home,
   browse: Browse,
-  course: Course
+  course: Course,
+  error: Error
 }
 
 export default class AppShell extends Component {
@@ -33,6 +35,7 @@ export default class AppShell extends Component {
                     routes = {routes}
                     activeRoute = {this.state.activeRoute}
                     navigate = {route => this.navigate(route)}
+                    fallbackRoute = 'error'
         />
       </div>
     )
