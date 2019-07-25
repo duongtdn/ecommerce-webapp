@@ -8,7 +8,7 @@ import { UserProvider } from 'react-user'
 
 import _c_env from './env'
 
-const env = _s_env ? _s_env : _c_env
+const env = window && window._s_env ? _s_env : _c_env
 
 const acc = new AccountClient({
   realm: env.realm,
@@ -21,7 +21,7 @@ acc.sso( (status, user) => {
   console.log(user)
 })
 
-import AppShell from '../Templates/AppShell'
+import AppShell from '../Template/AppShell'
 
 window.addEventListener('load', () => {
   render(
