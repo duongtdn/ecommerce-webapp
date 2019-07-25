@@ -20,14 +20,14 @@ export default {
     return this._matchFromURL(URL)
   },
   getProtocol() {
-    return this._matchFromURL(PROTOCOL)
+    return this._matchFromURL(PROTOCOL).replace(/:.*$/,'')
   },
   getHost() {
     return this._matchFromURL(HOST)
   },
   _matchFromURL(part) {
-    const url = window.location.href
-    return url.match(/(http[s]?:\/\/)?([^\/\s]+\/)(.*)/)[part].replace(/(\/)\1+/g, '/')
+    const url = window.location.href.replace(/(\/)\1+/g, '/').replace(/:(?=\/)/,":/")
+    return url.match(/(http[s]?:\/\/)?([^\/\s]+\/)(.*)/)[part].replace(/\/$/,'')
   },
   getQuery() {
     const href = window.location.href.split('?')

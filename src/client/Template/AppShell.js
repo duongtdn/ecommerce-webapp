@@ -19,7 +19,6 @@ export default class AppShell extends Component {
   constructor(props) {
     super(props)
     const path = href.getPathName() || 'home'
-    console.log(path)
     this.state = {
       activeRoute: path.split('/')[0]
     }
