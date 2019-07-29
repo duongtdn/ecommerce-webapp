@@ -13,9 +13,8 @@ export default class Navigator extends Component {
     const activeRoute = this.props.routes[this.props.activeRoute] ? this.props.activeRoute : 'error'
     if (this.routes.indexOf(activeRoute) === -1) { this.routes.push(activeRoute)}
     return (
-      <div className="w3-cell-row" >
-        <div className="w3-cell w3-hide-small" style={{width: '60px'}}/>
-        <div className="w3-cell" >
+      <div className="" >
+        <div className="" >
           <Header user = {this.props.user}
                   accountClient = {this.props.accountClient}
                   env = {this.props.env}
