@@ -17,17 +17,39 @@ const routes = {
   error: Error
 }
 
+const categories = [
+  {
+    id: 'emb',
+    title: 'Embedded Programming',
+    courses: [
+      'c-01', 'c-02'
+    ]
+  }
+]
+
 const courses = [
   {
     id: 'c-01',
-    title: 'Basic C Programming for Embedded System',
+    title: 'Beginning Embedded C Programming',
     snippet: 'C Programming for beginner, good for one who want to learn about C and Embedded Programming',
     description: 'c01.json',
+    thumbnail: 'https://cdn-images-1.medium.com/max/1200/1*z8cxJptPtl2JEERdYXChkQ.png',
+    picture: {
+      type: "yt",
+      uri: "https://www.youtube.com/embed/tpIctyqH29Q"
+    },
+    level: 'Beginner',
     price: 499,
+    skills: [
+      'C Programming'
+    ],
+    certificates: [
+      'Embedded C Programmer'
+    ],
     promotion: [
 
     ],
-    categories: ['Embedded Programming'],
+    categories: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -43,14 +65,61 @@ const courses = [
   },
   {
     id: 'c-02',
-    title: 'Advanced C Programming for Embedded System',
+    title: 'Applied C for Embedded ARM System',
     snippet: 'Advanced C Programming, ARM embedded processor and with pratice on famous STM32 series',
     description: 'c02.json',
+    thumbnail: 'https://harmonyed.com/wp-content/uploads/Online-Courses-1-300x20031.png',
+    picture: {
+      type: "yt",
+      uri: "https://www.youtube.com/embed/tpIctyqH29Q"
+    },
     price: 799,
+    level: 'Intermidate',
+    skills: [
+      'C Programming', 'ARM Programming'
+    ],
+    certificates: [
+      'Embedded Programming Engineer'
+    ],
     promotion: [
       
     ],
-    categories: ['Embedded Programming', 'ARM Programming'],
+    categories: ['emb'],
+    tests: [
+      {
+        title: 'Mid-term Exam',
+        description: 'Mid-term Test for course Embedded - 01',
+        exam: 'c-02-m'
+      },
+      {
+        title: 'Final Exam',
+        description: 'Final Test for course Embedded - 01',
+        exam: 'c-02-f'
+      }
+    ]
+  },
+  {
+    id: 'c-03',
+    title: 'Applied C for Embedded Programming in Detail',
+    snippet: 'Advanced C Programming, ARM embedded processor and with pratice on famous STM32 series',
+    description: 'c02.json',
+    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ4MSngvOcZcc_xlli8B0AuwMJCHIChtTtjt0wPTdwS-Tc8Xsi',
+    picture: {
+      type: "yt",
+      uri: "https://www.youtube.com/embed/tpIctyqH29Q"
+    },
+    price: 799,
+    level: 'Advanced',
+    skills: [
+      'C Programming', 'ARM Programming'
+    ],
+    certificates: [
+      'Embedded Programming Engineer'
+    ],
+    promotion: [
+      
+    ],
+    categories: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -85,6 +154,7 @@ export default class AppShell extends Component {
                     activeRoute = {this.state.activeRoute}
                     navigate = {route => this.navigate(route)}
                     fallbackRoute = 'error'
+                    categories = {categories}
                     courses = {courses}
         />
       </div>
