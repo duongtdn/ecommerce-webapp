@@ -46,8 +46,8 @@ const courses = [
     certificates: [
       'Embedded C Programmer'
     ],
-    promotion: [
-
+    promo: [
+      {type: 'sale', deduction: 100, description: 'on sale program', expireIn: '1564444799000'} // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
     ],
     categories: ['emb'],
     tests: [
@@ -81,8 +81,9 @@ const courses = [
     certificates: [
       'Embedded Programming Engineer'
     ],
-    promotion: [
-      
+    promo: [
+      {type: 'sale', deduction: 100, description: 'on sale program'},
+      {type: 'gift', description: '+ 1 board STM32 Discovery F0'}
     ],
     categories: ['emb'],
     tests: [
@@ -116,7 +117,7 @@ const courses = [
     certificates: [
       'Embedded Programming Engineer'
     ],
-    promotion: [
+    promo: [
       
     ],
     categories: ['emb'],

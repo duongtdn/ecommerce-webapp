@@ -9,17 +9,40 @@ class PromoTag extends Component {
     super(props)
   }
   render() {
+    const course = this.props.course
+    const promo = this.composePromo()
+    const sale = promo.deduction ? Math.floor((parseInt(promo.deduction)/parseInt(course.price))*100) : null
     return (
       <div style={{display: 'inline-block'}} >
-        <span className="w3-text-red">
-          <i className="fas fa-tags" /> {' '} -20%
-        </span>
+        {
+          sale ? <span className="w3-text-red"> <i className="fas fa-tags" /> {' '} -{sale}% </span> : null
+        }
         <br />
-        <span className="w3-text-green">
-          <i className="fas fa-gift" /> {' '} Gifts
-        </span>
+        {
+          promo.gifts ? <span className="w3-text-green"> <i className="fas fa-gift" /> {' '} +Gifts </span> : null
+        }
       </div>
     )
+  }
+  composePromo() {
+    const course = this.props.course
+    const user = this.props.user
+    const promo = { deduction: 0, gifts: false }
+    course.promo.forEach( p => {
+      if (p.type === 'sale' && this.checkExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
+      if (p.type === 'gift' && this.checkExpire(p.expireIn)) { promo.gifts = true }
+    })
+    if (user && user.vouchers && user.vouchers[course.id] && this.checkExpire(user.vouchers[course.id].expireIn)) {
+      promo.deduction += parseInt(user.vouchers[course.id].deduction)
+    }
+    return promo
+  }
+  checkExpire(timestamp) {
+    if (!timestamp) {
+      return true
+    }
+    const now = (new Date()).getTime()
+    return (parseInt(now) < parseInt(timestamp))
   }
 }
 
@@ -62,6 +85,7 @@ class CoursePanel extends Component {
     super(props)
   }
   render() {
+    const user = this.props.user
     const course = this.props.course
     return (
       <div className="w3-bar">
@@ -103,14 +127,14 @@ class CoursePanel extends Component {
         </div>
         {/* render course action button */}
         <div className="w3-bar-item w3-hide-medium w3-hide-large" style={{width: '100%'}}>
-          <PromoTag course={course} />
+          <PromoTag course={course} user={user} />
           {' '}
           <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4 w3-right"> View Course </a>
         </div>
         <div className="w3-bar-item w3-right w3-hide-small">
           <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4"> View Course </a>
           <br /> <br />
-          <PromoTag course={course} />
+          <PromoTag course={course} user={user} />
         </div>
       </div>
     )
