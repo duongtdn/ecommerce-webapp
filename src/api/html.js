@@ -1,6 +1,6 @@
 'use strict'
 
-function html() {
+function html({script, dom}) {
   return `
 <!DOCTYPE html>
 <html>
@@ -21,9 +21,8 @@ function html() {
     </style>
   </head>
   <body>
-    <div id="root">
-    </div>
-    <script type="text/javascript" src="/assets/app.bundle.js" ></script>
+    <div id="root"> ${dom || ''} </div>
+    <script type="text/javascript" src="${script}" ></script>
   </body>
 </html>
 
