@@ -11,7 +11,7 @@ api
   .add('/home', {
     get: require('./page/get-page-home')
   })
-  .add('/browse', {
+  .add('/browse/:catalog', {
     get: require('./page/get-page-browse')
   })
 

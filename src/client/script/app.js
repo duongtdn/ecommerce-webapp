@@ -1,5 +1,7 @@
 "use strict"
 
+if (module.hot) { module.hot.accept() }
+
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 
@@ -16,21 +18,18 @@ const acc = new AccountClient({
   baseurl: env.urlAccount
 })
 acc.sso( (status, user) => {
-  console.log('SSO finished')
-  console.log(status)
+  console.log(`SSO finished with status code: ${status}`)
   console.log(user)
 })
 
 import AppShell from '../Template/AppShell'
 
-window.addEventListener('load', () => {
-  render(
-    <UserProvider accountClient = {acc} >
-      <AppShell env = {env} />
-    </UserProvider>,
-    document.getElementById('root')
-  )
-})
+render(
+  <UserProvider accountClient = {acc} >
+    <AppShell env = {env} />
+  </UserProvider>,
+  document.getElementById('root')
+)
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
