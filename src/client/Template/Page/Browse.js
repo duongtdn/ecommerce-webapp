@@ -124,12 +124,13 @@ class CoursePanel extends Component {
           </div>
         </div>
         {/* render course action button */}
-        <div className="w3-bar-item w3-hide-medium w3-hide-large" style={{width: '100%'}}>
+        <div className="w3-bar-item w3-hide-large" style={{width: '100%'}}>
+          <div  className="w3-hide-small" style={{width: '150px', height: '10px', display: 'inline-block'}} />
           <PromoTag course={course} user={user} />
           {' '}
           <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4 w3-right"> View Course </a>
         </div>
-        <div className="w3-bar-item w3-right w3-hide-small">
+        <div className="w3-bar-item w3-right w3-hide-medium w3-hide-small">
           <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4"> View Course </a>
           <br /> <br />
           <PromoTag course={course} user={user} />
