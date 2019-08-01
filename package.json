@@ -2,10 +2,12 @@
   "name": "ecommerce-webapp",
   "version": "1.0.0",
   "description": "Project EDEN: e-commerce web application for selling courses",
-  "main": "index.js",
+  "main": "src/api/main.js",
   "scripts": {
-    "build": "webpack",
-    "start": "clear && npm run server",
+    "clean": "rm -rf build",
+    "build:client": "webpack --config webpack.build.client.config.js",
+    "build:server": "webpack --config webpack.build.server.config.js",
+    "start": "clear && npm run clean && npm run build:server && npm run server",
     "server": "node example/server",
     "test": "npm test"
   },

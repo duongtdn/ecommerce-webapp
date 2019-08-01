@@ -1,4 +1,3 @@
-src/clients/scripts/
-src/clients/Templates/
+src/clients
 node_modules/
 npm-debug.*

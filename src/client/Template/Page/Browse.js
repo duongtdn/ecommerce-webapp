@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react'
 
-import href from '../../lib/href'
-
 class PromoTag extends Component {
   constructor(props) {
     super(props)
@@ -146,9 +144,9 @@ export default class Browse extends Component {
     super(props)
   }
   render() {
-    const cat = href.getPathName().match(/\/.*$/)[0].replace('/','')
+    const prog = this.props.path.match(/\/.*$/)[0].replace('/','')
     const programs = this.props.programs
-    const program = programs.find(program => program.id = cat)
+    const program = programs.find(program => program.id = prog)
     const courses = this.props.courses.filter( course => course.programs.indexOf(program.id) !== -1 )
     return (
       <div className="w3-container">

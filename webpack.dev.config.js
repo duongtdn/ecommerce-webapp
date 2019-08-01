@@ -1,6 +1,7 @@
-const path = require("path");
+"use strict"
+
 const webpack = require('webpack')
-const WorkboxPlugin = require('workbox-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin')
 
 module.exports = {
     entry: [

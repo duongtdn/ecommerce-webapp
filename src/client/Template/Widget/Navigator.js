@@ -14,23 +14,21 @@ export default class Navigator extends Component {
     if (this.routes.indexOf(activeRoute) === -1) { this.routes.push(activeRoute)}
     return (
       <div className="" >
-        <div className="" >
-          <Header user = {this.props.user}
-                  accountClient = {this.props.accountClient}
-                  env = {this.props.env}
-          />
-          <div>{
-            this.routes.map(route => {
-              const page = this.props.routes[route]
-              const display = activeRoute === route ? 'block' : 'none'
-              return (
-                <div key={route} style={{ display }} >
-                  { React.createElement( page, { ...this.props }) }
-                </div>
-              )
-            })
-          }</div>
-        </div>
+        <Header user = {this.props.user}
+                accountClient = {this.props.accountClient}
+                env = {this.props.env}
+        />
+        <div>{
+          this.routes.map(route => {
+            const page = this.props.routes[route]
+            const display = activeRoute === route ? 'block' : 'none'
+            return (
+              <div key={route} style={{ display }} >
+                { React.createElement( page, { ...this.props }) }
+              </div>
+            )
+          })
+        }</div>
       </div>
     )
   }

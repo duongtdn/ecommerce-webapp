@@ -5,7 +5,7 @@ const Programs = [
     id: 'emb',
     title: 'Embedded Programming',
     courses: [
-      'c-01', 'c-02'
+      'c-01', 'c-02', 'c-03'
     ]
   }
 ]
@@ -126,7 +126,11 @@ module.exports = {
         done= projection
       }
       setTimeout(() => {
-        const program = Programs.find( cat => cat.id === id)
+        if (!id) {
+          done && done(Programs)
+          return
+        }
+        const program = Programs.find( prog => prog.id === id)
         if (program) {
           if ({}.toString.call(projection) === '[object Array]') {
             const _ret = {}

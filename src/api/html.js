@@ -1,6 +1,6 @@
 'use strict'
 
-function html({script, dom}) {
+function html({script, data, dom}) {
   return `
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,8 @@ function html({script, dom}) {
     </style>
   </head>
   <body>
-    <div id="root"> ${dom || ''} </div>
+    <div id="root">${dom || ''}</div>
+    <script type="text/javascript"> __data = ${JSON.stringify(data)} </script>
     <script type="text/javascript" src="${script}" ></script>
   </body>
 </html>
