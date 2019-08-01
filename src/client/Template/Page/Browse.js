@@ -86,7 +86,7 @@ class CoursePanel extends Component {
     const user = this.props.user
     const course = this.props.course
     return (
-      <div className="w3-bar">
+      <div className="w3-bar" style={{marginBottom: '6px'}}>
         <div className="w3-bar-item">
           <div className="w3-cell-row">
             <img src={course.thumbnail} className="w3-container w3-cell w3-hide-small" style={{width:'150px', borderRadius: '24px'}} />
