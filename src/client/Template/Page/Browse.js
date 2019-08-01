@@ -152,7 +152,13 @@ export default class Browse extends Component {
     return (
       <div className="w3-container">
         <div>
+          <span className="w3-hide-small">
+            <a href="/browse" className="w3-tag w3-blue w3-round" style={{textDecoration: 'none'}}>Program</a>
+            {' '}
+            <i className="fa fa-arrow-right" />
+          </span>
           <span className="w3-text-blue"> {program.title} </span>
+          <hr />
         </div>
         <ul className="w3-ul">
           {
