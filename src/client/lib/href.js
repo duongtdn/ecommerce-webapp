@@ -13,7 +13,7 @@ export default {
     bookmark: '__$_bookmark__'
   },
   getPathName() {
-    const path = this._matchFromURL(PATH)
+    const path = this._matchFromURL(PATH).replace(/#.*$/,'')
     return path.split('?')[0]
   },
   getUrl() {

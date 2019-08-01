@@ -74,7 +74,7 @@ export default class Header extends Component {
   }
   render() {
     return (
-      <header className="w3-bar" style={{margin: '0 0 16px 0'}}>
+      <header className="w3-bar " style={{margin: '0 0 16px 0'}}>
         <button className="w3-bar-item w3-button w3-large w3-hide-large"><i className="fa fa-bars" /></button>
         <a href="#" className="w3-bar-item w3-text-blue w3-large" style={{textDecoration: 'none', fontFamily: "'Pacifico', cursive"}}>
           Studi<span className="w3-text-dark-grey">na</span><i className="fas fa-seedling w3-text-green" />
