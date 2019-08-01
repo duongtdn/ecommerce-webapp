@@ -74,8 +74,8 @@ class Logo extends Component {
   }
   render() {
     return (
-      <a href="#" className="w3-bar-item w3-text-blue w3-large" style={{textDecoration: 'none', fontFamily: "'Pacifico', cursive", position: 'relative'}}>
-        <span className="logo">Studi</span><i className="fas fa-seedling w3-text-green" style={{position: 'absolute', left: '72px', top: '8px'}}/>
+      <a href="#" className="w3-bar-item w3-text-blue" style={{textDecoration: 'none', fontFamily: "'Kaushan Script', cursive", position: 'relative'}}>
+        <span className="logo">Studi</span><i className="fas fa-seedling w3-text-green" style={{position: 'absolute', left: '88px', top: '10px'}}/>
       </a>
     )
   }

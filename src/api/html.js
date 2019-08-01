@@ -11,13 +11,16 @@ function html({script, data, dom}) {
     <title>ecomm</title>
     <link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/4/w3.css">
 	  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Allura|Architects+Daughter|Bad+Script|Cookie|Dancing+Script|Great+Vibes|Indie+Flower|Kalam|Pacifico|Sacramento|Satisfy|Tangerine&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico|Kaushan+Script&display=swap" rel="stylesheet">
     <style>
       /* html {
         background: linear-gradient(to bottom right, #f1f1f1  0%, #ddffff  100%);
         background-attachment:fixed;
         height:100%;
       } */
+      .logo {
+        font-size: 22px;
+      }
       .logo:after {
         content: "ha";
         position: relative;
