@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const api = require('../src/api/main')
 
-// api.helpers({ Collections: require('./database') })
+api.helpers({ Collections: require('./database') })
 
 const express = require('express')
 const webpack = require('webpack')

@@ -116,7 +116,7 @@ class CoursePanel extends Component {
                 <span className="w3-text-grey"> Required for Certificates: </span>
                 <br />
                 {
-                  course.certificates.map(cert => (
+                  course.certs.map(cert => (
                     // <span key={cert} > <span className="w3-tag w3-teal" style={{margin: '4px 0'}}> {cert} </span> {'\u00A0'} </span>
                     <span key={cert} > <span className="w3-text-blue" style={{margin: '4px 0', fontWeight: 'bold', display: 'inline-block'}}> + {cert} </span> {'\u00A0'} </span>
                   ))
@@ -147,13 +147,13 @@ export default class Browse extends Component {
   }
   render() {
     const cat = href.getPathName().match(/\/.*$/)[0].replace('/','')
-    const categories = this.props.categories
-    const category = categories.find(category => category.id = cat)
-    const courses = this.props.courses.filter( course => course.categories.indexOf(category.id) !== -1 )
+    const programs = this.props.programs
+    const program = programs.find(program => program.id = cat)
+    const courses = this.props.courses.filter( course => course.programs.indexOf(program.id) !== -1 )
     return (
       <div className="w3-container">
         <div>
-          <span className="w3-text-blue"> {category.title} </span>
+          <span className="w3-text-blue"> {program.title} </span>
         </div>
         <ul className="w3-ul">
           {

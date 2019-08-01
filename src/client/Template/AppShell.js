@@ -17,7 +17,7 @@ const routes = {
   error: Error
 }
 
-const categories = [
+const programs = [
   {
     id: 'emb',
     title: 'Embedded Programming',
@@ -43,13 +43,13 @@ const courses = [
     skills: [
       'C Programming'
     ],
-    certificates: [
+    certs: [
       'Embedded C Programmer'
     ],
     promo: [
       {type: 'sale', deduction: 100, description: 'on sale program', expireIn: '1564444799000'} // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
     ],
-    categories: ['emb'],
+    programs: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -78,14 +78,14 @@ const courses = [
     skills: [
       'C Programming', 'ARM Programming'
     ],
-    certificates: [
+    certs: [
       'Embedded Programming Engineer'
     ],
     promo: [
       {type: 'sale', deduction: 100, description: 'on sale program'},
       {type: 'gift', description: '+ 1 board STM32 Discovery F0'}
     ],
-    categories: ['emb'],
+    programs: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -114,13 +114,13 @@ const courses = [
     skills: [
       'C Programming', 'ARM Programming'
     ],
-    certificates: [
+    certs: [
       'Embedded Programming Engineer'
     ],
     promo: [
       
     ],
-    categories: ['emb'],
+    programs: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -136,14 +136,13 @@ const courses = [
   }
 ]
 
-export default class AppShell extends Component {
+class AppShell extends Component {
   constructor(props) {
     super(props)
     const path = href.getPathName() || 'home'
     this.state = {
       activeRoute: path.split('/')[0]
     }
-
   }
   render() {
     return (
@@ -155,7 +154,7 @@ export default class AppShell extends Component {
                     activeRoute = {this.state.activeRoute}
                     navigate = {route => this.navigate(route)}
                     fallbackRoute = 'error'
-                    categories = {categories}
+                    programs = {programs}
                     courses = {courses}
         />
       </div>
@@ -164,5 +163,34 @@ export default class AppShell extends Component {
   navigate(route) {
     setTimeout( _ => href.set(`#${route}`), 0)
     this.setState({activeRoute: route || 'home'})
+  }
+}
+
+import AccountClient from 'account-realm-client'
+import { UserProvider } from 'react-user'
+
+import _c_env from '../script/env'
+
+const env = window && window._s_env ? _s_env : _c_env
+const acc = new AccountClient({
+  realm: env.realm,
+  app: env.app,
+  baseurl: env.urlAccount
+})
+acc.sso( (status, user) => {
+  console.log(`SSO finished with status code: ${status}`)
+  console.log(user)
+})
+
+export default class extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    return (
+      <UserProvider accountClient = {acc} >
+        <AppShell env = {env} />
+      </UserProvider>
+    )
   }
 }

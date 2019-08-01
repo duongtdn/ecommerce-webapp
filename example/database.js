@@ -1,6 +1,6 @@
 "use strict"
 
-const Categories = [
+const Programs = [
   {
     id: 'emb',
     title: 'Embedded Programming',
@@ -26,13 +26,13 @@ const Courses = [
     skills: [
       'C Programming'
     ],
-    certificates: [
+    certs: [
       'Embedded C Programmer'
     ],
     promo: [
       {type: 'sale', deduction: 100, description: 'on sale program', expireIn: '1564444799000'} // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
     ],
-    categories: ['emb'],
+    programs: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -61,14 +61,14 @@ const Courses = [
     skills: [
       'C Programming', 'ARM Programming'
     ],
-    certificates: [
+    certs: [
       'Embedded Programming Engineer'
     ],
     promo: [
       {type: 'sale', deduction: 100, description: 'on sale program'},
       {type: 'gift', description: '+ 1 board STM32 Discovery F0'}
     ],
-    categories: ['emb'],
+    programs: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -97,13 +97,13 @@ const Courses = [
     skills: [
       'C Programming', 'ARM Programming'
     ],
-    certificates: [
+    certs: [
       'Embedded Programming Engineer'
     ],
     promo: [
       
     ],
-    categories: ['emb'],
+    programs: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -120,20 +120,20 @@ const Courses = [
 ]
 
 module.exports = {
-  Category: {
+  Program: {
     find({id}, projection, done) {
       if ({}.toString.call(projection) === '[object Function]') {
         done= projection
       }
       setTimeout(() => {
-        const category = Categories.find( cat => cat.id === id)
-        if (category) {
+        const program = Programs.find( cat => cat.id === id)
+        if (program) {
           if ({}.toString.call(projection) === '[object Array]') {
             const _ret = {}
-            projection.forEach( prop => _ret[prop] = category[prop] )
+            projection.forEach( prop => _ret[prop] = program[prop] )
             done && done([_ret]) 
           } else {
-            done && done([category])
+            done && done([program])
           }
         } else {
           done && done([])
