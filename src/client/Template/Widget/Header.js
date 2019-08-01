@@ -68,6 +68,19 @@ class ShoppingCart extends Component {
   }
 }
 
+class Logo extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    return (
+      <a href="#" className="w3-bar-item w3-text-blue w3-large" style={{textDecoration: 'none', fontFamily: "'Pacifico', cursive", position: 'relative'}}>
+        <span className="logo">Studi</span><i className="fas fa-seedling w3-text-green" style={{position: 'absolute', left: '72px', top: '8px'}}/>
+      </a>
+    )
+  }
+}
+
 export default class Header extends Component {
   constructor(props) {
     super(props)
@@ -76,9 +89,7 @@ export default class Header extends Component {
     return (
       <header className="w3-bar " style={{margin: '0 0 16px 0'}}>
         <button className="w3-bar-item w3-button w3-large w3-hide-large"><i className="fa fa-bars" /></button>
-        <a href="#" className="w3-bar-item w3-text-blue w3-large" style={{textDecoration: 'none', fontFamily: "'Pacifico', cursive"}}>
-          Studi<span className="w3-text-dark-grey">na</span><i className="fas fa-seedling w3-text-green" />
-        </a>
+        <Logo />
         <div className="w3-right">
           <ShoppingCart />
           {
