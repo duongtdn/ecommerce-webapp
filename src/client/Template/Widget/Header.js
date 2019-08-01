@@ -41,10 +41,29 @@ class LoginButton extends Component {
   }
   render() {
     return (
-      <div className="w3-bar-item">
-        <button className="w3-button w3-text-orange"> Sign up </button>
-        <button className="w3-button w3-text-blue"> Login </button>
+      <div className="w3-bar-item w3-button">
+        <span className="w3-text-grey">
+          <i className="fas fa-user w3-large" style={{marginRight: '4px'}} /> <span className="w3-hide-small">Sign-up | Login</span>
+        </span>
       </div>
+    )
+  }
+}
+
+class ShoppingCart extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    return (
+      <a className="w3-bar-item w3-button w3-hover-none w3-large" style={{position: 'relative', marginRight: '5px'}}>
+        <i className="fas fa-shopping-cart w3-text-blue" />
+        <label className="w3-small w3-circle w3-red"
+               style={{display: 'inline-block', width: '20px', height: '20px', position: 'absolute', top: '6px', left: '32px'}}
+        >
+          2
+        </label>
+      </a>
     )
   }
 }
@@ -55,11 +74,13 @@ export default class Header extends Component {
   }
   render() {
     return (
-      <header className="w3-bar">
-        <a href="#" className="w3-button w3-bar-item w3-text-blue w3-large" style={{textDecoration: 'none', fontFamily: "'Pacifico', cursive"}}>
-          Studi<span className="w3-text-dark-grey">na</span>
+      <header className="w3-bar" style={{margin: '0 0 16px 0'}}>
+        <button className="w3-bar-item w3-button w3-large w3-hide-large"><i className="fa fa-bars" /></button>
+        <a href="#" className="w3-bar-item w3-text-blue w3-large" style={{textDecoration: 'none', fontFamily: "'Pacifico', cursive"}}>
+          Studi<span className="w3-text-dark-grey">na</span><i className="fas fa-seedling w3-text-green" />
         </a>
         <div className="w3-right">
+          <ShoppingCart />
           {
             this.props.user?
               <UserSnipet user={this.props.user}
