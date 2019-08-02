@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 
+import Logo from './Logo'
+
 class UserSnipet extends Component {
   constructor(props) {
     super(props)
@@ -68,19 +70,6 @@ class ShoppingCart extends Component {
   }
 }
 
-class Logo extends Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return (
-      <a href="#" className="w3-bar-item w3-text-blue" style={{textDecoration: 'none', fontFamily: "'Kaushan Script', cursive", position: 'relative'}}>
-        <span className="logo">Studi</span><i className="fas fa-seedling w3-text-green" style={{position: 'absolute', left: '88px', top: '10px'}}/>
-      </a>
-    )
-  }
-}
-
 export default class Header extends Component {
   constructor(props) {
     super(props)
@@ -89,7 +78,7 @@ export default class Header extends Component {
     return (
       <header className="w3-bar " style={{margin: '0 0 16px 0'}}>
         <button className="w3-bar-item w3-button w3-large w3-hide-large"><i className="fa fa-bars" /></button>
-        <Logo />
+        <a className="w3-bar-item"><Logo /></a>
         <div className="w3-right">
           <ShoppingCart />
           {

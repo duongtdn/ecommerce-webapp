@@ -18,15 +18,6 @@ function html({script, data, dom}) {
         background-attachment:fixed;
         height:100%;
       } */
-      .logo {
-        font-size: 22px;
-      }
-      .logo:after {
-        content: "ha";
-        position: relative;
-        color: #000;
-        left: 1px;
-      }
     </style>
   </head>
   <body>
