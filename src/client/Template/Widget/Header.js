@@ -80,7 +80,7 @@ export default class Header extends Component {
 
         {/* render in large screen */}
         <div className="w3-hide-small w3-hide-medium">
-          <a className="w3-bar-item w3-button w3-hover-none"><Logo scale={1.2} /></a>
+          <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
           <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
             <div className="w3-large w3-text-grey w3-border-right" style={{display: 'inline-block', padding: '0 8px', verticalAlign: 'bottom'}}>
               <span className="w3-button"> Programs <i className="fa fa-caret-down" /> </span>
@@ -104,7 +104,7 @@ export default class Header extends Component {
         {/* render in small and medium screen */}
         <div className="w3-hide-large">
           <span className="w3-bar-item w3-button w3-xlarge" style={{marginRight: '24px'}}><i className="fa fa-bars" /></span>
-          <a className="w3-bar-item w3-button w3-hover-none"><Logo scale={1.1} /></a>
+          <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
           <div className="w3-right w3-xlarge">
             <ShoppingCart />
           </div>

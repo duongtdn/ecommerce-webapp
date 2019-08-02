@@ -1,7 +1,7 @@
 
 ### Create logo.png from html
 
-"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --headless --screenshot="D:\screenshot.png" --window-size=200,80 --default-background-color=0 --virtual-time-budget=10000 "file:///D:/logo.html"
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --headless --screenshot="D:\screenshot.png" --window-size=241,80 --default-background-color=0 --virtual-time-budget=10000 "file:///D:/logo.html"
 
 ### For Referent
 

@@ -13,6 +13,11 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 
 const app = express()
 
+const path = require('path')
+console.log(path.join(__dirname, '../assets'))
+app.use('/public', express.static(path.join(__dirname, '../assets')))
+
+
 app.use('/', api.generate())
 
 const config = require('../webpack.dev.config')
