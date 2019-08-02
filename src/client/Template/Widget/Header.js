@@ -45,7 +45,7 @@ class LoginButton extends Component {
     return (
       <div className="w3-bar-item w3-button">
         <span className="w3-text-grey">
-          <i className="fas fa-user w3-large" style={{marginRight: '4px'}} /> <span className="w3-hide-small">Sign-up | Login</span>
+          <i className="fas fa-user" /> <span className="w3-hide-small" style={{marginLeft: '4px'}}>Sign In</span>
         </span>
       </div>
     )
@@ -58,8 +58,8 @@ class ShoppingCart extends Component {
   }
   render() {
     return (
-      <a className="w3-bar-item w3-button w3-hover-none w3-large" style={{position: 'relative', marginRight: '5px'}}>
-        <i className="fas fa-shopping-cart w3-text-blue" />
+      <a className="w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0 8px'}}>
+        <i className="fas fa-shopping-cart w3-text-light-blue" />
         <label className="w3-small w3-circle w3-red"
                style={{display: 'inline-block', width: '20px', height: '20px', position: 'absolute', top: '6px', left: '32px'}}
         >
@@ -76,22 +76,41 @@ export default class Header extends Component {
   }
   render() {
     return (
-      <header className="w3-bar " style={{margin: '0 0 16px 0'}}>
-        <button className="w3-bar-item w3-button w3-large w3-hide-large"><i className="fa fa-bars" /></button>
-        <a className="w3-bar-item"><Logo /></a>
-        <div className="w3-right">
-          <ShoppingCart />
-          {
-            this.props.user?
-              <UserSnipet user={this.props.user}
-                          accountClient={this.props.accountClient}
-                          env = {this.props.env}
-              />
-            :
-              <LoginButton
-              />
-          }
+      <header className={`w3-bar w3-top w3-white ${!this.props.isScrollTop?'w3-card':''}`} style={{margin: '0 0 32px 0'}}>
+
+        {/* render in large screen */}
+        <div className="w3-hide-small w3-hide-medium">
+          <a className="w3-bar-item w3-button w3-hover-none"><Logo scale={1.2} /></a>
+          <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
+            <div className="w3-large w3-text-grey w3-border-right" style={{display: 'inline-block', padding: '0 8px', verticalAlign: 'bottom'}}>
+              <span className="w3-button"> Programs <i className="fa fa-caret-down" /> </span>
+              <span className="w3-button"> Management <i className="fa fa-caret-down" /> </span>
+            </div>
+            <div className="w3-large" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
+              <ShoppingCart />
+              {
+                this.props.user?
+                  <UserSnipet user={this.props.user}
+                              accountClient={this.props.accountClient}
+                              env = {this.props.env}
+                  />
+                :
+                  <LoginButton />
+              }
+            </div>
+          </div>
         </div>
+
+        {/* render in small and medium screen */}
+        <div className="w3-hide-large">
+          <span className="w3-bar-item w3-button w3-xlarge" style={{marginRight: '24px'}}><i className="fa fa-bars" /></span>
+          <a className="w3-bar-item w3-button w3-hover-none"><Logo scale={1.1} /></a>
+          <div className="w3-right w3-xlarge">
+            <ShoppingCart />
+          </div>
+
+        </div>
+
       </header>
     )
   }
