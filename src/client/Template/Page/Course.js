@@ -50,14 +50,15 @@ class ActionPanel extends Component {
           </button>
           {
             sale ?
-              <p>
-                <span className="w3-large w3-text-grey" style={{fontWeight: 'bold', textDecoration: 'line-through', marginRight: '16px'}}>
-                  {localeString(price.origin, '.')} {'\u20ab'}
-                </span>
-                <span className="w3-text-red" style={{fontWeight: 'bold', marginRight: '16px'}}>
-                  {localeString(price.offer, '.')} {'\u20ab'}
-                </span>
-                <hr />
+              <div>
+                <p>
+                  <span className="w3-large w3-text-grey" style={{fontWeight: 'bold', textDecoration: 'line-through', marginRight: '16px'}}>
+                    {localeString(price.origin, '.')} {'\u20ab'}
+                  </span>
+                  <span className="w3-text-red" style={{fontWeight: 'bold', marginRight: '16px'}}>
+                    {localeString(price.offer, '.')} {'\u20ab'}
+                  </span>
+                </p>
                 { course.promo.map( (p, index) => {
                   return (
                     <p key = {index} className="w3-text-red">
@@ -69,7 +70,7 @@ class ActionPanel extends Component {
                     </p>
                   )
                 })}
-              </p>
+              </div>
               :
               <p>
                 <span className="w3-large w3-text-orange" style={{fontWeight: 'bold', marginRight: '16px'}}>
@@ -124,6 +125,11 @@ export default class Course extends Component {
             <br />
             <ActionPanel course = {course} />
           </div>
+            <div className="w3-half">
+              <div className="embed-responsive">
+                <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" />
+              </div>
+            </div>
         </div>
 
       </div>

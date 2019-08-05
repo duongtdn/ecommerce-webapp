@@ -18,6 +18,23 @@ function html({script, data, dom}) {
         background-attachment:fixed;
         height:100%;
       } */
+      .embed-responsive {
+        position : relative;
+        padding-bottom : 56.25%;
+        padding-top : 0px;
+        height : 100%;
+        overflow : hidden;
+        clear : both;
+      }
+      .embed-responsive iframe,
+      .embed-responsive img {
+        position : absolute;
+        top : 0;
+        left : 0;
+        width : 100%;
+        height : 100%;
+        border: 0;
+      }
     </style>
   </head>
   <body>
