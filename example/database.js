@@ -32,6 +32,7 @@ const Courses = [
     promo: [
       {type: 'sale', deduction: 100000, description: 'on sale program', expireIn: '1564444799000'} // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
     ],
+    tags: ['hot'],
     programs: ['emb'],
     tests: [
       {
@@ -69,6 +70,7 @@ const Courses = [
       {type: 'gift', description: '+ 1 board STM32 Discovery F0'}
     ],
     programs: ['emb'],
+    tags: ['new', 'hot'],
     tests: [
       {
         title: 'Mid-term Exam',

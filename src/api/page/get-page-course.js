@@ -34,7 +34,7 @@ function getProgram(helpers) {
 function getCourse(helpers) {
   return function(req, res, next) {
     helpers.Collections.Course.find({id : req.courseId},
-      ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs'],
+      ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs', 'tags'],
       data => {
         if (data.length > 0) {
           req.courses = data

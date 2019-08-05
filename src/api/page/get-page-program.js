@@ -29,7 +29,7 @@ function getCourses(helpers) {
     }
     const courses = program.courses
     helpers.Collections.Course.find({id : courses},
-      ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs'],
+      ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs', 'tags'],
       data => {
         if (data.length > 0) {
           req.courses = data

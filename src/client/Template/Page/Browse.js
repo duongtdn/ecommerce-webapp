@@ -78,6 +78,32 @@ class LevelBar extends Component {
   }
 }
 
+class Tags extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    const course = this.props.course
+    console.log(course)
+    if (course.tags && course.tags.length > 0) {
+      return (
+        <span>
+          {
+            course.tags.map(tag => {
+              const color = tag.toLowerCase() === 'hot' ? 'red' : 'orange'
+              return (
+                <lable className={`w3-tag w3-${color}`} style={{marginRight: '4px'}}> {tag.toUpperCase()} </lable>
+              )
+            })
+          }
+        </span>
+      )
+    } else {
+      return null
+    }
+  }
+}
+
 class CoursePanel extends Component {
   constructor(props) {
     super(props)
@@ -92,6 +118,7 @@ class CoursePanel extends Component {
             <img src={course.thumbnail} className="w3-container w3-cell w3-hide-small" style={{width:'150px', borderRadius: '24px'}} />
 
             <div className="w3-cell">
+              <Tags course = { course } />
               <div className="cursor-pointer w3-text-dark-grey" style={{fontWeight: 'bold', padding: '0 0 4px 0'}}>
                 <a href={`/course/${course.id}`} className="w3-hover-text-blue" style={{textDecoration: 'none'}}>
                   {course.title}
