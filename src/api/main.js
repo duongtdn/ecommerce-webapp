@@ -14,5 +14,8 @@ api
   .add('/browse/:program', {
     get: require('./page/get-page-program')
   })
+  .add('/course/:course', {
+    get: require('./page/get-page-course')
+  })
 
 module.exports = api

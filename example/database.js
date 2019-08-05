@@ -22,7 +22,7 @@ const Courses = [
       uri: "https://www.youtube.com/embed/tpIctyqH29Q"
     },
     level: 'Beginner',
-    price: 499,
+    price: 499000,
     skills: [
       'C Programming'
     ],
@@ -30,7 +30,7 @@ const Courses = [
       'Embedded C Programmer'
     ],
     promo: [
-      {type: 'sale', deduction: 100, description: 'on sale program', expireIn: '1564444799000'} // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
+      {type: 'sale', deduction: 100000, description: 'on sale program', expireIn: '1564444799000'} // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
     ],
     programs: ['emb'],
     tests: [
@@ -56,7 +56,7 @@ const Courses = [
       type: "yt",
       uri: "https://www.youtube.com/embed/tpIctyqH29Q"
     },
-    price: 799,
+    price: 799000,
     level: 'Intermidate',
     skills: [
       'C Programming', 'ARM Programming'
@@ -65,7 +65,7 @@ const Courses = [
       'Embedded Programming Engineer'
     ],
     promo: [
-      {type: 'sale', deduction: 100, description: 'on sale program'},
+      {type: 'sale', deduction: 100000, description: 'on sale program'},
       {type: 'gift', description: '+ 1 board STM32 Discovery F0'}
     ],
     programs: ['emb'],
@@ -92,7 +92,7 @@ const Courses = [
       type: "yt",
       uri: "https://www.youtube.com/embed/tpIctyqH29Q"
     },
-    price: 799,
+    price: 799000,
     level: 'Advanced',
     skills: [
       'C Programming', 'ARM Programming'
