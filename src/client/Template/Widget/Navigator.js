@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 
 import Header from './Header'
+import Footer from './Footer'
 
 export default class Navigator extends Component {
   constructor(props) {
@@ -27,7 +28,8 @@ export default class Navigator extends Component {
                 env = {this.props.env}
                 isScrollTop = {this.state.isScrollTop}
         />
-        <div style={{marginTop: '84px'}} >{
+        <div style={{marginTop: '84px'}} >
+        {
           this.routes.map(route => {
             const page = this.props.routes[route]
             const display = activeRoute === route ? 'block' : 'none'
@@ -37,7 +39,9 @@ export default class Navigator extends Component {
               </div>
             )
           })
-        }</div>
+        }
+        </div>
+        <Footer />
       </div>
     )
   }
