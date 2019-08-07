@@ -105,6 +105,34 @@ class ActionPanel extends Component {
   }
 }
 
+class CourseDetail extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    const course = this.props.course
+    return (
+      <div>
+        <div dangerouslySetInnerHTML={{__html: course.description}} style={{margin: '16px 0'}} />
+
+        <p style={{fontWeight: 'bold'}}>Skills to be gained</p>
+        <ul className="w3-ul">
+          {
+            course.skills.map(skill => (<li key={skill} className="w3-border-0">{skill}</li> ))
+          }
+        </ul>
+
+        <p style={{fontWeight: 'bold'}}>This course is required for certificates</p>
+        <ul className="w3-ul">
+          {
+            course.certs.map(cert => (<li key={cert} className="w3-border-0">{cert}</li> ))
+          }
+        </ul>
+      </div>
+    )
+  }
+}
+
 export default class Course extends Component {
   constructor(props) {
     super(props)
@@ -114,22 +142,29 @@ export default class Course extends Component {
     const course = this.props.courses.find(course => course.id === courseId)
     console.log(course)
     return (
-      <div className="w3-container">
+      <div className="">
 
-        <h2 style = {{fontWeight: 'bold'}}> {course.title} </h2>
-        <span className="w3-tag w3-green">  {course.level} </span>
+        <div className="w3-container">
+          <h2 style = {{fontWeight: 'bold'}}> {course.title} </h2>
+          <span className="w3-tag w3-green">  {course.level} </span>
+        </div>
 
         <div className="w3-row">
-          <div className = "w3-half">
+          <div className = "w3-half w3-container">
             <CourseInfo  course = {course} />
             <br />
             <ActionPanel course = {course} />
           </div>
-            <div className="w3-half">
+            <div className="w3-half w3-container" style={{maxWidth: '480px', marginBottom: '32px'}}>
               <div className="embed-responsive">
                 <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" />
               </div>
             </div>
+        </div>
+
+        <div className="w3-container">
+          <h3 className="w3-text-blue" >COURSE INFORMATION</h3>
+          <CourseDetail course = {course} />
         </div>
 
       </div>

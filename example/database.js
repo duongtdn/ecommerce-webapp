@@ -51,7 +51,7 @@ const Courses = [
     id: 'c-02',
     title: 'Applied C for Embedded ARM System',
     snippet: 'Advanced C Programming, ARM embedded processor and with pratice on famous STM32 series',
-    description: 'c02.json',
+    description: '<p>This course cover bla bla bla about <span class="w3-text-blue">C language use in ARM system</span>. You will gain all matter knowledge of C and bla bla bla.</p> <p>What you will get after this course:</p><ul class="w3-ul"><li class="w3-border-0">Point 1</li><li class="w3-border-0">Point 2</ul>',
     thumbnail: 'https://harmonyed.com/wp-content/uploads/Online-Courses-1-300x20031.png',
     picture: {
       type: "yt",
