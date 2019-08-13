@@ -45,7 +45,7 @@ class ActionPanel extends Component {
     return (
       <div style={{marginBottom: '32px'}} >
         <div>
-          <button className="w3-button w3-green w3-card-4" onClick = {_ => console.log('enroll')} >
+          <button className="w3-button w3-green w3-card-4" onClick = {_ => this.props.navigate('cart')} >
             Enroll Now {sale ? <span> (-{sale}%) </span> : null}
           </button>
           {
@@ -140,7 +140,6 @@ export default class Course extends Component {
   render() {
     const courseId = this.props.path.match(/\/.*$/)[0].replace('/','')
     const course = this.props.courses.find(course => course.id === courseId)
-    console.log(course)
     return (
       <div className="">
 
@@ -153,7 +152,7 @@ export default class Course extends Component {
           <div className = "w3-half w3-container">
             <CourseInfo  course = {course} />
             <br />
-            <ActionPanel course = {course} />
+            <ActionPanel course = {course} navigate = {this.props.navigate} />
           </div>
             <div className="w3-half w3-container" style={{maxWidth: '480px', marginBottom: '32px'}}>
               <div className="embed-responsive">

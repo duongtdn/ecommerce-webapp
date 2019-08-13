@@ -8,19 +8,17 @@ import Browse from './Page/Browse'
 import Course from './Page/Course'
 import Error from './Page/Error'
 
-import Purchase from './Popup/Purchase'
-
-// import href from '../lib/href'
+import Cart from './Page/Cart'
 
 const routes = {
   home: Home,
   browse: Browse,
   course: Course,
+  cart: Cart,
   error: Error
 }
 
 const popups = {
-  purchase: Purchase,
 }
 
 class AppShell extends Component {
@@ -52,10 +50,10 @@ class AppShell extends Component {
       </div>
     )
   }
-  // navigate(route) {
-  //   setTimeout( _ => href.set(`#${route}`), 0)
-  //   this.setState({activeRoute: route || 'home'})
-  // }
+  navigate(route) {
+    // this.props.href && setTimeout( _ => this.props.href.set(`/${route}`), 0)
+    this.setState({activeRoute: route || 'error'})
+  }
 }
 
 import { UserProvider } from 'react-user'

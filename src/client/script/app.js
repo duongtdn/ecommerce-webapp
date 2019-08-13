@@ -26,7 +26,7 @@ import href from '../lib/href'
 
 
 hydrate(
-  <AppShell accountClient = {acc} env = {env} path = {href.getPathName()} {...__data.props} />,
+  <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...__data.props} />,
   document.getElementById('root')
 )
 
