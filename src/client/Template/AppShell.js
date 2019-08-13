@@ -8,6 +8,8 @@ import Browse from './Page/Browse'
 import Course from './Page/Course'
 import Error from './Page/Error'
 
+import Purchase from './Popup/Purchase'
+
 // import href from '../lib/href'
 
 const routes = {
@@ -15,6 +17,10 @@ const routes = {
   browse: Browse,
   course: Course,
   error: Error
+}
+
+const popups = {
+  purchase: Purchase,
 }
 
 class AppShell extends Component {
@@ -38,6 +44,10 @@ class AppShell extends Component {
                     programs = {this.props.programs}
                     courses = {this.props.courses}
                     path = {this.props.path}
+                    popups = {popups}
+                    activePopup = {this.state.activePopup}
+                    showPopup = {popup => this.setState({ activePopup: popup })}
+                    hidePopup = { _ => this.setState({ activePopup: undefined })}
         />
       </div>
     )
