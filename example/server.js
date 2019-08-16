@@ -17,8 +17,8 @@ const path = require('path')
 console.log(path.join(__dirname, '../assets'))
 app.use('/public', express.static(path.join(__dirname, '../assets')))
 
-
-app.use('/', api.generate())
+let iHit = 0
+app.use('/', (req,res,next) => { console.log(`server hit ${iHit++}`); next() }, api.generate())
 
 const config = require('../webpack.dev.config')
 const compiler = webpack(config)

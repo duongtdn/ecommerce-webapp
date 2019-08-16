@@ -84,7 +84,6 @@ class Tags extends Component {
   }
   render() {
     const course = this.props.course
-    console.log(course)
     if (course.tags && course.tags.length > 0) {
       return (
         <span>
@@ -92,7 +91,7 @@ class Tags extends Component {
             course.tags.map(tag => {
               const color = tag.toLowerCase() === 'hot' ? 'red' : 'orange'
               return (
-                <lable key={tag} className={`w3-tag w3-${color}`} style={{marginRight: '4px'}}> {tag.toUpperCase()} </lable>
+                <label key={tag} className={`w3-tag w3-${color}`} style={{marginRight: '4px'}}> {tag.toUpperCase()} </label>
               )
             })
           }
