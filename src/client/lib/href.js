@@ -7,7 +7,7 @@ const PATH = 3
 
 
 export default {
-  _observers: [],
+  _handlers: { hashChange: [], popState: [] },
   _registeredEventListener: false,
   key: {
     bookmark: '__$_bookmark__'
@@ -51,15 +51,26 @@ export default {
   set(url) {
     location.href = url
   },
-  observer(callback) {
-    this._observers.push(callback)
+  on(event, callback) {
+
+    if (event !== 'hashChange' && event !== 'popState') {
+      throw new Error('only accept hashChange and popState in href.on')
+    }
+
+    this._handlers[event].push(callback)
 
     if (this._registeredEventListener) { return }
 
     window.addEventListener('hashchange',(evt) => {
-      this._observers.forEach(handler => handler(evt))
+      this._handlers.hashChange.forEach(handler => handler(evt))
+    }, false)
+    window.addEventListener('popstate',(evt) => {
+      this._handlers.popState.forEach(handler => handler(evt))
     }, false)
 
     this._registeredEventListener = true
+  },
+  history() {
+    return window.history
   }
 }

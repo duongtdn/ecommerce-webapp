@@ -24,10 +24,13 @@ const popups = {
 class AppShell extends Component {
   constructor(props) {
     super(props)
-    const path = this.props.path|| 'home'
+    const path = this.props.path || 'home'
     this.state = {
       activeRoute: path.split('/')[0]
     }
+  }
+  componentDidMount() {
+    this.props.href && this.props.href.on('popState', e => this.props.href.set(`/${this.props.href.getPathName()}`) )
   }
   render() {
     return (
@@ -51,7 +54,7 @@ class AppShell extends Component {
     )
   }
   navigate(route) {
-    // this.props.href && setTimeout( _ => this.props.href.set(`/${route}`), 0)
+    this.props.href && this.props.href.history().pushState({},'',`/${route}`)
     this.setState({activeRoute: route || 'error'})
   }
 }

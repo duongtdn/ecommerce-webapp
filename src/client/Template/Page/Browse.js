@@ -92,7 +92,7 @@ class Tags extends Component {
             course.tags.map(tag => {
               const color = tag.toLowerCase() === 'hot' ? 'red' : 'orange'
               return (
-                <lable className={`w3-tag w3-${color}`} style={{marginRight: '4px'}}> {tag.toUpperCase()} </lable>
+                <lable key={tag} className={`w3-tag w3-${color}`} style={{marginRight: '4px'}}> {tag.toUpperCase()} </lable>
               )
             })
           }
