@@ -3,7 +3,7 @@
 if (module.hot) { module.hot.accept() }
 
 import React, { Component } from 'react'
-import { hydrate } from 'react-dom'
+import { render, hydrate } from 'react-dom'
 
 import AccountClient from 'account-realm-client'
 import _c_env from '../script/env'
@@ -24,14 +24,23 @@ acc.sso( (status, user) => {
 import AppShell from '../Template/AppShell'
 import href from '../lib/href'
 
+if (__data && __data.props) {
+  hydrate(
+    <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...__data.props} />,
+    document.getElementById('root')
+  )
+} else {
+  // client check path to load correct data??
+  const path = href.getPathName()
+  render(
+    <AppShell accountClient = {acc} env = {env} href = {href} path = {path} />,
+    document.getElementById('root')
+  )
+}
 
-hydrate(
-  <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...__data.props} />,
-  document.getElementById('root')
-)
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/assets/sw.js');
-  });
+    navigator.serviceWorker.register('/sw.js')
+  })
 }

@@ -5,6 +5,9 @@ const Builder = require('express-api-builder')
 const api = Builder()
 
 api
+  .add('/app-shell', {
+    get: require('./page/get-app-shell')
+  })
   .add('/', {
     get: require('./page/get-page-home')
   })
@@ -16,6 +19,9 @@ api
   })
   .add('/course/:course', {
     get: require('./page/get-page-course')
+  })
+  .add('/data/program/:program', {
+    get: require('./data/get-data-program')
   })
 
 module.exports = api

@@ -16,6 +16,8 @@ const app = express()
 const path = require('path')
 console.log(path.join(__dirname, '../assets'))
 app.use('/public', express.static(path.join(__dirname, '../assets')))
+// app.use('/sw.js', express.static(path.join(__dirname, '../build/sw.js')))
+app.use('/', express.static(path.join(__dirname, '../build')))
 
 let iHit = 0
 app.use('/', (req,res,next) => { console.log(`server hit ${iHit++}`); next() }, api.generate())
@@ -30,7 +32,7 @@ app.use(webpackDevMiddleware(compiler, {
 }))
 
 app.use(webpackHotMiddleware(compiler, {
-  log: console.log
+  // log: console.log
 }))
 
 const PORT = 3400

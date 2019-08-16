@@ -25,21 +25,15 @@ module.exports = {
     },
     mode: 'development',
     devtool: 'inline-source-map',
-    // devServer: {
-    //   proxy: {
-    //     '/api': {
-    //       target: 'http://localhost:3400',
-    //       pathRewrite: {'^/api' : ''}
-    //     }
-    //   },
-    //   publicPath: "/assets/",
-    //   historyApiFallback: true
-    // },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new WorkboxPlugin.InjectManifest({
         swDest: 'sw.js',
         swSrc: './src/client/script/sw-template.js',
+        include: ['/app-shell', /\.js$/, /\.css$/],
+        templatedURLs: {
+          '/app-shell': new Date().toString(),
+        },
       })
     ],
 };
