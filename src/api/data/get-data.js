@@ -15,13 +15,7 @@ function getProgram(helpers) {
 
 function getCourses(helpers) {
   return function(req, res, next) {
-    const program = req.programs.find( prog => prog.id === req.params.program)
-    if (!program) {
-      res.status(404).json({message: 'no program'})
-      return
-    }
-    const courses = program.courses
-    helpers.Collections.Course.find({id : courses},
+    helpers.Collections.Course.find({},
       ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs', 'tags'],
       data => {
         req.courses = data
@@ -33,6 +27,8 @@ function getCourses(helpers) {
 
 function response() {
   return function(req, res) {
-
+    res.status(200).json({ programs: req.programs, courses: req.courses })
   }
 }
+
+module.exports = [getProgram, getCourses, response]

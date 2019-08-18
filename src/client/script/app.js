@@ -6,6 +6,8 @@ import React, { Component } from 'react'
 import { render, hydrate } from 'react-dom'
 
 import AccountClient from 'account-realm-client'
+import { xhttp } from 'authenform-utils'
+
 import _c_env from '../script/env'
 
 const env = window && window._s_env ? _s_env : _c_env
@@ -20,24 +22,35 @@ acc.sso( (status, user) => {
   console.log(user)
 })
 
-
 import AppShell from '../Template/AppShell'
 import href from '../lib/href'
 
-if (__data && __data.props) {
-  hydrate(
-    <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...__data.props} />,
-    document.getElementById('root')
-  )
-} else {
-  // client check path to load correct data??
-  const path = href.getPathName()
-  render(
-    <AppShell accountClient = {acc} env = {env} href = {href} path = {path} />,
-    document.getElementById('root')
-  )
-}
+const renderApp = (__data && __data.props) ? hydrate : render
 
+/*
+  depend on path:
+    - browse/:program -> will load programs and its courses
+    - course/:course -> will load course and programs
+    - cart -> will load programs
+  all programs are required for header, thus need to be available for all pages
+  *** notes:
+  it is ok to use GET /data to get all programs and courses right now as there're not much courses at beginning
+  but later, it should only load relevent courses
+  does api GET /data also need a protection mechanism, such as one-time-token?
+*/
+xhttp.get('/data', (status, responseText) => {
+  if (status === 200) {
+    const data = JSON.parse(responseText)
+    console.log('Loaded data')
+    console.log(data)
+    renderApp(
+      <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...data} />,
+      document.getElementById('root')
+    )
+  } else {
+    console.log(`Error when getting data. Returned status code is ${status}`)
+  }
+})
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

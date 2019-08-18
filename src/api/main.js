@@ -20,8 +20,8 @@ api
   .add('/course/:course', {
     get: require('./page/get-page-course')
   })
-  .add('/data/program/:program', {
-    get: require('./data/get-data-program')
+  .add('/data', {
+    get: require('./data/get-data')
   })
 
 module.exports = api

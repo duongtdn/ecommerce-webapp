@@ -156,7 +156,7 @@ module.exports = {
         if ({}.toString.call(id) === '[object String]') {
           id = [id]
         }
-        const courses = Courses.filter( course => id.indexOf(course.id) !== -1 )
+        const courses = id ? Courses.filter( course => id.indexOf(course.id) !== -1 ) : Courses
         if (courses.length > 0) {
           if ({}.toString.call(projection) === '[object Array]') {
             const _ret = courses.map( course => {
