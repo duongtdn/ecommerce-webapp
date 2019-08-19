@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 
 import { localeString } from '../../lib/util'
 
+import storage from '../../lib/storage'
+
 class CourseInfo extends Component {
   constructor(props) {
     super(props)
@@ -30,7 +32,7 @@ class CourseInfo extends Component {
   }
 }
 
-class ActionPanel extends Component {
+class PurchaseBtn extends Component {
   constructor(props) {
     super(props)
   }
@@ -45,7 +47,7 @@ class ActionPanel extends Component {
     return (
       <div style={{marginBottom: '32px'}} >
         <div>
-          <button className="w3-button w3-green w3-card-4" onClick = {_ => this.props.navigate('cart')} >
+          <button className="w3-button w3-green w3-card-4" onClick = { e => this.onPurchase(price.offer)} >
             Enroll Now {sale ? <span> (-{sale}%) </span> : null}
           </button>
           {
@@ -103,6 +105,16 @@ class ActionPanel extends Component {
     const now = (new Date()).getTime()
     return (parseInt(now) < parseInt(timestamp))
   }
+  onPurchase(price) {
+    const course = this.props.course
+    const item = {
+      code: course.id,
+      name: course.title,
+      type: 'course',
+      price
+    }
+    this.props.onPurchase && this.props.onPurchase(item)
+  }
 }
 
 class CourseDetail extends Component {
@@ -136,6 +148,7 @@ class CourseDetail extends Component {
 export default class Course extends Component {
   constructor(props) {
     super(props)
+    this.onPurchase = this.onPurchase.bind(this)
   }
   render() {
     const courseId = this.props.path.match(/\/.*$/)[0].replace('/','')
@@ -152,7 +165,7 @@ export default class Course extends Component {
           <div className = "w3-half w3-container">
             <CourseInfo  course = {course} />
             <br />
-            <ActionPanel course = {course} navigate = {this.props.navigate} />
+            <PurchaseBtn course = {course} onPurchase = {this.onPurchase} />
           </div>
             <div className="w3-half w3-container" style={{maxWidth: '480px', marginBottom: '32px'}}>
               <div className="embed-responsive">
@@ -168,5 +181,11 @@ export default class Course extends Component {
 
       </div>
     )
+  }
+  onPurchase(item) {
+    const cart = storage.get(storage.key.CART) || []
+    cart.push(item)
+    storage.update(storage.key.CART, cart)
+    this.props.navigate('cart')
   }
 }

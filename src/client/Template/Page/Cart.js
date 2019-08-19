@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 
 import { localeString } from '../../lib/util'
+import storage from '../../lib/storage'
 
 class Progress extends Component {
   constructor(props) {
@@ -41,7 +42,8 @@ class TabCart extends Component {
     super(props)
   }
   render() {
-    const cart = [{code: 'item-1', name: 'Sinbad and the great adventure', price: 500}, {code: 'item-2', name: 'One Piece, The elevent super novas  ', price: 700}]
+    // const cart = [{code: 'item-1', name: 'Sinbad and the great adventure', price: 500}, {code: 'item-2', name: 'One Piece, The elevent super novas  ', price: 700}]
+    const cart = storage.get(storage.key.CART) || []
     const subTotal = cart.reduce( (acc, cur) => acc + cur.price, 0 )
     return(
       <div>
@@ -60,7 +62,9 @@ class TabCart extends Component {
               <tr key={item.code}>
                 <td className = "w3-border-right">
                   <div className="w3-cell-row">
-                    <input className="w3-cell" type="checkbox" style={{marginRight: '5px'}} />
+                    <div className="w3-cell" style={{width: '25px'}}>
+                      <input type="checkbox" style={{marginRight: '5px'}} />
+                    </div>
                     <div className="w3-cell">
                       <div> {item.name} </div>
                       <div className="w3-small w3-text-grey"> {item.code} </div>
