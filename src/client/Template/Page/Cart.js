@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 
+import { localeString } from '../../lib/util'
+
 class Progress extends Component {
   constructor(props) {
     super(props)
@@ -14,7 +16,7 @@ class Progress extends Component {
     }
     return(
       <div>
-        <div className="w3-cell-row">
+        <div className="w3-cell-row w3-border-bottom w3-padding">
           <div className={`w3-cell w3-center ${tabColors.cart}`} style={{width: '33.33%'}}>
             <i className="fas fa-shopping-cart" /><br/>
             <span className="w3-hide-small">Checkout Cart</span>
@@ -39,8 +41,50 @@ class TabCart extends Component {
     super(props)
   }
   render() {
+    const cart = [{code: 'item-1', name: 'Sinbad and the great adventure', price: 500}, {code: 'item-2', name: 'One Piece, The elevent super novas  ', price: 700}]
+    const subTotal = cart.reduce( (acc, cur) => acc + cur.price, 0 )
     return(
-      <div>Cart <button onClick = {e => this.props.moveToTab('payment')} >Next</button> </div>
+      <div>
+        <h3> Checkout Carts </h3>
+        <p> Please verify your purchase items in cart, then process to next pay with payment method</p>
+        <table className="w3-table w3-border w3-bordered">
+          <thead>
+            <tr className="w3-blue">
+              <th className = "w3-border-right">Item</th>
+              <th style={{textAlign: 'right'}} >Value ({'\u20ab'})</th>
+            </tr>
+          </thead>
+          <tbody>
+          {
+            cart.map( item => (
+              <tr key={item.code}>
+                <td className = "w3-border-right">
+                  <div className="w3-cell-row">
+                    <input className="w3-cell" type="checkbox" style={{marginRight: '5px'}} />
+                    <div className="w3-cell">
+                      <div> {item.name} </div>
+                      <div className="w3-small w3-text-grey"> {item.code} </div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{textAlign: 'right'}}>
+                  {localeString(item.price)}
+                </td>
+              </tr>
+            ))
+          }
+          </tbody>
+          <tfoot>
+            <tr className="w3-pale-blue">
+              <th className = "w3-border-right">Total</th>
+              <th className="w3-text-orange" style={{textAlign: 'right'}} > {localeString(subTotal)} </th>
+            </tr>
+          </tfoot>
+        </table>
+        <div style={{margin: '32px 0'}}>
+          <button className="w3-button w3-blue w3-right" onClick = {e => this.props.moveToTab('payment')}> Continue with payment </button>
+        </div>
+      </div>
     )
   }
 }
@@ -84,7 +128,7 @@ export default class Cart extends Component {
     return (
       <div className="w3-container">
         <Progress progress = {this.state.progress} tab = {this.state.tab} />
-        <div>
+        <div style={{margin: '32px 0'}} >
           {
             this.tabs.map( (Tab, index) => {
               return (
