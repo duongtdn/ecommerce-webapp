@@ -1,6 +1,7 @@
 "use strict"
 
 export default {
+  key: { CART: '__$_cart__'},
   observe(key, handler, flag=true) {
     if (typeof handler === 'number' && !flag) {
       return this._removeObserver(key, handler)
