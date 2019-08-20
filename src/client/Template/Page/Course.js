@@ -186,6 +186,10 @@ export default class Course extends Component {
   }
   onPurchase(item) {
     const cart = storage.get(storage.key.CART) || []
+    if (cart.some( _item => _item.code === item.code)) {
+      // item is already in cart
+      return
+    }
     cart.push(item)
     storage.update(storage.key.CART, cart)
     this.props.navigate('order')
