@@ -154,6 +154,7 @@ export default class Course extends Component {
   render() {
     const courseId = this.props.path.match(/\/.*$/)[0].replace('/','')
     const course = this.props.courses.find(course => course.id === courseId)
+    if (!course) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
     return (
       <div className="">
 

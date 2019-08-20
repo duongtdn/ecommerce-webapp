@@ -173,7 +173,8 @@ export default class Browse extends Component {
   render() {
     const prog = this.props.path.match(/\/.*$/)[0].replace('/','')
     const programs = this.props.programs
-    const program = programs.find(program => program.id = prog)
+    const program = programs.find(program => program.id === prog)
+    if (!program) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
     const courses = this.props.courses.filter( course => course.programs.indexOf(program.id) !== -1 )
     return (
       <div className="w3-container">
