@@ -3,8 +3,6 @@
 const path = require("path");
 const fs = require("fs");
 
-const WorkboxPlugin = require('workbox-webpack-plugin')
-
 const nodeModules = {};
 fs.readdirSync('node_modules')
   .filter(function(x) {
@@ -39,15 +37,5 @@ module.exports = {
     ]
   },
   mode: 'development',
-  devtool: 'inline-source-map',
-  plugins: [
-    new WorkboxPlugin.InjectManifest({
-      swDest: 'sw.js',
-      swSrc: './src/client/script/sw-template.js',
-      include: ['/app-shell', /\.js$/, /\.css$/],
-      templatedURLs: {
-        '/app-shell': new Date().toString(),
-      },
-    })
-  ],
+  devtool: 'inline-source-map'
 }

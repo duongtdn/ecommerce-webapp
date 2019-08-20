@@ -10,7 +10,7 @@ module.exports = {
       './src/client/script/app.js'
     ],
     output: {
-      filename: "app.bundle.js",
+      filename: "app.js",
       publicPath: "/assets/",
       // path: path.resolve(__dirname, "tests"),
     },
@@ -27,13 +27,5 @@ module.exports = {
     devtool: 'inline-source-map',
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new WorkboxPlugin.InjectManifest({
-        swDest: 'sw.js',
-        swSrc: './src/client/script/sw-template.js',
-        include: ['/app-shell', /\.js$/, /\.css$/],
-        templatedURLs: {
-          '/app-shell': new Date().toString(),
-        },
-      })
     ],
 };

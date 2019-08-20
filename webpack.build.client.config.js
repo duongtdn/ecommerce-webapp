@@ -6,7 +6,6 @@ const WorkboxPlugin = require('workbox-webpack-plugin')
 module.exports = {
   entry: {
     app: './src/client/script/app.js',
-    AppShell: './src/client/Template/AppShell.js'
   },
   output: {
     path: path.resolve(__dirname, "build"),
@@ -26,6 +25,10 @@ module.exports = {
     new WorkboxPlugin.InjectManifest({
       swDest: 'sw.js',
       swSrc: './src/client/script/sw-template.js',
+      include: ['/app-shell', /\.js$/, /\.css$/],
+      templatedURLs: {
+        '/app-shell': new Date().toString(),
+      },
     })
   ],
 }
