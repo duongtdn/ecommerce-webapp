@@ -58,10 +58,19 @@ function loadDataAndRender() {
     does api GET /data also need a protection mechanism, such as one-time-token?
   */
   if (__data && __data.props) {
+    /*
+      data are serialized with html page
+      so simply cache that data
+    */
     const data = __data.props
-    // need to cach data here
+    cacheData({url: '/data', cacheName: 'data-cache', data})
     renderApp(data)
   } else {
+    /*
+      app-shell is served, make a request to get up-to-date data
+      if data are in cache and still valid (not expired), they will be served
+      else, network request will be made to get data
+    */
     xhttp.get('/data', (status, responseText) => {
       if (status === 200) {
         const data = JSON.parse(responseText)        
@@ -72,4 +81,13 @@ function loadDataAndRender() {
     })
   }
 
+}
+
+function cacheData({ url, cacheName, data }) {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      console.log('Cache data...')
+      event.source.postMessage({ type: 'CACHE', url, cacheName, data })
+    })
+  }
 }

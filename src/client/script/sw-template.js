@@ -68,6 +68,33 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   /\/data$/i,
   new workbox.strategies.CacheFirst({
-    cacheName: 'data-cache'
+    cacheName: 'data-cache',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60,
+      }),
+    ]
   })
 );
+
+
+/*
+  communicate witl clients for advance cache, ...
+*/
+
+self.addEventListener('activate', function(event) {
+  clients.matchAll({includeUncontrolled: true}).then(clients => {
+    clients.forEach(client => { client.postMessage(``) })
+  })
+});
+
+self.addEventListener('message', function(event){
+  if (event.data.type === 'CACHE') {
+    const { url, cacheName, data } = event.data
+    const expire = new workbox.expiration.CacheExpiration(cacheName, {  maxAgeSeconds: 60 })
+    caches.open(cacheName).then( cache => {
+      cache.put(url, new Response(JSON.stringify(data)))
+      expire.updateTimestamp(url)
+    })
+  }
+});
