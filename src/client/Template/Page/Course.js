@@ -186,6 +186,6 @@ export default class Course extends Component {
     const cart = storage.get(storage.key.CART) || []
     cart.push(item)
     storage.update(storage.key.CART, cart)
-    this.props.navigate('cart')
+    this.props.navigate('order')
   }
 }

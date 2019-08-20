@@ -118,7 +118,7 @@ class TabReceipt extends Component {
 }
 TabReceipt.__tabname = 'receipt'
 
-export default class Cart extends Component {
+export default class Order extends Component {
   constructor(props) {
     super(props)
     this.state = {

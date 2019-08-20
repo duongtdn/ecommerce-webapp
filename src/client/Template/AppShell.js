@@ -8,13 +8,13 @@ import Browse from './Page/Browse'
 import Course from './Page/Course'
 import Error from './Page/Error'
 
-import Cart from './Page/Cart'
+import Order from './Page/Order'
 
 const routes = {
   home: Home,
   browse: Browse,
   course: Course,
-  cart: Cart,
+  order: Order,
   error: Error
 }
 
