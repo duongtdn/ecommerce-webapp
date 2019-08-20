@@ -111,6 +111,7 @@ class PurchaseBtn extends Component {
       code: course.id,
       name: course.title,
       type: 'course',
+      checked: true,
       price
     }
     this.props.onPurchase && this.props.onPurchase(item)

@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 
 import Logo from './Logo'
+import storage from '../../lib/storage'
 
 class UserSnipet extends Component {
   constructor(props) {
@@ -55,16 +56,27 @@ class LoginButton extends Component {
 class ShoppingCart extends Component {
   constructor(props) {
     super(props)
+    this.state = { itemCount: (storage.get(storage.key.CART) && storage.get(storage.key.CART).length) || 0 }
+  }
+  componentDidMount() {
+    this._observer = storage.observe(storage.key.CART, cart => this.setState({ itemCount: cart.length }))
+  }
+  componentWillUnmount() {
+    storage.observe(storage.key.CART, this._observer, false)
   }
   render() {
     return (
       <a className="w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0 8px'}}>
-        <i className="fas fa-shopping-cart w3-text-light-blue" />
-        <label className="w3-small w3-circle w3-red"
-               style={{display: 'inline-block', width: '20px', height: '20px', position: 'absolute', top: '6px', left: '32px'}}
-        >
-          2
-        </label>
+        <i className={`fas fa-shopping-cart ${this.state.itemCount > 0 ? 'w3-text-blue' : 'w3-text-light-blue'}`} />
+        {
+          this.state.itemCount > 0 ?
+            <label  className="w3-small w3-circle w3-red"
+                    style={{display: 'inline-block', width: '20px', height: '20px', position: 'absolute', top: '6px', left: '32px'}}
+            >
+              {this.state.itemCount}
+            </label>
+          : null
+        }
       </a>
     )
   }

@@ -40,11 +40,17 @@ class Progress extends Component {
 class TabCart extends Component {
   constructor(props) {
     super(props)
+    this.state = { cart: storage.get(storage.key.CART) || [] }
+  }
+  componentDidMount() {
+    this._observer = storage.observe(storage.key.CART, cart => this.setState({ cart }))
+  }
+  componentWillUnmount() {
+    storage.observe(storage.key.CART, this._observer, false)
   }
   render() {
-    // const cart = [{code: 'item-1', name: 'Sinbad and the great adventure', price: 500}, {code: 'item-2', name: 'One Piece, The elevent super novas  ', price: 700}]
-    const cart = storage.get(storage.key.CART) || []
-    const subTotal = cart.reduce( (acc, cur) => acc + cur.price, 0 )
+    const cart = this.state.cart
+    const subTotal = cart.reduce( (acc, cur) => acc + (cur.checked ? cur.price : 0), 0 )
     return(
       <div>
         <h3> Checkout Carts </h3>
@@ -63,16 +69,20 @@ class TabCart extends Component {
                 <td className = "w3-border-right">
                   <div className="w3-cell-row">
                     <div className="w3-cell" style={{width: '25px'}}>
-                      <input type="checkbox" style={{marginRight: '5px'}} />
+                      <input type="checkbox" style={{marginRight: '5px'}} checked={item.checked} onChange ={ e => this.toggleCheckItem(item.code)}/>
                     </div>
-                    <div className="w3-cell">
-                      <div> {item.name} </div>
-                      <div className="w3-small w3-text-grey"> {item.code} </div>
+                    <div className = "w3-cell">
+                      <div className={`${item.checked ? '' : 'w3-text-grey'}`} style={{ textDecoration: item.checked ? 'none' : 'line-through', fontStyle: item.checked ? 'normal' : 'italic' }}> {item.name} </div>
+                      <div style={{margin: '3px 0'}}>
+                        <span className="w3-small w3-text-grey" style = {{ textDecoration: 'none', fontStyle: 'normal'}} onClick = {e => this.removeItemFrom(item.code)}>
+                          <i className="fas fa-trash"/> Remove from cart
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </td>
                 <td style={{textAlign: 'right'}}>
-                  {localeString(item.price)}
+                  { item.checked ? localeString(item.price) : 0 }
                 </td>
               </tr>
             ))
@@ -90,6 +100,16 @@ class TabCart extends Component {
         </div>
       </div>
     )
+  }
+  toggleCheckItem(code) {
+    const cart = [...this.state.cart]
+    const item = cart.find( _item => _item.code === code)
+    item.checked = !item.checked
+    storage.update(storage.key.CART, cart)
+  }
+  removeItemFrom(code) {
+    const cart = this.state.cart.filter(item => item.code !== code)
+    storage.update(storage.key.CART, cart)
   }
 }
 TabCart.__tabname = 'cart'
