@@ -25,7 +25,6 @@ acc.sso( (status, user) => {
 import AppShell from '../Template/AppShell'
 import href from '../lib/href'
 
-const renderApp = (__data && __data.props) ? hydrate : render
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -39,6 +38,13 @@ if ('serviceWorker' in navigator) {
   loadDataAndRender()
 }
 
+
+const _render = (__data && __data.props) ? hydrate : render
+const renderApp = data => _render (
+  <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...data} />,
+  document.getElementById('root')
+)
+
 function loadDataAndRender() {
   /*
     depend on path:
@@ -51,18 +57,19 @@ function loadDataAndRender() {
     but later, it should only load relevent courses
     does api GET /data also need a protection mechanism, such as one-time-token?
   */
-  console.log('Loading data')
-  xhttp.get('/data', (status, responseText) => {
-    if (status === 200) {
-      const data = JSON.parse(responseText)
-      console.log('Loaded data')
-      console.log(data)
-      renderApp(
-        <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...data} />,
-        document.getElementById('root')
-      )
-    } else {
-      console.log(`Error when getting data. Returned status code is ${status}`)
-    }
-  })
+  if (__data && __data.props) {
+    const data = __data.props
+    // need to cach data here
+    renderApp(data)
+  } else {
+    xhttp.get('/data', (status, responseText) => {
+      if (status === 200) {
+        const data = JSON.parse(responseText)        
+        renderApp(data)
+      } else {
+        console.log(`Error when getting data. Returned status code is ${status}`)
+      }
+    })
+  }
+
 }
