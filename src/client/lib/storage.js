@@ -3,6 +3,7 @@
 export default {
   key: { CART: '__$_cart__'},
   observe(key, handler, flag=true) {
+    if (typeof(Storage) === "undefined") { return }
     if (typeof handler === 'number' && !flag) {
       return this._removeObserver(key, handler)
     } else if (typeof handler === 'function' && flag) {
@@ -10,10 +11,12 @@ export default {
     }
   },
   update(key, data) {
+    if (typeof(Storage) === "undefined") { return }
     localStorage.setItem(key, JSON.stringify(data))
     this._fire(key, data)
   },
   get(key) {
+    if (typeof(Storage) === "undefined") { return null }
     const data = localStorage.getItem(key)
     if (data && data.length > 0) {
       return JSON.parse(data)
@@ -22,6 +25,7 @@ export default {
     }
   },
   clear(key) {
+    if (typeof(Storage) === "undefined") { return }
     localStorage.removeItem(key)
     this._fire(key, null)
   },
