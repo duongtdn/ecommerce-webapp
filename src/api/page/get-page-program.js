@@ -22,21 +22,11 @@ function getProgram(helpers) {
 
 function getCourses(helpers) {
   return function(req, res, next) {
-    const program = req.programs.find( prog => prog.id === req.params.program)
-    if (!program) {
-      res.status(404).send("Page not found")
-      return
-    }
-    const courses = program.courses
-    helpers.Collections.Course.find({id : courses},
+    helpers.Collections.Course.find({},
       ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs', 'tags'],
       data => {
-        if (data.length > 0) {
-          req.courses = data
-          next()
-        } else {
-          res.status(200).send("This Program does not have any course yet")
-        }
+        req.courses = data
+        next()
       }
     )
   }

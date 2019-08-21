@@ -31,17 +31,13 @@ function getProgram(helpers) {
   }
 }
 
-function getCourse(helpers) {
+function getCourses(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Course.find({id : req.courseId},
+    helpers.Collections.Course.find({},
       ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs', 'tags'],
       data => {
-        if (data.length > 0) {
-          req.courses = data
-          next()
-        } else {
-          res.status(404).send("Page not found")
-        }
+        req.courses = data
+        next()
       }
     )
   }
