@@ -15,7 +15,7 @@ api
     get: require('./page/get-page-home')
   })
   .add('/browse/:program', {
-    get: require('./page/get-page-program')
+    get: require('./page/get-page-browse')
   })
   .add('/course/:course', {
     get: require('./page/get-page-course')
