@@ -7,6 +7,11 @@ const AppShell = require('../../../build/AppShell')
 
 const html = require('../html')
 
+/*
+  for improvement
+    - it is possible to make a single batch request and retrieve all data
+*/
+
 function getPrograms(helpers) {
   return function(req, res, next) {
     helpers.Collections.Program.find({}, data => {
