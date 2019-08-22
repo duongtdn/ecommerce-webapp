@@ -76,6 +76,12 @@ workbox.routing.registerRoute(
     ]
   })
 );
+workbox.routing.registerRoute(
+  /\/data\/promotion$/i,
+  new workbox.strategies.NetworkFirst({
+    cacheName: 'promotion-cache',
+  })
+);
 
 
 /*

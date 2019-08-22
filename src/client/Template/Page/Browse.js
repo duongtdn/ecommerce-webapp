@@ -26,7 +26,7 @@ class Promotion extends Component {
     const course = this.props.course
     const user = this.props.user
     const promo = { deduction: 0, gifts: false }
-    this.props.promo.forEach( p => {
+    this.props.promos.forEach( p => {
       if (p.type === 'sale' && this.checkExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && this.checkExpire(p.expireIn)) { promo.gifts = true }
     })
@@ -192,12 +192,12 @@ export default class Browse extends Component {
         <ul className="w3-ul">
           {
             courses.map( course => {
-              const promos = this.props.promos.find( promo => promo.target === course.id )
-              const tags = this.props.tags.find( tag => tag.courseId === course.id)
+              const promos = this.props.promos? this.props.promos.filter( promo => promo.target === course.id ) : []
+              const tag = this.props.tags? this.props.tags.find(tag => tag.courseId === course.id) || [] : []
               return (
                 <li key = {course.id} style={{padding: '0 0 8px 0'}}>
                   <LevelBar course = {course} />
-                  <CoursePanel course = {course} promos = {promos} tags = {tags.label} />
+                  <CoursePanel course = {course} promos = {promos} tags = {tag.label} />
                 </li>
               )
             })

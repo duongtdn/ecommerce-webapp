@@ -23,7 +23,7 @@ api
   .add('/data/content', {
     get: require('./data/get-data-content')
   })
-  .add('/data/promo', {
+  .add('/data/promotion', {
     get: require('./data/get-data-promo')
   })
 

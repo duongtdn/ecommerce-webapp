@@ -55,4 +55,4 @@ function render() {
   }
 }
 
-module.exports = [validateParams, getProgram, getCourse, render]
+module.exports = [validateParams, getProgram, getCourses, render]

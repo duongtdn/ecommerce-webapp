@@ -63,7 +63,10 @@ function loadDataAndRender() {
       so simply cache that data
     */
     const data = __data.props
-    cacheData({url: '/data/content', cacheName: 'data-cache', data})
+    cacheData([
+      {url: '/data/content', cacheName: 'data-cache', data: { programs: data.programs, courses: data.courses }},
+      {url: '/data/promotion', cacheName: 'promotion-cache', data: { promos: data.promos, tags: data.tags }}
+    ])
     renderApp(data)
   } else {
     /*
@@ -71,23 +74,34 @@ function loadDataAndRender() {
       if data are in cache and still valid (not expired), they will be served
       else, network request will be made to get data
     */
-    xhttp.get('/data/content', (status, responseText) => {
-      if (status === 200) {
-        const data = JSON.parse(responseText)        
-        renderApp(data)
-      } else {
-        console.log(`Error when getting data. Returned status code is ${status}`)
-      }
+    Promise.all([get('/data/content'), get('/data/promotion')]).then(  values => {
+      const data = {...values[0], ...values[1]}
+      renderApp(data)
     })
   }
 
 }
 
-function cacheData({ url, cacheName, data }) {
+function cacheData(data) {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('message', (event) => {
       console.log('Cache data...')
-      event.source.postMessage({ type: 'CACHE', url, cacheName, data })
+      data.forEach( ({ url, cacheName, data }) => {
+        event.source.postMessage({ type: 'CACHE', url, cacheName, data })
+      })
     })
   }
+}
+
+function get(url) {
+  return new Promise( (resolve, reject) => {
+    xhttp.get(url, (status, responseText) => {
+      if (status === 200) {
+        const data = JSON.parse(responseText)
+        resolve(data)
+      } else {
+        reject(`Request to ${url} failed. Returned status code is ${status}`)
+      }
+    })
+  })
 }

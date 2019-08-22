@@ -35,20 +35,15 @@ class AppShell extends Component {
   render() {
     return (
       <div>
-        <Navigator  user = {this.props.user}
-                    accountClient = {this.props.accountClient}
-                    env = {this.props.env}
-                    routes = {routes}
+        <Navigator  routes = {routes}
                     activeRoute = {this.state.activeRoute}
                     navigate = {route => this.navigate(route)}
                     fallbackRoute = 'error'
-                    programs = {this.props.programs}
-                    courses = {this.props.courses}
-                    path = {this.props.path}
                     popups = {popups}
                     activePopup = {this.state.activePopup}
                     showPopup = {popup => this.setState({ activePopup: popup })}
                     hidePopup = { _ => this.setState({ activePopup: undefined })}
+                    {...this.props}
         />
       </div>
     )

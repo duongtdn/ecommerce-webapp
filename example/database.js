@@ -96,6 +96,7 @@ const Courses = [
     certs: [
       'Embedded Programming Engineer'
     ],
+    programs: ['emb'],
     tests: [
       {
         title: 'Mid-term Exam',

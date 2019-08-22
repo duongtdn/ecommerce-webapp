@@ -32,16 +32,46 @@ function getCourses(helpers) {
   }
 }
 
+function getPromotion(helpers) {
+  return function(req, res, next) {
+    helpers.Collections.Promo.find({},
+      data => {
+        req.promos = data
+        next()
+      }
+    )
+  }
+}
+
+function getTags(helpers) {
+  return function(req, res, next) {
+    helpers.Collections.Tag.find({},
+      data => {
+        req.tags = data
+        next()
+      }
+    )
+  }
+}
+
 function render() {
   return function(req, res) {
     const dom = renderToString(React.createElement(AppShell.default, {
       path: req.path.replace(/^\//,''),
       programs: req.programs,
       courses: req.courses,
+      promos: req.promos,
+      tags: req.tags
     }))
     res.writeHead( 200, { "Content-Type": "text/html" } )
-    res.end(html({ dom, script: process.env.SCRIPT, data: {props: {programs: req.programs, courses: req.courses}} }))
+    res.end(html({
+      dom,
+      script: process.env.SCRIPT,
+      data: {
+        props: {programs: req.programs, courses: req.courses, promos: req.promos, tags: req.tags }
+      }
+    }))
   }
 }
 
-module.exports = [getProgram, getCourses, render]
+module.exports = [getProgram, getCourses, getPromotion, getTags, render]
