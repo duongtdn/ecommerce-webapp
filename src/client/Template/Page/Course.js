@@ -89,7 +89,7 @@ class PurchaseBtn extends Component {
     const course = this.props.course
     const user = this.props.user
     const promo = { deduction: 0, gifts: false }
-    course.promo.forEach( p => {
+    this.props.promos.forEach( p => {
       if (p.type === 'sale' && this.checkExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && this.checkExpire(p.expireIn)) { promo.gifts = true }
     })
@@ -155,6 +155,7 @@ export default class Course extends Component {
     const courseId = this.props.path.match(/\/.*$/)[0].replace('/','')
     const course = this.props.courses.find(course => course.id === courseId)
     if (!course) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
+    const promos = this.props.promos
     return (
       <div className="">
 

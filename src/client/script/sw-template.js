@@ -66,7 +66,7 @@ workbox.routing.registerRoute(
 
 // routing for api
 workbox.routing.registerRoute(
-  /\/data$/i,
+  /\/data\/content$/i,
   new workbox.strategies.CacheFirst({
     cacheName: 'data-cache',
     plugins: [

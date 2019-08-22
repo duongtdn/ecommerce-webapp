@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-class PromoTag extends Component {
+class Promotion extends Component {
   constructor(props) {
     super(props)
   }
@@ -26,7 +26,7 @@ class PromoTag extends Component {
     const course = this.props.course
     const user = this.props.user
     const promo = { deduction: 0, gifts: false }
-    course.promo.forEach( p => {
+    this.props.promo.forEach( p => {
       if (p.type === 'sale' && this.checkExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && this.checkExpire(p.expireIn)) { promo.gifts = true }
     })
@@ -83,12 +83,12 @@ class Tags extends Component {
     super(props)
   }
   render() {
-    const course = this.props.course
-    if (course.tags && course.tags.length > 0) {
+    const tags = this.props.tags
+    if (tags && tags.length > 0) {
       return (
         <span>
           {
-            course.tags.map(tag => {
+            tags.map(tag => {
               const color = tag.toLowerCase() === 'hot' ? 'red' : 'orange'
               return (
                 <label key={tag} className={`w3-tag w3-${color}`} style={{marginRight: '4px'}}> {tag.toUpperCase()} </label>
@@ -110,6 +110,8 @@ class CoursePanel extends Component {
   render() {
     const user = this.props.user
     const course = this.props.course
+    const promos = this.props.promos
+    const tags = this.props.tags
     return (
       <div className="w3-bar" style={{marginBottom: '6px'}}>
         <div className="w3-bar-item">
@@ -117,7 +119,7 @@ class CoursePanel extends Component {
             <img src={course.thumbnail} className="w3-container w3-cell w3-hide-small" style={{width:'150px', borderRadius: '24px'}} />
 
             <div className="w3-cell">
-              <Tags course = { course } />
+              <Tags course = { course } tags = {tags} />
               <div className="cursor-pointer w3-text-dark-grey" style={{fontWeight: 'bold', padding: '0 0 4px 0'}}>
                 <a href={`/course/${course.id}`} className="w3-hover-text-blue" style={{textDecoration: 'none'}}>
                   {course.title}
@@ -152,14 +154,14 @@ class CoursePanel extends Component {
         {/* render course action button */}
         <div className="w3-bar-item w3-hide-large" style={{width: '100%'}}>
           <div  className="w3-hide-small" style={{width: '150px', height: '10px', display: 'inline-block'}} />
-          <PromoTag course={course} user={user} />
+          <Promotion course={course} promos={promos} user={user} />
           {' '}
           <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4 w3-right"> View Course </a>
         </div>
         <div className="w3-bar-item w3-right w3-hide-medium w3-hide-small">
           <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4"> View Course </a>
           <br /> <br />
-          <PromoTag course={course} user={user} />
+          <Promotion course={course} promos={promos} user={user} />
         </div>
       </div>
     )
@@ -190,10 +192,12 @@ export default class Browse extends Component {
         <ul className="w3-ul">
           {
             courses.map( course => {
+              const promos = this.props.promos.find( promo => promo.target === course.id )
+              const tags = this.props.tags.find( tag => tag.courseId === course.id)
               return (
                 <li key = {course.id} style={{padding: '0 0 8px 0'}}>
                   <LevelBar course = {course} />
-                  <CoursePanel course = {course} />
+                  <CoursePanel course = {course} promos = {promos} tags = {tags.label} />
                 </li>
               )
             })

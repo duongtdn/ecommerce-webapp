@@ -63,7 +63,7 @@ function loadDataAndRender() {
       so simply cache that data
     */
     const data = __data.props
-    cacheData({url: '/data', cacheName: 'data-cache', data})
+    cacheData({url: '/data/content', cacheName: 'data-cache', data})
     renderApp(data)
   } else {
     /*
@@ -71,7 +71,7 @@ function loadDataAndRender() {
       if data are in cache and still valid (not expired), they will be served
       else, network request will be made to get data
     */
-    xhttp.get('/data', (status, responseText) => {
+    xhttp.get('/data/content', (status, responseText) => {
       if (status === 200) {
         const data = JSON.parse(responseText)        
         renderApp(data)

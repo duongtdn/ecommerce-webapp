@@ -1,5 +1,40 @@
 "use strict"
 
+const Promos = [
+  {
+    id: 'promo-01',
+    type: 'sale',
+    target: 'c-01',
+    deduction: 100000,
+    description: 'on sale program',
+    expireIn: '1564444799000' // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
+  },
+  {
+    id: 'promo-02',
+    type: 'sale',
+    target: 'c-02',
+    deduction: 100000,
+    description: 'on sale program',
+  },
+  {
+    id: 'promo-03',
+    type: 'gift',
+    target: 'c-02',
+    description: '+ 1 board STM32 Discovery F0'
+  }
+]
+
+const Tags = [
+  {
+    courseId: 'c-01',
+    label: ['hot']
+  },
+  {
+    courseId: 'c-02',
+    label: ['new', 'hot']
+  },
+]
+
 const Programs = [
   {
     id: 'emb',
@@ -29,10 +64,6 @@ const Courses = [
     certs: [
       'Embedded C Programmer'
     ],
-    promo: [
-      {type: 'sale', deduction: 100000, description: 'on sale program', expireIn: '1564444799000'} // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
-    ],
-    tags: ['hot'],
     programs: ['emb'],
     tests: [
       {
@@ -65,12 +96,6 @@ const Courses = [
     certs: [
       'Embedded Programming Engineer'
     ],
-    promo: [
-      {type: 'sale', deduction: 100000, description: 'on sale program'},
-      {type: 'gift', description: '+ 1 board STM32 Discovery F0'}
-    ],
-    programs: ['emb'],
-    tags: ['new', 'hot'],
     tests: [
       {
         title: 'Mid-term Exam',
@@ -101,9 +126,6 @@ const Courses = [
     ],
     certs: [
       'Embedded Programming Engineer'
-    ],
-    promo: [
-      
     ],
     programs: ['emb'],
     tests: [
@@ -168,6 +190,34 @@ module.exports = {
           } else {
             done && done(courses)
           }
+        } else {
+          done && done([])
+        }
+      }, 500)
+    }
+  },
+  Promo: {
+    find(query, projection, done) {
+      if ({}.toString.call(projection) === '[object Function]') {
+        done= projection
+      }
+      setTimeout(() => {
+        if (Promos && Promos.length > 0) {
+          done && done(Promos)
+        } else {
+          done && done([])
+        }
+      }, 500)
+    }
+  },
+  Tag: {
+    find(query, projection, done) {
+      if ({}.toString.call(projection) === '[object Function]') {
+        done= projection
+      }
+      setTimeout(() => {
+        if (Tags && Tags.length > 0) {
+          done && done(Tags)
         } else {
           done && done([])
         }
