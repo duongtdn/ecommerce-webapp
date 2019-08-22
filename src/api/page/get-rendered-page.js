@@ -7,7 +7,7 @@ const AppShell = require('../../../build/AppShell')
 
 const html = require('../html')
 
-function getProgram(helpers) {
+function getPrograms(helpers) {
   return function(req, res, next) {
     helpers.Collections.Program.find({}, data => {
       if (data.length > 0) {
@@ -74,4 +74,4 @@ function render() {
   }
 }
 
-module.exports = [getProgram, getCourses, getPromotion, getTags, render]
+module.exports = [getPrograms, getCourses, getPromotion, getTags, render]

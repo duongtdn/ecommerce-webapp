@@ -15,10 +15,10 @@ api
     get: require('./page/get-page-home')
   })
   .add('/browse/:program', {
-    get: require('./page/get-page-browse')
+    get: require('./page/get-rendered-page')
   })
   .add('/course/:course', {
-    get: require('./page/get-page-course')
+    get: require('./page/get-rendered-page')
   })
   .add('/data/content', {
     get: require('./data/get-data-content')

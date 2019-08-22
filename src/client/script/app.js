@@ -25,27 +25,26 @@ acc.sso( (status, user) => {
 import AppShell from '../Template/AppShell'
 import href from '../lib/href'
 
-
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
     .then ( reg => {
       console.log('Registration succeeded. Scope is ' + reg.scope);
-      loadDataAndRender()
     })   
   })
-} else {
-  loadDataAndRender()
 }
 
 
-const _render = (__data && __data.props) ? hydrate : render
-const renderApp = data => _render (
-  <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...data} />,
-  document.getElementById('root')
-)
+/*
+  Load data from either network or cache and render
+*/
 
-function loadDataAndRender() {
+(function () {
+  const _render = (__data && __data.props) ? hydrate : render
+  const renderApp = data => _render (
+    <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...data} />,
+    document.getElementById('root')
+  )
   /*
     depend on path:
       - browse/:program -> will load programs and its courses
@@ -80,7 +79,7 @@ function loadDataAndRender() {
     })
   }
 
-}
+})()
 
 function cacheData(data) {
   if ('serviceWorker' in navigator) {

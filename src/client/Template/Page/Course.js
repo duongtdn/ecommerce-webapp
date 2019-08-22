@@ -61,7 +61,7 @@ class PurchaseBtn extends Component {
                     {localeString(price.offer, '.')} {'\u20ab'}
                   </span>
                 </p>
-                { course.promo.map( (p, index) => {
+                { this.props.promos.map( (p, index) => {
                   return (
                     <p key = {index} className="w3-text-red">
                       {p.type === 'sale' ?
@@ -155,7 +155,7 @@ export default class Course extends Component {
     const courseId = this.props.path.match(/\/.*$/)[0].replace('/','')
     const course = this.props.courses.find(course => course.id === courseId)
     if (!course) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
-    const promos = this.props.promos || []
+    const promos = this.props.promos? this.props.promos.filter( promo => promo.target === course.id ) : []
     return (
       <div className="">
 
@@ -168,7 +168,7 @@ export default class Course extends Component {
           <div className = "w3-half w3-container">
             <CourseInfo  course = {course} />
             <br />
-            <PurchaseBtn course = {course} onPurchase = {this.onPurchase} />
+            <PurchaseBtn course = {course} promos = {promos} onPurchase = {this.onPurchase} />
           </div>
             <div className="w3-half w3-container" style={{maxWidth: '480px', marginBottom: '32px'}}>
               <div className="embed-responsive">
