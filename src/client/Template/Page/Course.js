@@ -6,6 +6,14 @@ import { localeString } from '../../lib/util'
 
 import storage from '../../lib/storage'
 
+function isExpire(timestamp) {
+  if (!timestamp) {
+    return false
+  }
+  const now = (new Date()).getTime()
+  return (parseInt(now) > parseInt(timestamp))
+}
+
 class CourseInfo extends Component {
   constructor(props) {
     super(props)
@@ -66,8 +74,8 @@ class PurchaseBtn extends Component {
                     <p key = {index} className="w3-text-red">
                       {p.type === 'sale' ?
                         `Save - ${localeString(p.deduction, '.')} \u20ab (${p.description})`
-                        :
-                        `Gift: ${p.description}`
+                        : p.type === 'gift' ? `Gift: ${p.description}`
+                        : null
                       }
                     </p>
                   )
@@ -90,20 +98,13 @@ class PurchaseBtn extends Component {
     const user = this.props.user
     const promo = { deduction: 0, gifts: false }
     this.props.promos.forEach( p => {
-      if (p.type === 'sale' && this.checkExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
-      if (p.type === 'gift' && this.checkExpire(p.expireIn)) { promo.gifts = true }
+      if (p.type === 'sale' && !isExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
+      if (p.type === 'gift' && !isExpire(p.expireIn)) { promo.gifts = true }
     })
-    if (user && user.vouchers && user.vouchers[course.id] && this.checkExpire(user.vouchers[course.id].expireIn)) {
+    if (user && user.vouchers && user.vouchers[course.id] && !isExpire(user.vouchers[course.id].expireIn)) {
       promo.deduction += parseInt(user.vouchers[course.id].deduction)
     }
     return promo
-  }
-  checkExpire(timestamp) {
-    if (!timestamp) {
-      return true
-    }
-    const now = (new Date()).getTime()
-    return (parseInt(now) < parseInt(timestamp))
   }
   onPurchase(price) {
     const course = this.props.course
@@ -115,6 +116,107 @@ class PurchaseBtn extends Component {
       price
     }
     this.props.onPurchase && this.props.onPurchase(item)
+  }
+}
+
+class PurchaseBundleBtn extends Component {
+  constructor(props) {
+    super (props)
+  }
+  render() {
+    if (!this.props.promos) {
+      return null
+    }
+    const bundle = this.props.promos.filter( promo => promo.type === 'bundle')
+    if (!bundle || bundle.length === 0) {
+      return null
+    }
+    return (
+      <div style={{marginBottom: '32px'}} >
+        <h4 className="w3-text-blue"> <i className="fas fa-dollar-sign" /><i className="fas fa-dollar-sign" /> Bundle Offer </h4>
+        {
+          bundle.map( offer => {
+            if (offer.expireIn && isExpire(offer.expireIn)) { return null }
+            const bundlePrice = this.calculateOfferBundlePrice(offer)
+            return (
+              <div key = {offer.id}>
+                <p> Buy {offer.deduction.length} at once, get super discount </p>
+                <ul className='w3-ul'>
+                  { offer.deduction.map( promo => {
+                    /* currently, bundle only apply to course, later will support other goods such as boards, sofware licenses... */
+                    const course = this.props.courses.find( course => course.id === promo.target)
+                    if (!course) { return null }
+                    if (this.isPurchased(course)) { return null }
+                    const price = {
+                      origin: parseInt(course.price),
+                      offer: Math.floor(parseInt(course.price) - parseInt(promo.number))
+                    }
+                    return (
+                      <li key={promo.target}>
+                        <div className="w3-text-blue-grey"> {course.title} </div>
+                        <div>
+                          <span className="w3-text-grey" style={{textDecoration: 'line-through', marginRight: '16px'}}> {localeString(price.origin, '.')} {'\u20ab'} </span>
+                          <span className="w3-text-red w3-small"> {localeString(price.offer, '.')} {'\u20ab'} </span>
+                        </div>
+                      </li>
+                    )
+                  })}
+                  <li style={{fontWeight: 'bold'}}>
+                    Bundle price: <span className="w3-text-red"> {localeString(bundlePrice.subTotal, '.')} {'\u20ab'} </span> {' '}
+                    <span className="w3-small" style={{fontStyle: "italic"}} > saved {localeString(bundlePrice.deduction, '.')} {'\u20ab'} </span>
+                  </li>
+                </ul>
+                <p>
+                  <button className="w3-button w3-blue w3-card-4" onClick = { e => this.onPurchase(offer, bundlePrice)} >
+                    Purchase Bundle (-{bundlePrice.saved}%)
+                  </button>
+                </p>
+
+              </div>
+            )
+          })
+        }
+      </div>
+    )
+  }
+  calculateOfferBundlePrice(offer) {
+    const subTotal = offer.deduction.reduce( (acc, cur) => {
+      /* currently, bundle only apply to course, later will support other goods such as boards, sofware licenses... */
+      const course = this.props.courses.find( course => course.id === cur.target)
+      if (this.isPurchased(course)) { return acc }
+      return acc + Math.floor(parseInt(course.price) - parseInt(cur.number))
+    }, 0 )
+    const originPrice = offer.deduction.reduce( (acc, cur) => {
+      const course = this.props.courses.find( course => course.id === cur.target)
+      if (this.isPurchased(course)) { return acc }
+      return acc + parseInt(course.price)
+    }, 0 )
+    const saved= Math.floor((originPrice-subTotal)*100/originPrice)
+    return {subTotal, saved, deduction: originPrice-subTotal}
+  }
+  onPurchase(offer, bundlePrice) {
+    const items = offer.deduction.map( cur => {
+      /* currently, bundle only apply to course, later will support other goods such as boards, sofware licenses... */
+      const course = this.props.courses.find( course => course.id === cur.target)
+      if (this.isPurchased(course)) { return undefined }
+      return {
+        code: course.id,
+        name: course.title,
+        type: 'course',
+      }
+    }).filter( cur => cur !== undefined)
+
+    this.props.onPurchase && this.props.onPurchase({
+      code: offer.id,
+      type: offer.type,
+      name: offer.description,
+      items,
+      checked: true,
+      price: bundlePrice.subTotal
+    })
+  }
+  isPurchased(course) {
+    return false // todo: check whether course is purchased
   }
 }
 
@@ -155,7 +257,7 @@ export default class Course extends Component {
     const courseId = this.props.path.match(/\/.*$/)[0].replace('/','')
     const course = this.props.courses.find(course => course.id === courseId)
     if (!course) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
-    const promos = this.props.promos? this.props.promos.filter( promo => promo.target === course.id ) : []
+    const promos = this.props.promos? this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1 ) : []
     return (
       <div className="">
 
@@ -169,6 +271,7 @@ export default class Course extends Component {
             <CourseInfo  course = {course} />
             <br />
             <PurchaseBtn course = {course} promos = {promos} onPurchase = {this.onPurchase} />
+            <PurchaseBundleBtn courses = {this.props.courses} promos = {promos} onPurchase = {this.onPurchase} />
           </div>
             <div className="w3-half w3-container" style={{maxWidth: '480px', marginBottom: '32px'}}>
               <div className="embed-responsive">

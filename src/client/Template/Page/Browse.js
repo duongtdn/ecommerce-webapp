@@ -13,7 +13,7 @@ class Promotion extends Component {
     return (
       <div style={{display: 'inline-block'}} >
         {
-          sale ? <span className="w3-text-red"> <i className="fas fa-tags" /> {' '} -{sale}% </span> : null
+          sale ? <span className="w3-text-red"> <i className="fas fa-dollar-sign" /> {' '} -{sale}% </span> : null
         }
         <br />
         {
@@ -192,7 +192,7 @@ export default class Browse extends Component {
         <ul className="w3-ul">
           {
             courses.map( course => {
-              const promos = this.props.promos? this.props.promos.filter( promo => promo.target === course.id ) : []
+              const promos = this.props.promos? this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1 ) : []
               const tag = this.props.tags? this.props.tags.find(tag => tag.courseId === course.id) || [] : []
               return (
                 <li key = {course.id} style={{padding: '0 0 8px 0'}}>

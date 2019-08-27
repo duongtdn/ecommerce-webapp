@@ -4,7 +4,7 @@ const Promos = [
   {
     id: 'promo-01',
     type: 'sale',
-    target: 'c-01',
+    target: ['c-01'],
     deduction: 100000,
     description: 'on sale program',
     expireIn: '1564444799000' // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
@@ -12,15 +12,26 @@ const Promos = [
   {
     id: 'promo-02',
     type: 'sale',
-    target: 'c-02',
+    target: ['c-02'],
     deduction: 100000,
     description: 'on sale program',
   },
   {
     id: 'promo-03',
     type: 'gift',
-    target: 'c-02',
+    target: ['c-02'],
     description: '+ 1 board STM32 Discovery F0'
+  },
+  {
+    id: 'promo-04',
+    type: 'bundle',
+    target: ['c-01', 'c-02', 'c-03'],
+    deduction: [
+      {target: 'c-01', number: 150000},
+      {target: 'c-02', number: 150000},
+      {target: 'c-03', number: 100000}
+    ],
+    description: 'Bundle Offer: Embedded completion courses'
   }
 ]
 
