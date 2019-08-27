@@ -72,7 +72,10 @@ class TabCart extends Component {
                       <input type="checkbox" style={{marginRight: '5px'}} checked={item.checked} onChange ={ e => this.toggleCheckItem(item.code)}/>
                     </div>
                     <div className = "w3-cell">
-                      <div className={`${item.checked ? '' : 'w3-text-grey'}`} style={{ textDecoration: item.checked ? 'none' : 'line-through', fontStyle: item.checked ? 'normal' : 'italic' }}> {item.name} </div>
+                      <div className={`${item.checked ? '' : 'w3-text-grey'}`} style={{ textDecoration: item.checked ? 'none' : 'line-through', fontStyle: item.checked ? 'normal' : 'italic' }}>
+                        <span style={{fontWeight: 'bold'}} >{item.name}</span>
+                        {item.type === 'bundle'? <ul className="w3-text-blue-grey" style={{margin:'6px 0'}}> {item.items.map( item => (<li key={item.code} style={{margin:'3px 0'}}>{item.name}</li>) )} </ul> :null}
+                      </div>
                       <div style={{margin: '3px 0'}}>
                         <span className="w3-small w3-text-grey" style = {{ textDecoration: 'none', fontStyle: 'normal'}} onClick = {e => this.removeItemFrom(item.code)}>
                           <i className="fas fa-trash"/> Remove from cart
