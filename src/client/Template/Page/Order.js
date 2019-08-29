@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { localeString } from '../../lib/util'
 import storage from '../../lib/storage'
 
-class Progress extends Component {
+class ProgressBar extends Component {
   constructor(props) {
     super(props)
   }
@@ -62,31 +62,34 @@ class ItemsTable extends Component {
         </thead>
         <tbody>
         {
-          cart.map( item => (
-            <tr key={item.code}>
-              <td className = "w3-border-right">
-                <div className="w3-cell-row">
-                  <div className="w3-cell" style={{width: '25px', display: !this.props.simpleUI? 'block': 'none'}}>
-                    <input type="checkbox" style={{marginRight: '5px'}} checked={item.checked} onChange ={ e => this.toggleCheckItem(item.code)}/>
-                  </div>
-                  <div className = "w3-cell">
-                    <div className={`${item.checked ? '' : 'w3-text-grey'}`} style={{ textDecoration: item.checked ? 'none' : 'line-through', fontStyle: item.checked ? 'normal' : 'italic' }}>
-                      <span style={{fontWeight: 'bold'}} >{item.name}</span>
-                      {(item.type === 'bundle' && !this.props.simpleUI)? <ul className="w3-text-blue-grey" style={{margin:'6px 0'}}> {item.items.map( item => (<li key={item.code} style={{margin:'3px 0'}}>{item.name}</li>) )} </ul> : null}
+          cart.map( item => {
+            if (this.props.simpleUI && !item.checked) { return null }
+            return (
+              <tr key={item.code}>
+                <td className = "w3-border-right">
+                  <div className="w3-cell-row">
+                    <div className="w3-cell" style={{width: '25px', display: !this.props.simpleUI? 'block': 'none'}}>
+                      <input type="checkbox" style={{marginRight: '5px'}} checked={item.checked} onChange ={ e => this.toggleCheckItem(item.code)}/>
                     </div>
-                    <div style={{margin: '3px 0', display: !this.props.simpleUI? 'block': 'none'}}>
-                      <span className="w3-small w3-text-grey" style = {{ textDecoration: 'none', fontStyle: 'normal'}} onClick = {e => this.removeItemFrom(item.code)}>
-                        <i className="fas fa-trash"/> Remove from cart
-                      </span>
+                    <div className = "w3-cell">
+                      <div className={`${item.checked ? '' : 'w3-text-grey'}`} style={{ textDecoration: item.checked ? 'none' : 'line-through', fontStyle: item.checked ? 'normal' : 'italic' }}>
+                        <span style={{fontWeight: 'bold'}} >{item.name}</span>
+                        {(item.type === 'bundle' && !this.props.simpleUI)? <ul className="w3-text-blue-grey" style={{margin:'6px 0'}}> {item.items.map( item => (<li key={item.code} style={{margin:'3px 0'}}>{item.name}</li>) )} </ul> : null}
+                      </div>
+                      <div style={{margin: '3px 0', display: !this.props.simpleUI? 'block': 'none'}}>
+                        <span className="w3-small w3-text-grey" style = {{ textDecoration: 'none', fontStyle: 'normal'}} onClick = {e => this.removeItemFrom(item.code)}>
+                          <i className="fas fa-trash"/> Remove from cart
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </td>
-              <td style={{textAlign: 'right'}}>
-                { item.checked ? localeString(item.price) : 0 }
-              </td>
-            </tr>
-          ))
+                </td>
+                <td style={{textAlign: 'right'}}>
+                  { item.checked ? localeString(item.price) : 0 }
+                </td>
+              </tr>
+            )
+          })
         }
         </tbody>
         <tfoot>
@@ -134,9 +137,10 @@ class Delivery extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      edit: false,
-      delivery: null
+      edit: this.props.delivery? false : true,
+      delivery: {...this.props.delivery}
     }
+    this.updateDelivery = this.updateDelivery.bind(this)
   }
   render() {
     return (
@@ -150,39 +154,48 @@ class Delivery extends Component {
         <div style={{ display: this.state.edit? 'block': 'none' }} >
           <p>
             <label> Name </label>
-            <input className="w3-input" />
+            <input className="w3-input" value={this.state.delivery.fullName} onChange={this.handleTextInput('fullName')} />
           </p>
           <p>
             <label> Contact number </label>
-            <input className="w3-input" />
+            <input className="w3-input" value={this.state.delivery.phone} onChange={this.handleTextInput('phone')} />
           </p>
           <p>
             <label> Delivery Address </label>
-            <input className="w3-input" />
+            <input className="w3-input" value={this.state.delivery.address} onChange={this.handleTextInput('address')} />
           </p>
           <p>
-            <button className="w3-button w3-blue" onClick={e => this.setState({ edit: false })} >Save </button>
+            <button className="w3-button w3-blue" onClick={this.updateDelivery} > Save </button>
           </p>
         </div>
         <div style={{ display: !this.state.edit? 'block': 'none' }} >
           <div>
             <p className="w3-small w3-text-grey"> Delivery to:</p>
-            <label className="bold">Nguyen Duong</label> <br />
-            <label>0976096633</label> <br />
-            <label>Etown 2, 364 Cong Hoa, Tan Binh, HCMC</label>
+            <label className="bold">{this.props.delivery && this.props.delivery.fullName}</label> <br />
+            <label>{this.props.delivery && this.props.delivery.phone}</label> <br />
+            <label>{this.props.delivery && this.props.delivery.address}</label>
           </div>
         </div>
       </div>
     )
+  }
+  updateDelivery() {
+    const delivery = {...this.state.delivery}
+    this.props.updateDelivery && this.props.updateDelivery(delivery)
+    this.setState({ edit: false })
+  }
+  handleTextInput(key) {
+    return (e) => {
+      const delivery = {...this.state.delivery}
+      delivery[key] = e.target.value
+      this.setState({ delivery })
+    }
   }
 }
 
 class PaymentMethod extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      paymentMethod: null
-    }
   }
   render() {
     const highlight = 'w3-border-blue w3-text-blue bold'
@@ -192,27 +205,27 @@ class PaymentMethod extends Component {
         <h3 className="w3-text-blue"> Payment Method </h3>
           <div className="w3-cell">
             <div className="w3-cell w3-center" style={{width: '90px', paddingRight: '5px'}}>
-              <div  className={`w3-border w3-round w3-hover-pale-blue cursor-pointer ${this.state.paymentMethod === 'cod'? highlight : normal}`}
+              <div  className={`w3-border w3-round w3-hover-pale-blue w3-hover-text-blue cursor-pointer ${this.props.paymentMethod === 'cod'? highlight : normal}`}
                     style={{padding: '3px 0'}}
-                    onClick={e => this.setState({ paymentMethod: 'cod'})}
+                    onClick={e => this.props.selectPaymentMethod('cod')}
               >
                 <i className="fas fa-shuttle-van" /><br/>
                 <span className="">COD</span>
               </div>
             </div>
             <div className="w3-cell w3-center" style={{width: '90px', paddingRight: '5px'}}>
-              <div  className={`w3-border w3-round w3-hover-pale-blue cursor-pointer ${this.state.paymentMethod === 'card'? highlight : normal}`}
+              <div  className={`w3-border w3-round w3-hover-pale-blue w3-hover-text-blue cursor-pointer ${this.props.paymentMethod === 'bank'? highlight : normal}`}
                     style={{padding: '3px 0'}}
-                    onClick={e => this.setState({ paymentMethod: 'card'})}
+                    onClick={e => this.props.selectPaymentMethod('bank')}
               >
                 <i className="fas fa-landmark" /><br/>
                 <span className="">BANK</span>
               </div>
             </div>
             <div className="w3-cell w3-center" style={{width: '90px', paddingRight: '5px'}}>
-              <div  className={`w3-border w3-round w3-hover-pale-blue cursor-pointer ${this.state.paymentMethod === 'bank'? highlight : normal}`}
+              <div  className={`w3-border w3-round w3-hover-pale-blue w3-hover-text-blue cursor-pointer ${this.props.paymentMethod === 'card'? highlight : normal}`}
                     style={{padding: '3px 0'}}
-                    onClick={e => this.setState({ paymentMethod: 'bank'})}
+                    onClick={e => this.props.selectPaymentMethod('card')}
               >
                 <i className="far fa-credit-card" /><br/>
                 <span className="">CARD</span>
@@ -220,13 +233,13 @@ class PaymentMethod extends Component {
             </div>
           </div>
           <div>
-            <div style={{display: this.state.paymentMethod === 'cod'? 'block' : 'none'}} >
+            <div style={{display: this.props.paymentMethod === 'cod'? 'block' : 'none'}} >
               <p>You will pay when we deliver activation code to you. Please check and confirm the delivery address</p>
             </div>
-            <div style={{display: this.state.paymentMethod === 'bank'? 'block' : 'none'}} >
+            <div style={{display: this.props.paymentMethod === 'bank'? 'block' : 'none'}} >
               <p>This payment method is not supported yet. We are going to make it vailable soon</p>
             </div>
-            <div style={{display: this.state.paymentMethod === 'card'? 'block' : 'none'}} >
+            <div style={{display: this.props.paymentMethod === 'card'? 'block' : 'none'}} >
               <p>This payment method is not supported yet. We are going to make it vailable soon</p>
             </div>
           </div>
@@ -238,18 +251,23 @@ class PaymentMethod extends Component {
 class ConfirmPurchase extends Component {
   constructor(props) {
     super(props)
+    this.placeOrder = this.placeOrder.bind(this)
   }
   render() {
     return (
       <div style={{marginBottom: '32px'}} >
         <h3 className="w3-text-blue"> Confirm Purchase </h3>
-        <button className="w3-button w3-small w3-right w3-text-grey" onClick = {e => this.props.moveToTab('cart')}> <i className = "fa fa-edit" /> Edit Cart </button>
+        <button className="w3-button w3-small w3-right w3-text-grey w3-hover-none" onClick = {e => this.props.moveToTab('cart')}> <i className = "fa fa-edit" /> Edit Cart </button>
         <ItemsTable simpleUI = {true} />
         <div style={{margin: '32px 0'}}>
-          <button className="w3-button w3-blue w3-right" onClick = {e => this.props.moveToTab('receipt')}> Place Order </button>
+          <button className="w3-button w3-blue w3-right" onClick = {this.placeOrder}> Place Order </button>
         </div>
       </div>
     )
+  }
+  placeOrder() {
+    this.props.placeOrder && this.props.placeOrder()
+    this.props.moveToTab('receipt')
   }
 }
 
@@ -263,11 +281,11 @@ class TabPayment extends Component {
       <div>
         <div className="w3-row-padding" >
           <div className="w3-col w3-half">
-            <PaymentMethod />
+            <PaymentMethod {...this.props} />
           </div>
           <div className="w3-col w3-half">
-            <Delivery />
-            <ConfirmPurchase moveToTab = {this.props.moveToTab} />
+            <Delivery {...this.props} />
+            <ConfirmPurchase {...this.props} />
           </div>
         </div>
       </div>
@@ -293,21 +311,30 @@ export default class Order extends Component {
     super(props)
     this.state = {
       progress: {},
-      tab: 'payment'
+      tab: 'payment',
+      paymentMethod: null,
+      delivery: null
     }
     this.tabs = [TabCart, TabPayment, TabReceipt]
-    this.moveToTab = this.moveToTab.bind(this)
+    const methods = ['moveToTab', 'onSelectPaymentMethod', 'onUpdateDelivery', 'placeOrder']
+    methods.forEach( method => this[method] = this[method].bind(this) )
   }
   render() {
     return (
       <div className="w3-container">
-        <Progress progress = {this.state.progress} tab = {this.state.tab} />
+        <ProgressBar progress = {this.state.progress} tab = {this.state.tab} />
         <div style={{margin: '32px 0'}} >
           {
             this.tabs.map( (Tab, index) => {
               return (
                 <div key = {index} style = {{display: this.state.tab === Tab.__tabname ? 'block' : 'none'}} >
-                  <Tab moveToTab = {this.moveToTab} />
+                  <Tab  moveToTab = {this.moveToTab}
+                        paymentMethod = {this.state.paymentMethod}
+                        delivery = {this.state.delivery}
+                        selectPaymentMethod = {this.onSelectPaymentMethod}
+                        updateDelivery = {this.onUpdateDelivery}
+                        placeOrder = {this.placeOrder}
+                  />
                 </div>
               )
             })
@@ -320,5 +347,20 @@ export default class Order extends Component {
     const progress = {...this.state.progress}
     progress[tab] = true
     this.setState({ progress, tab })
+  }
+  onSelectPaymentMethod(method) {
+    this.setState({ paymentMethod: method })
+  }
+  onUpdateDelivery(delivery) {
+    this.setState({ delivery })
+  }
+  placeOrder() {
+    const order = {
+      status: 'new',
+      delivery: {...this.state.delivery},
+      billTo: {},
+      items: storage.get(storage.key.CART).filter( item => item.checked )
+    }
+    console.log(order)
   }
 }
