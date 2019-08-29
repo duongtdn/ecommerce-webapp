@@ -8,6 +8,9 @@ api
   .add('/app-shell', {
     get: require('./page/get-app-shell')
   })
+  .add('/order', {
+    get: require('./page/get-app-shell')
+  })
   .add('/', {
     get: require('./page/get-page-home')
   })

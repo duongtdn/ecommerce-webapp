@@ -35,6 +35,12 @@ function html({script, data, dom}) {
         height : 100%;
         border: 0;
       }
+      .cursor-pointer {
+        cursor: pointer;
+      }
+      .bold {
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
