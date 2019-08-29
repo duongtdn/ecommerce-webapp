@@ -267,7 +267,7 @@ class TabPayment extends Component {
           </div>
           <div className="w3-col w3-half">
             <Delivery />
-            <ConfirmPurchase />
+            <ConfirmPurchase moveToTab = {this.props.moveToTab} />
           </div>
         </div>
       </div>
