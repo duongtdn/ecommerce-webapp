@@ -138,7 +138,7 @@ class Delivery extends Component {
     super(props)
     this.state = {
       edit: this.props.delivery? false : true,
-      delivery: {...this.props.delivery}
+      delivery: this.props.delivery? {...this.props.delivery} : {fullName: '', phone: '', address: ''}
     }
     this.updateDelivery = this.updateDelivery.bind(this)
   }
@@ -153,15 +153,15 @@ class Delivery extends Component {
         <p>Please confirm delivery information below</p>
         <div style={{ display: this.state.edit? 'block': 'none' }} >
           <p>
-            <label> Name </label>
+            <label className="w3-text-grey w3-small"> Name </label>
             <input className="w3-input" value={this.state.delivery.fullName} onChange={this.handleTextInput('fullName')} />
           </p>
           <p>
-            <label> Contact number </label>
+            <label className="w3-text-grey w3-small"> Contact number </label>
             <input className="w3-input" value={this.state.delivery.phone} onChange={this.handleTextInput('phone')} />
           </p>
           <p>
-            <label> Delivery Address </label>
+            <label className="w3-text-grey w3-small"> Delivery Address </label>
             <input className="w3-input" value={this.state.delivery.address} onChange={this.handleTextInput('address')} />
           </p>
           <p>
