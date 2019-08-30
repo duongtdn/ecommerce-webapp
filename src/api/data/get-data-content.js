@@ -2,7 +2,7 @@
 
 function getProgram(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Program.find({}, data => {
+    helpers.Database.Program.find({}, data => {
       if (data.length > 0) {
         req.programs = data
         next()
@@ -15,7 +15,7 @@ function getProgram(helpers) {
 
 function getCourses(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Course.find({},
+    helpers.Database.Course.find({},
       ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs', 'tags'],
       data => {
         req.courses = data

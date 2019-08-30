@@ -2,7 +2,7 @@
 
 function getPromos(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Promo.find({}, data => {
+    helpers.Database.Promo.find({}, data => {
       req.promos = data
       next()
     })
@@ -11,7 +11,7 @@ function getPromos(helpers) {
 
 function getTags(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Tag.find({}, data => {
+    helpers.Database.Tag.find({}, data => {
         req.tags = data
         next()
       }

@@ -14,7 +14,7 @@ const html = require('../html')
 
 function getPrograms(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Program.find({}, data => {
+    helpers.Database.Program.find({}, data => {
       if (data.length > 0) {
         req.programs = data
         next()
@@ -27,7 +27,7 @@ function getPrograms(helpers) {
 
 function getCourses(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Course.find({},
+    helpers.Database.Course.find({},
       ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs', 'tags'],
       data => {
         req.courses = data
@@ -39,7 +39,7 @@ function getCourses(helpers) {
 
 function getPromotion(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Promo.find({},
+    helpers.Database.Promo.find({},
       data => {
         req.promos = data
         next()
@@ -50,7 +50,7 @@ function getPromotion(helpers) {
 
 function getTags(helpers) {
   return function(req, res, next) {
-    helpers.Collections.Tag.find({},
+    helpers.Database.Tag.find({},
       data => {
         req.tags = data
         next()
