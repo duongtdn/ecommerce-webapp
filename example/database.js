@@ -1,5 +1,7 @@
 "use strict"
 
+const Order = []
+
 const Promos = [
   {
     id: 'promo-01',
@@ -233,6 +235,18 @@ module.exports = {
         } else {
           done && done([])
         }
+      }, 500)
+    }
+  },
+  Order: {
+    insert({ order }, done) {
+      setTimeout(() => {
+        if (Order.find( _order => _order.uid === order.uid && _order.number === order.number)) {
+          done && done('Order: Document exist')
+          return
+        }
+        Order.push(order)
+        done && done(null, order)
       }, 500)
     }
   }

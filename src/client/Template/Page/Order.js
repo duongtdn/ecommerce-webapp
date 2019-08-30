@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 
+import { xhttp } from 'authenform-utils'
+
 import { localeString } from '../../lib/util'
 import storage from '../../lib/storage'
 
@@ -266,8 +268,8 @@ class ConfirmPurchase extends Component {
     )
   }
   placeOrder() {
-    this.props.placeOrder && this.props.placeOrder()
-    this.props.moveToTab('receipt')
+    this.props.placeOrder && this.props.placeOrder().then(order > this.props.moveToTab('receipt'))
+    // catch error here
   }
 }
 
@@ -355,12 +357,20 @@ export default class Order extends Component {
     this.setState({ delivery })
   }
   placeOrder() {
-    const order = {
-      status: 'new',
-      delivery: {...this.state.delivery},
-      billTo: {},
-      items: storage.get(storage.key.CART).filter( item => item.checked )
-    }
-    console.log(order)
+    return new Promise( (resolve, reject) => {
+      const order = {
+        delivery: {...this.state.delivery},
+        billTo: {},
+        items: storage.get(storage.key.CART).filter( item => item.checked )
+      }
+      // show popup here
+      xhttp.post('/data/order', { order }, {authen: true}, (status, order) => {
+        if (status === 200) {
+          resolve(order)
+        } else {
+          reject(status)
+        }
+      })
+    })
   }
 }

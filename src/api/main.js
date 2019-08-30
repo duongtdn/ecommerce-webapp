@@ -29,5 +29,8 @@ api
   .add('/data/promotion', {
     get: require('./data/get-data-promo')
   })
+  .add('/data/order', {
+    post: require('./data/create-order')
+  })
 
 module.exports = api
