@@ -311,7 +311,7 @@ export default class Order extends Component {
     super(props)
     this.state = {
       progress: {},
-      tab: 'payment',
+      tab: 'cart',
       paymentMethod: null,
       delivery: null
     }
