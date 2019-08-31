@@ -247,7 +247,7 @@ module.exports = {
         }
         Order.push(order)
         done && done(null, order)
-      }, 500)
+      }, 2000)
     }
   }
 }

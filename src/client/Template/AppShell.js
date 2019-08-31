@@ -7,8 +7,9 @@ import Home from './Page/Home'
 import Browse from './Page/Browse'
 import Course from './Page/Course'
 import Error from './Page/Error'
-
 import Order from './Page/Order'
+
+import WaitingPopup from './Popup/Waiting'
 
 const routes = {
   home: Home,
@@ -19,6 +20,7 @@ const routes = {
 }
 
 const popups = {
+  waiting: WaitingPopup
 }
 
 class AppShell extends Component {
@@ -41,7 +43,8 @@ class AppShell extends Component {
                     fallbackRoute = 'error'
                     popups = {popups}
                     activePopup = {this.state.activePopup}
-                    showPopup = {popup => this.setState({ activePopup: popup })}
+                    popupArgs = {this.state.popupArgs}
+                    showPopup = { (popup, args) => this.setState({ activePopup: popup, popupArgs: args })}
                     hidePopup = { _ => this.setState({ activePopup: undefined })}
                     {...this.props}
         />
