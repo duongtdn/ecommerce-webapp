@@ -363,8 +363,7 @@ export default class Order extends Component {
         billTo: {},
         items: storage.get(storage.key.CART).filter( item => item.checked )
       }
-      // show popup here
-      this.props.showPopup('waiting', { message: 'creating order...' })
+      this.props.showPopup('small', { icon: 'fas fa-spinner', message: 'creating order...' })
       xhttp.post('/data/order', { order }, {authen: true}, (status, order) => {
         if (status === 200) {
           resolve(order)

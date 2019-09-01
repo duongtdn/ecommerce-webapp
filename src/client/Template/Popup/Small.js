@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-export default class Waiting extends Component {
+export default class CenterSmall extends Component {
   constructor(props) {
     super(props)
   }
@@ -15,7 +15,7 @@ export default class Waiting extends Component {
     }
     return (
       <div className="w3-model-content w3-sand w3-round" style={style} >
-        <p> <i className="w3-spin w3-xxxlarge w3-text-blue bold fas fa-spinner" /> </p>
+        <p> <i className={`w3-spin w3-xxxlarge w3-text-blue bold ${this.props.popupArgs && this.props.popupArgs.icon}`} /> </p>
         <p className="w3-xlarge w3-text-black bold">
           {this.props.popupArgs && this.props.popupArgs.message}
         </p>
