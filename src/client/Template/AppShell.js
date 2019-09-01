@@ -9,7 +9,7 @@ import Course from './Page/Course'
 import Error from './Page/Error'
 import Order from './Page/Order'
 
-import SmallPopup from './Popup/Small'
+import Info from './Popup/Info'
 
 const routes = {
   home: Home,
@@ -20,7 +20,7 @@ const routes = {
 }
 
 const popups = {
-  small: SmallPopup
+  info: Info
 }
 
 class AppShell extends Component {

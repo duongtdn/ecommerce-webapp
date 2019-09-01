@@ -154,7 +154,8 @@ class Delivery extends Component {
     super(props)
     this.state = {
       edit: this.props.delivery? false : true,
-      delivery: this.props.delivery? {...this.props.delivery} : {fullName: '', phone: '', address: ''}
+      delivery: this.props.delivery? {...this.props.delivery} : {fullName: '', phone: '', address: ''},
+      error: {fullName: false, phone: false, address: false}
     }
     this.updateDelivery = this.updateDelivery.bind(this)
   }
@@ -169,16 +170,16 @@ class Delivery extends Component {
         <p>Please confirm delivery information below</p>
         <div style={{ display: this.state.edit? 'block': 'none' }} >
           <p>
-            <label className="w3-text-grey w3-small"> Name </label>
-            <input className="w3-input" value={this.state.delivery.fullName} onChange={this.handleTextInput('fullName')} />
+            <label className={`w3-small ${this.state.error.fullName?'w3-text-red':'w3-text-grey'}`}> Name </label>
+            <input className={`w3-input ${this.state.error.fullName?'w3-border-red':''}`} value={this.state.delivery.fullName} onChange={this.handleTextInput('fullName')} />
           </p>
           <p>
-            <label className="w3-text-grey w3-small"> Contact number </label>
-            <input className="w3-input" value={this.state.delivery.phone} onChange={this.handleTextInput('phone')} />
+            <label className={`w3-small ${this.state.error.phone?'w3-text-red':'w3-text-grey'}`}> Contact number </label>
+            <input className={`w3-input ${this.state.error.phone?'w3-border-red':''}`} value={this.state.delivery.phone} onChange={this.handleTextInput('phone')} />
           </p>
           <p>
-            <label className="w3-text-grey w3-small"> Delivery Address </label>
-            <input className="w3-input" value={this.state.delivery.address} onChange={this.handleTextInput('address')} />
+            <label className={`w3-small ${this.state.error.address?'w3-text-red':'w3-text-grey'}`}> Delivery Address </label>
+            <input className={`w3-input ${this.state.error.address?'w3-border-red':''}`} value={this.state.delivery.address} onChange={this.handleTextInput('address')} />
           </p>
           <p>
             <button className="w3-button w3-blue" onClick={this.updateDelivery} > Save </button>
@@ -197,14 +198,26 @@ class Delivery extends Component {
   }
   updateDelivery() {
     const delivery = {...this.state.delivery}
-    this.props.updateDelivery && this.props.updateDelivery(delivery)
-    this.setState({ edit: false })
+    // validate delivery here
+    const error = {
+      fullName: delivery.fullName.length === 0,
+      phone: delivery.phone.length === 0,
+      address: delivery.address.length === 0
+    }
+    if (Object.keys(error).some(key => error[key])) {
+      this.setState({ error })
+    } else {
+      this.props.updateDelivery && this.props.updateDelivery(delivery)
+      this.setState({ edit: false, error })
+    }
   }
   handleTextInput(key) {
     return (e) => {
       const delivery = {...this.state.delivery}
       delivery[key] = e.target.value
-      this.setState({ delivery })
+      const error = {...this.state.error}
+      error[key] = false
+      this.setState({ delivery, error })
     }
   }
 }
@@ -282,8 +295,7 @@ class ConfirmPurchase extends Component {
     )
   }
   placeOrder() {
-    this.props.placeOrder && this.props.placeOrder().then(order => this.props.moveToTab('receipt'))
-    // catch error here
+    this.props.placeOrder && this.props.placeOrder().then(order => this.props.moveToTab('receipt')).catch(err => console.log(err))
   }
 }
 
@@ -373,12 +385,23 @@ export default class Order extends Component {
   }
   placeOrder() {
     return new Promise( (resolve, reject) => {
+      if (!this.state.delivery || Object.keys(this.state.delivery).some(key => this.state.delivery[key].length === 0)) {
+        this.props.showPopup('info', { closeBtn: true, message: 'please complete delivery', align: 'left' })
+        reject('delivery must be provided')
+        return
+      }
+      if (!this.state.paymentMethod) {
+        this.props.showPopup('info', { closeBtn: true, message: 'please select a payment method', align: 'left' })
+        reject('please select a payment method')
+        return
+      }
       const order = {
         delivery: {...this.state.delivery},
+        paymentMethod: this.state.paymentMethod,
         billTo: {},
         items: storage.get(storage.key.CART).filter( item => item.checked )
       }
-      this.props.showPopup('small', { icon: 'fas fa-spinner', message: 'creating order...' })
+      this.props.showPopup('info', { icon: 'fas fa-spinner', message: 'creating order...' })
       xhttp.post('/data/order', { order }, {authen: true}, (status, order) => {
         if (status === 200) {
           resolve(order)
