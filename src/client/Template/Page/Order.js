@@ -343,7 +343,8 @@ export default class Order extends Component {
       progress: {},
       tab: 'cart',
       paymentMethod: null,
-      delivery: null
+      // delivery: null,
+delivery: {fullName: 'Duong', phone: '0976876633', address: 'Etown 2'}
     }
     this.tabs = [TabCart, TabPayment, TabReceipt]
     const methods = ['moveToTab', 'onSelectPaymentMethod', 'onUpdateDelivery', 'placeOrder']
@@ -404,8 +405,12 @@ export default class Order extends Component {
         items: storage.get(storage.key.CART).filter( item => item.checked )
       }
       this.props.showPopup('info', { icon: 'fas fa-spinner', message: 'creating order...' })
-      xhttp.post('/data/order', { order }, {authen: true}, (status, order) => {
+      xhttp.post('/data/order', { order }, {authen: true}, (status, data) => {
         if (status === 200) {
+          const order = JSON.parse(data).order
+          // remove purchased item from cart
+          const cart = storage.get(storage.key.CART).filter( item => !order.items.find( _item => _item.code === item.code) )
+          storage.update(storage.key.CART, cart)
           resolve(order)
         } else {
           reject(status)
