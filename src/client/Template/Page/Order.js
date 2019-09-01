@@ -50,6 +50,8 @@ class ItemsTable extends Component {
       this.setState({ cart })
       this.props.onCartUpdated && this.props.onCartUpdated(cart)
     })
+    // first update after page load
+    this.props.onCartUpdated && this.props.onCartUpdated(this.state.cart)
   }
   componentWillUnmount() {
     storage.observe(storage.key.CART, this._observer, false)
