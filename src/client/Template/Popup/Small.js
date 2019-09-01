@@ -6,6 +6,11 @@ export default class CenterSmall extends Component {
   constructor(props) {
     super(props)
   }
+  componentDidMount() {
+    if (this.props.popupArgs && this.props.popupArgs.duration) {
+      setTimeout(_ => this.props.hidePopup(), this.props.popupArgs.duration)
+    }
+  }
   render() {
     const style = {
       margin: '120px auto',

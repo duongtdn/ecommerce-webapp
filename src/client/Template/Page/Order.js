@@ -46,7 +46,10 @@ class ItemsTable extends Component {
     this.state = { cart: storage.get(storage.key.CART) || [] }
   }
   componentDidMount() {
-    this._observer = storage.observe(storage.key.CART, cart => this.setState({ cart }))
+    this._observer = storage.observe(storage.key.CART, cart => {
+      this.setState({ cart })
+      this.props.onCartUpdated && this.props.onCartUpdated(cart)
+    })
   }
   componentWillUnmount() {
     storage.observe(storage.key.CART, this._observer, false)
@@ -118,18 +121,29 @@ class ItemsTable extends Component {
 class TabCart extends Component {
   constructor(props) {
     super(props)
+    this.state = { disabledBtn: false }
+    this.onCartUpdated = this.onCartUpdated.bind(this)
   }
   render() {
     return(
       <div>
         <h3> Checkout Carts </h3>
         <p> Please verify your purchase items in cart, then process to next pay with payment method</p>
-        <ItemsTable />
+        <ItemsTable onCartUpdated = {this.onCartUpdated} />
         <div style={{margin: '32px 0'}}>
-          <button className="w3-button w3-blue w3-right" onClick = {e => this.props.moveToTab('payment')}> Continue with payment </button>
+          <button className={`w3-button w3-blue w3-right ${this.state.disabledBtn? 'w3-disabled' : ''}`}
+                  disabled = {this.state.disabledBtn}
+                  onClick = {e => this.props.moveToTab('payment')}
+          >
+            Continue with payment
+          </button>
         </div>
       </div>
     )
+  }
+  onCartUpdated(cart) {
+    const disabledBtn = !(cart && cart.filter(item => item.checked).length > 0)
+    this.setState({ disabledBtn })
   }
 }
 TabCart.__tabname = 'cart'
@@ -336,6 +350,7 @@ export default class Order extends Component {
                         selectPaymentMethod = {this.onSelectPaymentMethod}
                         updateDelivery = {this.onUpdateDelivery}
                         placeOrder = {this.placeOrder}
+                        {...this.props}
                   />
                 </div>
               )
