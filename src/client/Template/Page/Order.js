@@ -343,8 +343,7 @@ export default class Order extends Component {
       progress: {},
       tab: 'cart',
       paymentMethod: null,
-      // delivery: null,
-delivery: {fullName: 'Duong', phone: '0976876633', address: 'Etown 2'}
+      delivery: null,
     }
     this.tabs = [TabCart, TabPayment, TabReceipt]
     const methods = ['moveToTab', 'onSelectPaymentMethod', 'onUpdateDelivery', 'placeOrder']

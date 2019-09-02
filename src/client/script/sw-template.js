@@ -82,6 +82,12 @@ workbox.routing.registerRoute(
     cacheName: 'promotion-cache',
   })
 );
+workbox.routing.registerRoute(
+  /\/data\/order$/i,
+  new workbox.strategies.NetworkFirst({
+    cacheName: 'user-cache',
+  })
+);
 
 
 /*
