@@ -108,11 +108,13 @@ class PurchaseBtn extends Component {
   }
   onPurchase(price) {
     const course = this.props.course
+    const promotion = this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1).map( promo => promo.id)
     const item = {
       code: course.id,
       name: course.title,
       type: 'course',
       checked: true,
+      promotion,
       price
     }
     this.props.onPurchase && this.props.onPurchase(item)
@@ -212,6 +214,7 @@ class PurchaseBundleBtn extends Component {
       name: offer.description,
       items,
       checked: true,
+      promotion: [offer.id],
       price: bundlePrice.subTotal
     })
   }

@@ -31,7 +31,6 @@ const Promos = [
     deduction: [
       {target: 'c-01', number: 150000},
       {target: 'c-02', number: 150000},
-      {target: 'c-03', number: 100000}
     ],
     description: 'Bundle Offer: Embedded completion courses'
   }
