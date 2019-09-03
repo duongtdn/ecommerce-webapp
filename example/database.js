@@ -9,7 +9,7 @@ const Promos = [
     target: ['c-01'],
     deduction: 100000,
     description: 'on sale program',
-    expireIn: '1564444799000' // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
+    // expireIn: '1564444799000' // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
   },
   {
     id: 'promo-02',
@@ -22,12 +22,13 @@ const Promos = [
     id: 'promo-03',
     type: 'gift',
     target: ['c-02'],
+    deduction: 0,
     description: '+ 1 board STM32 Discovery F0'
   },
   {
     id: 'promo-04',
     type: 'bundle',
-    target: ['c-01', 'c-02', 'c-03'],
+    target: ['c-01', 'c-02'],
     deduction: [
       {target: 'c-01', number: 150000},
       {target: 'c-02', number: 150000},
@@ -247,6 +248,21 @@ module.exports = {
         Order.push(order)
         done && done(null, order)
       }, 2000)
+    }
+  },
+  find(query, done) {
+    const data = {}
+    console.log(query)
+    const _done = {}
+    Object.keys(query).forEach(key => _done[key] = false )
+    for (let table in query) {
+      this[table].find({id: query.keys}, query.projection, (response) => {
+        data[table] = response
+        _done[table] = true
+        if (Object.keys(_done).every(key => _done[key])) {
+          done && done(data)
+        }
+      })
     }
   }
 }
