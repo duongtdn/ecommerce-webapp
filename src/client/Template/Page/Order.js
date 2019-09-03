@@ -480,8 +480,10 @@ export default class Order extends Component {
           // remove purchased item from cart
           const cart = storage.get(storage.key.CART).filter( item => !order.items.find( _item => _item.code === item.code) )
           storage.update(storage.key.CART, cart)
+          this.props.onOrderCreated && this.props.onOrderCreated(order)
           resolve(order)
         } else {
+          this.props.showPopup('info', { closeBtn: true, message: `error ${status}. Please refresh page and try again`, align: 'left' })
           reject(status)
         }
         this.props.hidePopup()
