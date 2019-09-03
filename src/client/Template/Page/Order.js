@@ -30,7 +30,7 @@ class ProgressBar extends Component {
           </div>
           <div className={`w3-cell w3-center ${tabColors.receipt}`} style={{width: '33.33%'}}>
             <i className="fas fa-receipt" /><br/>
-            <span className="w3-hide-small">Confirm Order</span>
+            <span className="w3-hide-small">Receipt</span>
           </div>
         </div>
 
@@ -329,9 +329,79 @@ class TabReceipt extends Component {
     super(props)
   }
   render() {
+    const order = {
+      number: '332110',
+      createdAt: 1567515866463,
+      status: 'new',
+      delivery: {
+        fullName: 'Duong Nguyen',
+        phone: '0976986633',
+        address: 'Etown 2, 364 Cong Hoa St. Tan BInh Dist. HCMC'
+      },
+      items:[]
+    }
+    const subTotal = order.items.reduce( (acc, cur) => acc + (cur.checked ? cur.price : 0), 0 )
     return(
-      <div>Receipt</div>
+      <div className="w3-text-grey">
+        <p className="w3-text-blue-grey"> Thank you for purchasing our service. Your order information is as below </p>
+        <h4 className="bold w3-text-blue"> <i className="fas fa-receipt" />  Order: #{order.number} </h4>
+        <p> Created At: {this.getDay(order.createdAt)} </p>
+        <p> Status: {order.status.toUpperCase()} </p>
+
+        <p className="w3-card w3-padding">
+          <span className="w3-small w3-text-grey"> Delivery to </span> <br />
+          <span className="bold w3-text-blue-grey"> {order.delivery.fullName} </span> <br/>
+          <span className="w3-text-blue-grey"> {order.delivery.phone} </span> <br/>
+          <span className="w3-text-blue-grey"> {order.delivery.address} </span>
+        </p>
+
+        <p className="w3-text-grey"> Item Lists </p>
+
+        <table className="w3-table w3-border w3-bordered">
+          <thead>
+            <tr className="w3-blue">
+              <th className = "w3-border-right">Item</th>
+              <th style={{textAlign: 'right'}} >Value ({'\u20ab'})</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              order.items.map( item => {
+                return (
+                  <tr key={item.code}>
+                    <td className = "w3-border-right">
+                      <div className="w3-cell-row">
+                        <div className = "w3-cell">
+                          <div >
+                            <span style={{fontWeight: 'bold'}} >{item.name}</span>
+                            {(item.type === 'bundle')? <ul className="w3-text-blue-grey" style={{margin:'6px 0'}}> {item.items.map( item => (<li key={item.code} style={{margin:'3px 0'}}>{item.name}</li>) )} </ul> : null}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style={{textAlign: 'right'}}>
+                      {localeString(item.price)}
+                    </td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+          <tfoot>
+            <tr className="w3-pale-blue">
+              <th className = "w3-border-right">Total</th>
+              <th className="w3-text-orange" style={{textAlign: 'right'}} > {localeString(subTotal)} </th>
+            </tr>
+          </tfoot>
+        </table>
+
+      </div>
     )
+  }
+  getDay(timestamp) {
+    const date = new Date(timestamp)
+    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    return `${weekday[date.getDay()]} ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
   }
 }
 TabReceipt.__tabname = 'receipt'
@@ -341,7 +411,7 @@ export default class Order extends Component {
     super(props)
     this.state = {
       progress: {},
-      tab: 'cart',
+      tab: 'receipt',
       paymentMethod: null,
       delivery: null,
     }
