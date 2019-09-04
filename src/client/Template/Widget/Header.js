@@ -41,15 +41,19 @@ class UserSnipet extends Component {
 class LoginButton extends Component {
   constructor(props) {
     super(props)
+    this.signin = this.signin.bind(this)
   }
   render() {
     return (
       <div className="w3-bar-item w3-button">
-        <span className="w3-text-grey">
-          <i className="fas fa-user" /> <span className="w3-hide-small" style={{marginLeft: '4px'}}>Sign In</span>
+        <span className="w3-text-grey" onClick={this.signin}>
+          <i className="fas fa-user" /> <span className="w3-hide-small" style={{marginLeft: '4px'}} >Sign In</span>
         </span>
       </div>
     )
+  }
+  signin() {
+    this.props.accountClient.signin()
   }
 }
 
@@ -107,7 +111,7 @@ export default class Header extends Component {
                               env = {this.props.env}
                   />
                 :
-                  <LoginButton />
+                  <LoginButton accountClient={this.props.accountClient} />
               }
             </div>
           </div>

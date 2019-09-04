@@ -33,7 +33,7 @@ app.use(webpackHotMiddleware(compiler, {
   // log: console.log
 }))
 
-const PORT = 3400
+const PORT = 3200
 app.listen(PORT, (err) => {
   if (err) {
     console.log('Failed to start API Server')
