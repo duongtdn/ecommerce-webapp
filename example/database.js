@@ -239,6 +239,16 @@ module.exports = {
     }
   },
   Order: {
+    find({uid}, done) {
+      setTimeout(() => {
+        const orders = Order.find( _order => _order.uid === order.uid)
+        if (orders) {
+          done && done(orders)
+        } else {
+          done && done([])
+        }
+      }, 500)
+    },
     insert({ order }, done) {
       setTimeout(() => {
         if (Order.find( _order => _order.uid === order.uid && _order.number === order.number)) {

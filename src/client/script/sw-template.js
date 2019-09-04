@@ -18,12 +18,12 @@ workbox.routing.registerNavigationRoute('/app-shell');
 /* Cache strategies */
 
 // routing for js and css
-workbox.routing.registerRoute(
-  /\.(?:js|css)$/,
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'static-cache',
-  })
-);
+// workbox.routing.registerRoute(
+//   /\.(?:js|css)$/,
+//   new workbox.strategies.StaleWhileRevalidate({
+//     cacheName: 'static-cache',
+//   })
+// );
 
 
 // routing for cloud served images

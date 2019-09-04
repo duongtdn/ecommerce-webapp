@@ -30,7 +30,8 @@ api
     get: require('./data/get-data-promo')
   })
   .add('/data/order', {
-    post: require('./data/create-order')
+    post: require('./data/create-order'),
+    get: require('./data/get-order')
   })
 
 module.exports = api
