@@ -43,8 +43,8 @@ function validateOrder(helpers) {
     order.items.forEach(item => item.promotion.forEach(p => (promotion.indexOf(p) === -1) && promotion.push(p)))
     helpers.Database.find(
       {
-        Course: {keys: courseIds, projection: ['price']},
-        Promo: {keys: promotion, projection: ['target', 'deduction']},
+        Course: {key: {id: courseIds}, projection: ['price']},
+        Promo: {key: {id: promotion}, projection: ['target', 'deduction']},
       },
       (data) => {
         const courses = data.Course

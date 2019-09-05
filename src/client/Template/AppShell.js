@@ -11,6 +11,9 @@ import Order from './Page/Order'
 
 import Info from './Popup/Info'
 
+import { xhttp } from 'authenform-utils'
+import env from '../script/env'
+
 const routes = {
   home: Home,
   browse: Browse,
@@ -30,6 +33,18 @@ class AppShell extends Component {
     this.state = {
       activeRoute: path.split('/')[0]
     }
+    /* fetch /user to get user orders, enrolls and vouchers */
+    this.props.accountClient && this.props.accountClient.on('authenticated', user => {
+      const urlBasePath = env.urlBasePath
+      xhttp.get(`${urlBasePath}/user`, {authen: false}, (status, responseText) => {
+        if (status === 200) {
+          const data = JSON.parse(responseText)
+          console.log(data)
+        } else {
+
+        }
+      })
+    })
   }
   componentDidMount() {
     this.props.href && this.props.href.on('popState', e => this.props.href.set(`/${this.props.href.getPathName()}`) )

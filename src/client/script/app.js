@@ -66,18 +66,15 @@ if ('serviceWorker' in navigator) {
       {url: '/data/content', cacheName: 'data-cache', data: { programs: data.programs, courses: data.courses }},
       {url: '/data/promotion', cacheName: 'promotion-cache', data: { promos: data.promos, tags: data.tags }}
     ])
-    get('/data/order', {authen: false}).then( response => { // todo: turn authen to true after code is tested
-      data.orders = response.orders
-      renderApp(data)
-    }) // tbd: catch error
+    renderApp(data)
   } else {
     /*
       app-shell is served, make a request to get up-to-date data
       if data are in cache and still valid (not expired), they will be served
       else, network request will be made to get data
     */
-    Promise.all([get('/data/content'), get('/data/promotion'), get('/data/order', {authen: false})]).then(  values => { // todo: turn authen to true after code is tested
-      const data = {...values[0], ...values[1], ...values[2]}
+    Promise.all([get('/data/content'), get('/data/promotion')]).then(  values => {
+      const data = {...values[0], ...values[1]}
       renderApp(data)
     }) // tbd: catch error
   }

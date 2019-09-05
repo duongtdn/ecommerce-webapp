@@ -239,9 +239,12 @@ module.exports = {
     }
   },
   Order: {
-    find({uid}, done) {
+    find({uid}, projection, done) {
+      if ({}.toString.call(projection) === '[object Function]') {
+        done= projection
+      }
       setTimeout(() => {
-        const orders = Order.find( _order => _order.uid === order.uid)
+        const orders = Order.find( _order => _order.uid === uid)
         if (orders) {
           done && done(orders)
         } else {
@@ -262,11 +265,10 @@ module.exports = {
   },
   find(query, done) {
     const data = {}
-    console.log(query)
     const _done = {}
     Object.keys(query).forEach(key => _done[key] = false )
     for (let table in query) {
-      this[table].find({id: query.keys}, query.projection, (response) => {
+      this[table].find(query[table].key, query[table].projection, (response) => {
         data[table] = response
         _done[table] = true
         if (Object.keys(_done).every(key => _done[key])) {

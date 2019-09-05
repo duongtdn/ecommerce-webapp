@@ -83,7 +83,7 @@ workbox.routing.registerRoute(
   })
 );
 workbox.routing.registerRoute(
-  /\/data\/order$/i,
+  /\/user$/i,
   new workbox.strategies.NetworkFirst({
     cacheName: 'user-cache',
   })
