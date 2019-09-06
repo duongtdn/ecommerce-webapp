@@ -13,24 +13,72 @@ class ProgressBar extends Component {
   }
   render() {
     const tabColors = {
-      cart: this.props.tab === 'cart' ? 'w3-text-blue' : this.props.progress.cart ? 'w3-text-light-blue' : 'w3-text-light-blue',
-      payment: this.props.tab === 'payment' ? 'w3-text-blue' : this.props.progress.payment ? 'w3-text-light-blue' : 'w3-text-grey',
-      receipt: this.props.tab === 'receipt' ? 'w3-text-blue' : this.props.progress.receipt ? 'w3-text-light-blue' : 'w3-text-grey',
+      cart: this.props.tab === 'cart' ? 'blue' : this.props.progress.cart ? 'light-blue' : 'light-blue',
+      payment: this.props.tab === 'payment' ? 'blue' : this.props.progress.payment ? 'light-blue' : 'grey',
+      receipt: this.props.tab === 'receipt' ? 'blue' : this.props.progress.receipt ? 'light-blue' : 'grey',
     }
     return(
       <div>
         <div className="w3-cell-row w3-border-bottom w3-padding">
-          <div className={`w3-cell w3-center ${tabColors.cart}`} style={{width: '33.33%'}}>
-            <i className="fas fa-shopping-cart" /><br/>
-            <span className="w3-hide-small">Checkout Cart</span>
+          <div className={`w3-cell w3-center w3-text-${tabColors.cart}`} style={{width: '33.33%'}}>
+            <label style={{position: 'relative'}} >
+              <i className="fas fa-shopping-cart" /><br/>
+              <span className="w3-hide-small">Checkout Cart</span>
+              {
+                this.props.progress.cart ?
+                  <label  className={`w3-text-${tabColors.cart}`}
+                          style={{display: 'inline-block', width: '25px', height: '25px', position: 'absolute', top: '-27px', left: '-3px'}}
+                  >
+                    <i className="fa fa-check" />
+                  </label>
+                :
+                  <label  className={`w3-circle w3-${tabColors.cart}`}
+                          style={{display: 'inline-block', width: '25px', height: '25px', position: 'absolute', top: '-27px', left: '-3px'}}
+                  >
+                    1
+                  </label>
+              }
+            </label>
           </div>
-          <div className={`w3-cell w3-center ${tabColors.payment}`} style={{width: '33.33%'}}>
-            <i className="far fa-credit-card" /><br/>
-            <span className="w3-hide-small">Process Payment</span>
+          <div className={`w3-cell w3-center w3-text-${tabColors.payment}`} style={{width: '33.33%'}}>
+            <label style={{position: 'relative'}} >
+              <i className="far fa-credit-card" /><br/>
+              <span className="w3-hide-small">Process Payment</span>
+              {
+                this.props.progress.payment ?
+                  <label  className={`w3-text-${tabColors.payment}`}
+                          style={{display: 'inline-block', width: '25px', height: '25px', position: 'absolute', top: '-27px', left: '-4px'}}
+                  >
+                    <i className="fa fa-check" />
+                  </label>
+                :
+                  <label  className={`w3-circle w3-${tabColors.payment}`}
+                          style={{display: 'inline-block', width: '25px', height: '25px', position: 'absolute', top: '-27px', left: '-4px'}}
+                  >
+                    2
+                  </label>
+              }
+            </label>
           </div>
-          <div className={`w3-cell w3-center ${tabColors.receipt}`} style={{width: '33.33%'}}>
-            <i className="fas fa-receipt" /><br/>
-            <span className="w3-hide-small">Receipt</span>
+          <div className={`w3-cell w3-center w3-text-${tabColors.receipt}`} style={{width: '33.33%'}}>
+            <label style={{position: 'relative'}} >
+              <i className="fas fa-receipt" /><br/>
+              <span className="w3-hide-small">Receipt</span>
+              {
+                this.props.progress.receipt ?
+                  <label  className={`w3-text-${tabColors.receipt}`}
+                          style={{display: 'inline-block', width: '25px', height: '25px', position: 'absolute', top: '-27px', left: '-6px'}}
+                  >
+                    <i className="fa fa-check" />
+                  </label>
+                :
+                  <label  className={`w3-circle w3-${tabColors.receipt}`}
+                          style={{display: 'inline-block', width: '25px', height: '25px', position: 'absolute', top: '-27px', left: '-6px'}}
+                  >
+                    3
+                  </label>
+              }
+            </label>
           </div>
         </div>
 
@@ -125,6 +173,7 @@ class TabCart extends Component {
     super(props)
     this.state = { disabledBtn: false }
     this.onCartUpdated = this.onCartUpdated.bind(this)
+    this.onCartConfirmed = this.onCartConfirmed.bind(this)
   }
   render() {
     return(
@@ -135,7 +184,7 @@ class TabCart extends Component {
         <div style={{margin: '32px 0'}}>
           <button className={`w3-button w3-blue w3-right ${this.state.disabledBtn? 'w3-disabled' : ''}`}
                   disabled = {this.state.disabledBtn}
-                  onClick = {e => this.props.moveToTab('payment')}
+                  onClick = {this.onCartConfirmed }
           >
             Continue with payment
           </button>
@@ -146,6 +195,10 @@ class TabCart extends Component {
   onCartUpdated(cart) {
     const disabledBtn = !(cart && cart.filter(item => item.checked).length > 0)
     this.setState({ disabledBtn })
+  }
+  onCartConfirmed() {
+    this.props.setTabCompleted('cart')
+    this.props.moveToTab('payment')
   }
 }
 TabCart.__tabname = 'cart'
@@ -288,12 +341,13 @@ class ConfirmPurchase extends Component {
   constructor(props) {
     super(props)
     this.placeOrder = this.placeOrder.bind(this)
+    this.editCart = this.editCart.bind(this)
   }
   render() {
     return (
       <div style={{marginBottom: '32px'}} >
         <h3 className="w3-text-blue"> Confirm Purchase </h3>
-        <button className="w3-button w3-small w3-right w3-text-grey w3-hover-none" onClick = {e => this.props.moveToTab('cart')}> <i className = "fa fa-edit" /> Edit Cart </button>
+        <button className="w3-button w3-small w3-right w3-text-grey w3-hover-none" onClick = {this.editCart}> <i className = "fa fa-edit" /> Edit Cart </button>
         <ItemsTable simpleUI = {true} />
         <div style={{margin: '32px 0'}}>
           <button className="w3-button w3-blue w3-right" onClick = {this.placeOrder}> Place Order </button>
@@ -301,8 +355,17 @@ class ConfirmPurchase extends Component {
       </div>
     )
   }
+  editCart() {
+    this.props.setTabIncompleted('cart')
+    this.props.moveToTab('cart')
+  }
   placeOrder() {
-    this.props.placeOrder && this.props.placeOrder().then(order => this.props.moveToTab('receipt')).catch(err => console.log(err))
+    this.props.placeOrder && this.props.placeOrder().then(order => {
+      this.props.setTabCompleted('payment')
+      this.props.setTabCompleted('receipt')
+      this.props.moveToTab('receipt')
+    })
+    .catch(err => console.log(err))
   }
 }
 
@@ -412,7 +475,7 @@ export default class Order extends Component {
       delivery: null,
     }
     this.tabs = [TabCart, TabPayment, TabReceipt]
-    const methods = ['moveToTab', 'onSelectPaymentMethod', 'onUpdateDelivery', 'placeOrder']
+    const methods = ['moveToTab', 'setTabCompleted', 'setTabIncompleted', 'onSelectPaymentMethod', 'onUpdateDelivery', 'placeOrder']
     methods.forEach( method => this[method] = this[method].bind(this) )
   }
   render() {
@@ -425,6 +488,8 @@ export default class Order extends Component {
               return (
                 <div key = {index} style = {{display: this.state.tab === Tab.__tabname ? 'block' : 'none'}} >
                   <Tab  moveToTab = {this.moveToTab}
+                        setTabCompleted = {this.setTabCompleted}
+                        setTabIncompleted = {this.setTabIncompleted}
                         paymentMethod = {this.state.paymentMethod}
                         delivery = {this.state.delivery}
                         selectPaymentMethod = {this.onSelectPaymentMethod}
@@ -441,9 +506,17 @@ export default class Order extends Component {
     )
   }
   moveToTab(tab) {
+    this.setState({ tab })
+  }
+  setTabCompleted(tab) {
     const progress = {...this.state.progress}
     progress[tab] = true
-    this.setState({ progress, tab })
+    this.setState({ progress })
+  }
+  setTabIncompleted(tab) {
+    const progress = {...this.state.progress}
+    progress[tab] = false
+    this.setState({ progress })
   }
   onSelectPaymentMethod(method) {
     this.setState({ paymentMethod: method })

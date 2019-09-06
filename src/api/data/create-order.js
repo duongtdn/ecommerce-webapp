@@ -2,7 +2,7 @@
 
 function rand() {
   // return Math.random().toString(36).substr(2,9)
-  Math.floor(100000 + Math.random() * 900000)
+  return Math.floor(100000 + Math.random() * 900000)
 }
 
 function isExpire(timestamp) {
@@ -106,7 +106,7 @@ function insertOrderToDB(helpers) {
     order.notes = [{ by: 'system', message: 'new order created', at: now.getTime() }]
     helpers.Database.Order.insert({order}, (err, data) => {
       if (err) {
-        res.status(500).json({err: 'Database Access Error'})
+        res.status(403).json({err})
       } else {
         next()
       }
