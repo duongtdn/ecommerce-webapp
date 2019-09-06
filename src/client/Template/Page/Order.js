@@ -207,45 +207,35 @@ TabCart.__tabname = 'cart'
 class Delivery extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      edit: this.props.delivery? false : true,
-      // delivery: this.props.delivery? {...this.props.delivery} : {fullName: '', phone: '', address: ''},
-      delivery: {
-        fullName: 'Duong Nguyen',
-        phone: '0976986633',
-        address: 'Etown 2, 364 Cong Hoa St. Tan BInh Dist. HCMC'
-      },
-      error: {fullName: false, phone: false, address: false}
-    }
-    this.updateDelivery = this.updateDelivery.bind(this)
+    this.saveDelivery = this.saveDelivery.bind(this)
   }
   render() {
     return (
       <div style={{marginBottom: '32px'}} >
         <h3 className="w3-text-blue"> Delivery
           <span className="w3-text-grey cursor-pointer w3-small"
-                style={{marginLeft: '6px', display: this.state.edit? 'none' : 'inline'}}
-                onClick={e => this.setState({edit: true})}> <i className = "fa fa-edit" /> Edit </span>
+                style={{marginLeft: '6px', display: this.props.editDelivery? 'none' : 'inline'}}
+                onClick={this.props.enableEditDelivery}> <i className = "fa fa-edit" /> Edit </span>
         </h3>
         <p>Please confirm delivery information below</p>
-        <div style={{ display: this.state.edit? 'block': 'none' }} >
+        <div style={{ display: this.props.editDelivery? 'block': 'none' }} >
           <p>
-            <label className={`w3-small ${this.state.error.fullName?'w3-text-red':'w3-text-grey'}`}> Name </label>
-            <input className={`w3-input ${this.state.error.fullName?'w3-border-red':''}`} value={this.state.delivery.fullName} onChange={this.handleTextInput('fullName')} />
+            <label className={`w3-small ${this.props.error.fullName?'w3-text-red':'w3-text-grey'}`}> Name </label>
+            <input className={`w3-input ${this.props.error.fullName?'w3-border-red':''}`} value={this.props.delivery.fullName} onChange={this.handleTextInput('fullName')} />
           </p>
           <p>
-            <label className={`w3-small ${this.state.error.phone?'w3-text-red':'w3-text-grey'}`}> Contact number </label>
-            <input className={`w3-input ${this.state.error.phone?'w3-border-red':''}`} value={this.state.delivery.phone} onChange={this.handleTextInput('phone')} />
+            <label className={`w3-small ${this.props.error.phone?'w3-text-red':'w3-text-grey'}`}> Contact number </label>
+            <input className={`w3-input ${this.props.error.phone?'w3-border-red':''}`} value={this.props.delivery.phone} onChange={this.handleTextInput('phone')} />
           </p>
           <p>
-            <label className={`w3-small ${this.state.error.address?'w3-text-red':'w3-text-grey'}`}> Delivery Address </label>
-            <input className={`w3-input ${this.state.error.address?'w3-border-red':''}`} value={this.state.delivery.address} onChange={this.handleTextInput('address')} />
+            <label className={`w3-small ${this.props.error.address?'w3-text-red':'w3-text-grey'}`}> Delivery Address </label>
+            <input className={`w3-input ${this.props.error.address?'w3-border-red':''}`} value={this.props.delivery.address} onChange={this.handleTextInput('address')} />
           </p>
           <p>
-            <button className="w3-button w3-blue" onClick={this.updateDelivery} > Save </button>
+            <button className="w3-button w3-blue" onClick={this.saveDelivery} > Save </button>
           </p>
         </div>
-        <div style={{ display: !this.state.edit? 'block': 'none' }} >
+        <div style={{ display: !this.props.editDelivery? 'block': 'none' }} >
           <div>
             <p className="w3-small w3-text-grey"> Delivery to:</p>
             <label className="bold">{this.props.delivery && this.props.delivery.fullName}</label> <br />
@@ -256,28 +246,14 @@ class Delivery extends Component {
       </div>
     )
   }
-  updateDelivery() {
-    const delivery = {...this.state.delivery}
-    // validate delivery here
-    const error = {
-      fullName: delivery.fullName.length === 0,
-      phone: delivery.phone.length === 0,
-      address: delivery.address.length === 0
-    }
-    if (Object.keys(error).some(key => error[key])) {
-      this.setState({ error })
-    } else {
-      this.props.updateDelivery && this.props.updateDelivery(delivery)
-      this.setState({ edit: false, error })
-    }
+  saveDelivery() {
+    this.props.saveDelivery().catch( err => console.log(err))
   }
   handleTextInput(key) {
     return (e) => {
-      const delivery = {...this.state.delivery}
+      const delivery = {...this.props.delivery}
       delivery[key] = e.target.value
-      const error = {...this.state.error}
-      error[key] = false
-      this.setState({ delivery, error })
+      this.props.updateDelivery(delivery)
     }
   }
 }
@@ -468,15 +444,46 @@ TabReceipt.__tabname = 'receipt'
 export default class Order extends Component {
   constructor(props) {
     super(props)
+
+    const delivery = this.props.user ?
+      {
+        fullName: this.props.user.profile.fullName || '',
+        phone: this.props.user.profile.phone[0] || '',
+        address: this.props.user.profile.address || ''
+      }
+      : null
+
+    const editDelivery =  delivery &&
+      delivery.fullName && delivery.fullName.length > 0 &&
+      delivery.phone && delivery.phone.length > 0 &&
+      delivery.address && delivery.address.length > 0 ? false : true
+
     this.state = {
       progress: {},
       tab: 'cart',
       paymentMethod: null,
-      delivery: null,
+      delivery,
+      error: this._validateDelivery(delivery),
+      editDelivery
     }
+
     this.tabs = [TabCart, TabPayment, TabReceipt]
-    const methods = ['moveToTab', 'setTabCompleted', 'setTabIncompleted', 'onSelectPaymentMethod', 'onUpdateDelivery', 'placeOrder']
+
+    const methods = ['moveToTab', 'setTabCompleted', 'setTabIncompleted', 'onSelectPaymentMethod', 'updateDelivery', 'saveDelivery', 'placeOrder']
     methods.forEach( method => this[method] = this[method].bind(this) )
+    this.props.accountClient && this.props.accountClient.on('authenticated', user => {
+      const delivery =  {
+        fullName: user.profile.fullName || '',
+        phone: user.profile.phone[0] || '',
+        address: user.profile.address || ''
+      }
+      const editDelivery =  delivery &&
+            delivery.fullName && delivery.fullName.length > 0 &&
+            delivery.phone && delivery.phone.length > 0 &&
+            delivery.address && delivery.address.length > 0 ? false : true
+      const error = this._validateDelivery(delivery)
+      this.setState({delivery, error, editDelivery})
+    })
   }
   render() {
     if (!this.props.user) { return (<div className="w3-container w3-text-red w3-large bold">Unauthenticated</div>) }
@@ -494,8 +501,12 @@ export default class Order extends Component {
                         paymentMethod = {this.state.paymentMethod}
                         delivery = {this.state.delivery}
                         selectPaymentMethod = {this.onSelectPaymentMethod}
-                        updateDelivery = {this.onUpdateDelivery}
+                        updateDelivery = {this.updateDelivery}
+                        saveDelivery = {this.saveDelivery}
+                        enableEditDelivery = {e => this.setState({ editDelivery: true })}
                         placeOrder = {this.placeOrder}
+                        error = {this.state.error}
+                        editDelivery = {this.state.editDelivery}
                         {...this.props}
                   />
                 </div>
@@ -522,42 +533,73 @@ export default class Order extends Component {
   onSelectPaymentMethod(method) {
     this.setState({ paymentMethod: method })
   }
-  onUpdateDelivery(delivery) {
+  saveDelivery() {
+    const delivery = {...this.state.delivery}
+    return new Promise( (resolve, reject) => {
+      const error = this._validateDelivery(delivery)
+      if (Object.keys(error).some(key => error[key])) {
+        this.setState({ error, editDelivery: true })
+        reject(error)
+      } else {
+        this.setState({ delivery, error, editDelivery: false })
+        resolve()
+      }
+    })
+  }
+  updateDelivery(delivery) {
     this.setState({ delivery })
   }
   placeOrder() {
     return new Promise( (resolve, reject) => {
-      if (!this.state.delivery || Object.keys(this.state.delivery).some(key => this.state.delivery[key].length === 0)) {
-        this.props.showPopup('info', { closeBtn: true, message: 'please complete delivery', align: 'left' })
-        reject('delivery must be provided')
-        return
-      }
-      if (!this.state.paymentMethod) {
-        this.props.showPopup('info', { closeBtn: true, message: 'please select a payment method', align: 'left' })
-        reject('please select a payment method')
-        return
-      }
-      const order = {
-        delivery: {...this.state.delivery},
-        paymentMethod: this.state.paymentMethod,
-        billTo: {},
-        items: storage.get(storage.key.CART).filter( item => item.checked )
-      }
-      this.props.showPopup('info', { icon: 'fas fa-spinner', message: 'creating order...' })
-      xhttp.post('/data/order', { order }, {authen: true}, (status, data) => {
-        if (status === 200) {
-          const order = JSON.parse(data).order
-          // remove purchased item from cart
-          const cart = storage.get(storage.key.CART).filter( item => !order.items.find( _item => _item.code === item.code) )
-          storage.update(storage.key.CART, cart)
-          this.props.onOrderCreated && this.props.onOrderCreated(order)
-          resolve(order)
-        } else {
-          this.props.showPopup('info', { closeBtn: true, message: `error ${status}. Please refresh page and try again`, align: 'left' })
-          reject(status)
+      // if (!this.state.delivery || Object.keys(this.state.delivery).some(key => this.state.delivery[key].length === 0)) {
+      //   this.props.showPopup('info', { closeBtn: true, message: 'please complete delivery', align: 'left' })
+      //   reject('delivery must be provided')
+      //   return
+      // }
+      this.saveDelivery().then( _ => {
+        if (!this.state.paymentMethod) {
+          this.props.showPopup('info', { closeBtn: true, message: 'please select a payment method', align: 'left' })
+          reject('please select a payment method')
+          return
         }
-        this.props.hidePopup()
+        const order = {
+          delivery: {...this.state.delivery},
+          paymentMethod: this.state.paymentMethod,
+          billTo: {},
+          items: storage.get(storage.key.CART).filter( item => item.checked )
+        }
+        this.props.showPopup('info', { icon: 'fas fa-spinner', message: 'creating order...' })
+        xhttp.post('/data/order', { order }, {authen: true}, (status, data) => {
+          if (status === 200) {
+            const order = JSON.parse(data).order
+            // remove purchased item from cart
+            const cart = storage.get(storage.key.CART).filter( item => !order.items.find( _item => _item.code === item.code) )
+            storage.update(storage.key.CART, cart)
+            this.props.onOrderCreated && this.props.onOrderCreated(order)
+            resolve(order)
+          } else {
+            this.props.showPopup('info', { closeBtn: true, message: `error ${status}. Please refresh page and try again`, align: 'left' })
+            reject(status)
+          }
+          this.props.hidePopup()
+        })
+      }).catch( error => {
+        this.props.showPopup('info', { closeBtn: true, message: 'please complete delivery information', align: 'left' })
+        reject('delivery must be provided')
       })
     })
+  }
+  _validateDelivery(delivery) {
+    if (delivery) {
+      return {
+        fullName: delivery.fullName === undefined || delivery.fullName === null || delivery.fullName.length === 0,
+        phone: delivery.phone === undefined || delivery.phone === null || delivery.phone.length === 0,
+        address: delivery.address === undefined || delivery.address === null || delivery.address.length === 0
+      }
+    } else {
+      return {
+        fullName: false, phone: false, address: false
+      }
+    }
   }
 }

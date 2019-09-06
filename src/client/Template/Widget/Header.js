@@ -76,7 +76,7 @@ class ShoppingCart extends Component {
   }
   render() {
     return (
-      <a className="w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0 8px'}}>
+      <a href='/order' className="w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0 8px'}}>
         <i className={`fas fa-shopping-cart ${this.state.itemCount > 0 ? 'w3-text-blue' : 'w3-text-light-blue'}`} />
         {
           this.state.itemCount > 0 ?
