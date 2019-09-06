@@ -2,7 +2,7 @@
 
 function rand() {
   // return Math.random().toString(36).substr(2,9)
-  return Math.floor((Math.random()*1000000)+1)
+  Math.floor(100000 + Math.random() * 900000)
 }
 
 function isExpire(timestamp) {
