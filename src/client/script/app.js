@@ -17,10 +17,6 @@ const acc = new AccountClient({
   app: env.app,
   baseurl: env.urlAccount
 })
-acc.sso( (status, user) => {
-  console.log(`SSO finished with status code: ${status}`)
-  console.log(user)
-})
 
 import AppShell from '../Template/AppShell'
 import href from '../lib/href'
@@ -41,10 +37,24 @@ if ('serviceWorker' in navigator) {
 
 (function () {
   const _render = (__data && __data.props) ? hydrate : render
-  const renderApp = data => _render (
-    <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...data} />,
-    document.getElementById('root')
-  )
+  const renderApp = data => {
+    _render (
+      <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...data} />,
+      document.getElementById('root')
+    )
+    // after page rendered, perform user lso | sso
+    acc.lso( (status, user) => {
+      if (status === 200) {
+        console.log(`LSO finished with status code: ${status}`)
+        console.log(user)
+      } else {
+        acc.sso( (status, user) => {
+          console.log(`SSO finished with status code: ${status}`)
+          console.log(user)
+        })
+      }
+    })
+  }
   /*
     depend on path:
       - browse/:program -> will load programs and its courses
