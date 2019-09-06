@@ -14,8 +14,7 @@ function batchGetUserData(helpers) {
         Order: {key: {uid: req.uid}},
       },
       (data) => {
-        console.log(data)
-        res.status(200).json({ data })
+        res.status(200).json({ orders: data.Order })
       }
     )
   }

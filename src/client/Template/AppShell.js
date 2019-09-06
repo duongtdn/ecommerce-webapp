@@ -31,17 +31,19 @@ class AppShell extends Component {
     super(props)
     const path = this.props.path || 'home'
     this.state = {
-      activeRoute: path.split('/')[0]
+      activeRoute: path.split('/')[0],
+      orders: []
     }
+    this.onOrderCreated = this.onOrderCreated.bind(this)
     /* fetch /user to get user orders, enrolls and vouchers */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
       const urlBasePath = env.urlBasePath
       xhttp.get(`${urlBasePath}/user`, {authen: false}, (status, responseText) => {
         if (status === 200) {
           const data = JSON.parse(responseText)
-          console.log(data)
+          this.setState({ orders: data.orders })
         } else {
-
+          console.log(`fetching /user failed: return code ${status}`)
         }
       })
     })
@@ -62,6 +64,8 @@ class AppShell extends Component {
                     showPopup = { (popup, args) => this.setState({ activePopup: popup, popupArgs: args })}
                     hidePopup = { _ => this.setState({ activePopup: undefined })}
                     {...this.props}
+                    orders = {this.state.orders}
+                    onOrderCreated = {this.onOrderCreated}
         />
       </div>
     )
@@ -69,6 +73,11 @@ class AppShell extends Component {
   navigate(route) {
     this.props.href && this.props.href.history().pushState({},'',`/${route}`)
     this.setState({activeRoute: route || 'error'})
+  }
+  onOrderCreated(order) {
+    const orders = [...this.state.orders.filter(_order => _order.number !== order.number)]
+    orders.push(order)
+    this.setState({ orders })
   }
 }
 

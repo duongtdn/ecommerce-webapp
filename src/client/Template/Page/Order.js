@@ -156,7 +156,12 @@ class Delivery extends Component {
     super(props)
     this.state = {
       edit: this.props.delivery? false : true,
-      delivery: this.props.delivery? {...this.props.delivery} : {fullName: '', phone: '', address: ''},
+      // delivery: this.props.delivery? {...this.props.delivery} : {fullName: '', phone: '', address: ''},
+      delivery: {
+        fullName: 'Duong Nguyen',
+        phone: '0976986633',
+        address: 'Etown 2, 364 Cong Hoa St. Tan BInh Dist. HCMC'
+      },
       error: {fullName: false, phone: false, address: false}
     }
     this.updateDelivery = this.updateDelivery.bind(this)
@@ -329,17 +334,8 @@ class TabReceipt extends Component {
     super(props)
   }
   render() {
-    const order = {
-      number: '332110',
-      createdAt: 1567515866463,
-      status: 'new',
-      delivery: {
-        fullName: 'Duong Nguyen',
-        phone: '0976986633',
-        address: 'Etown 2, 364 Cong Hoa St. Tan BInh Dist. HCMC'
-      },
-      items:[]
-    }
+    const order = this.props.orders[this.props.orders.length-1]
+    if (!order) { return null }
     const subTotal = order.items.reduce( (acc, cur) => acc + (cur.checked ? cur.price : 0), 0 )
     return(
       <div className="w3-text-grey">
@@ -411,7 +407,7 @@ export default class Order extends Component {
     super(props)
     this.state = {
       progress: {},
-      tab: 'receipt',
+      tab: 'cart',
       paymentMethod: null,
       delivery: null,
     }

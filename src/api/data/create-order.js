@@ -1,7 +1,8 @@
 "use strict"
 
 function rand() {
-  return Math.random().toString(36).substr(2,9)
+  // return Math.random().toString(36).substr(2,9)
+  return Math.floor((Math.random()*1000000)+1)
 }
 
 function isExpire(timestamp) {
@@ -44,7 +45,7 @@ function validateOrder(helpers) {
     helpers.Database.find(
       {
         Course: {key: {id: courseIds}, projection: ['price']},
-        Promo: {key: {id: promotion}, projection: ['target', 'deduction']},
+        Promo: {key: {id: promotion}},
       },
       (data) => {
         const courses = data.Course

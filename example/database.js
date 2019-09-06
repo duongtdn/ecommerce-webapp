@@ -196,7 +196,7 @@ module.exports = {
         if (courses.length > 0) {
           if ({}.toString.call(projection) === '[object Array]') {
             const _ret = courses.map( course => {
-              const __ret = {}
+              const __ret = {id: course.id}
               projection.forEach( prop => __ret[prop] = course[prop] )
               return __ret
             })
@@ -244,7 +244,7 @@ module.exports = {
         done= projection
       }
       setTimeout(() => {
-        const orders = Order.find( _order => _order.uid === uid)
+        const orders = Order.filter( _order => _order.uid === uid)
         if (orders) {
           done && done(orders)
         } else {
