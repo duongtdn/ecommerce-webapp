@@ -479,6 +479,7 @@ export default class Order extends Component {
     methods.forEach( method => this[method] = this[method].bind(this) )
   }
   render() {
+    if (!this.props.user) { return (<div className="w3-container w3-text-red w3-large bold">Unauthenticated</div>) }
     return (
       <div className="w3-container">
         <ProgressBar progress = {this.state.progress} tab = {this.state.tab} />
