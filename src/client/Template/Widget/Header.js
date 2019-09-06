@@ -8,21 +8,23 @@ import storage from '../../lib/storage'
 class UserSnipet extends Component {
   constructor(props) {
     super(props)
+    this.state = { showUserDropdown : false }
+    this.signout = this.signout.bind(this)
   }
   render() {
     const user = this.props.user
     const avata = this._getUserAvata()
     return (
-      <div className="w3-bar-item w3-dropdown-hover w3-white w3-hover-pale-green" style={{margin: '4px 0', padding: '3px 16px', cursor: 'pointer'}}>
-        <span >
+      <div className="w3-bar-item" style={{margin: '4px 0', padding: '3px 16px', cursor: 'pointer'}}>
+        <div className="w3-white" onClick={e => this.setState({showUserDropdown:!this.state.showUserDropdown})}>
           <img className="w3-circle w3-border w3-border-white"style={{width: '35px'}} src={avata} />
           {' '}
           <span className="w3-text-blue-grey" style={{marginRight: '4px'}}>{user.profile.displayName}</span>
           {' '}
           <i className="w3-text-dark-grey fa fa-ellipsis-v" />
-        </span>
-        <div className={` w3-dropdown-content w3-bar-block w3-border`} style={{margin: '3px 0px 3px -16px', minWidth: '131px'}}>
-          <button className="w3-bar-item w3-button" onClick={evt => this.props.accountClient.signout()}> Logout </button>
+        </div>
+        <div className={`${this.state.showUserDropdown? 'w3-bar-block' : 'w3-hide'}`} style={{padding: '16px 0'}}>
+          <button className="w3-bar-item w3-button" onClick={this.signout}> Logout </button>
         </div>
       </div>
     )
@@ -35,6 +37,10 @@ class UserSnipet extends Component {
     } else {
       return this.props.env.template.avata.male
     }
+  }
+  signout(e) {
+    this.props.accountClient.signout()
+    this.setState({ showUserDropdown: false })
   }
 }
 
@@ -92,16 +98,13 @@ export default class Header extends Component {
   }
   render() {
     return (
-      <header className={`w3-bar w3-top w3-white ${!this.props.isScrollTop?'w3-card':''}`} style={{margin: '0 0 32px 0'}}>
+      <header className={`w3-bar w3-top w3-white ${!this.props.isScrollTop?'w3-card':'w3-border-bottom'}`} style={{margin: '0 0 32px 0'}}>
 
         {/* render in large screen */}
         <div className="w3-hide-small w3-hide-medium">
           <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
+
           <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
-            <div className="w3-large w3-text-grey w3-border-right" style={{display: 'inline-block', padding: '0 8px', verticalAlign: 'bottom'}}>
-              <span className="w3-button"> Programs <i className="fa fa-caret-down" /> </span>
-              <span className="w3-button"> Management <i className="fa fa-caret-down" /> </span>
-            </div>
             <div className="w3-large" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
               <ShoppingCart />
               {
@@ -115,6 +118,14 @@ export default class Header extends Component {
               }
             </div>
           </div>
+
+          <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
+            <div className="w3-large w3-text-grey w3-border-right" style={{display: 'inline-block', padding: '0 8px', verticalAlign: 'bottom'}}>
+              <span className="w3-button"> Programs <i className="fa fa-caret-down" /> </span>
+              <span className="w3-button"> Management <i className="fa fa-caret-down" /> </span>
+            </div>
+          </div>
+
         </div>
 
         {/* render in small and medium screen */}

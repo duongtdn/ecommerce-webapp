@@ -33,7 +33,7 @@ export default class Navigator extends Component {
                 env = {this.props.env}
                 isScrollTop = {this.state.isScrollTop}
         />
-        <div style={{marginTop: '84px'}} >
+        <div style={{marginTop: '96px'}} >
         {
           this.routes.map(route => {
             const page = this.props.routes[route]
