@@ -1,11 +1,6 @@
 "use strict"
 
-function authen() {
-  return function (req, res, next) {
-    req.uid = 'test-user'
-    next()
-  }
-}
+const authen = require('../lib/authen')
 
 function batchGetUserData(helpers) {
   return function(req, res) {

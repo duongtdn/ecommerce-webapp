@@ -551,11 +551,6 @@ export default class Order extends Component {
   }
   placeOrder() {
     return new Promise( (resolve, reject) => {
-      // if (!this.state.delivery || Object.keys(this.state.delivery).some(key => this.state.delivery[key].length === 0)) {
-      //   this.props.showPopup('info', { closeBtn: true, message: 'please complete delivery', align: 'left' })
-      //   reject('delivery must be provided')
-      //   return
-      // }
       this.saveDelivery().then( _ => {
         if (!this.state.paymentMethod) {
           this.props.showPopup('info', { closeBtn: true, message: 'please select a payment method', align: 'left' })

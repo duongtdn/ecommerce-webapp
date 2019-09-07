@@ -1,21 +1,16 @@
 "use strict"
 
-function rand() {
+const authen = require('../lib/authen')
+
+function _rand() {
   // return Math.random().toString(36).substr(2,9)
   return Math.floor(100000 + Math.random() * 900000)
 }
 
-function isExpire(timestamp) {
+function _isExpire(timestamp) {
   if (!timestamp) { return false }
   const now = (new Date()).getTime()
   return (parseInt(now) > parseInt(timestamp))
-}
-
-function authen() {
-  return function (req, res, next) {
-    req.uid = 'test-user'
-    next()
-  }
 }
 
 function validateOrder(helpers) {
@@ -57,7 +52,7 @@ function validateOrder(helpers) {
             let deduction = 0
             item.promotion.forEach(promo => {
               promos.filter(p => p.id === promo).forEach( p => {
-                if (p.type === 'sale' && !isExpire(p.expireIn)) { deduction += parseInt(p.deduction) }
+                if (p.type === 'sale' && !_isExpire(p.expireIn)) { deduction += parseInt(p.deduction) }
               })
             })
             // here also need to check voucher
@@ -69,7 +64,7 @@ function validateOrder(helpers) {
           }
           if (item.type === 'bundle') {
             const promo = promos.find(p => p.id === item.code)
-            if (promo.expireIn && isExpire(promo.expireIn)) {
+            if (promo.expireIn && _isExpire(promo.expireIn)) {
               res.status(400).json({reason: 'expired'})
               return
             }
@@ -99,7 +94,7 @@ function insertOrderToDB(helpers) {
   return function(req, res, next) {
     const now = new Date()
     const order = req.body.order
-    order.number = rand()
+    order.number = _rand()
     order.uid = req.uid
     order.status = 'new'
     order.createdAt = now.getTime()

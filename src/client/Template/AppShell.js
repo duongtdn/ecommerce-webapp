@@ -38,7 +38,7 @@ class AppShell extends Component {
     /* fetch /user to get user orders, enrolls and vouchers */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
       const urlBasePath = env.urlBasePath
-      xhttp.get(`${urlBasePath}/user`, {authen: false}, (status, responseText) => {
+      xhttp.get(`${urlBasePath}/user`, {authen: true}, (status, responseText) => {
         if (status === 200) {
           const data = JSON.parse(responseText)
           this.setState({ orders: data.orders })
