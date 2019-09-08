@@ -41,7 +41,7 @@ class AppShell extends Component {
       xhttp.get(`${urlBasePath}/user`, {authen: true}, (status, responseText) => {
         if (status === 200) {
           const data = JSON.parse(responseText)
-          this.setState({ orders: data.orders })
+          this.setState({ orders: data.orders, enrolls: data.enrolls })
         } else {
           console.log(`fetching /user failed: return code ${status}`)
         }
@@ -65,6 +65,7 @@ class AppShell extends Component {
                     hidePopup = { _ => this.setState({ activePopup: undefined })}
                     {...this.props}
                     orders = {this.state.orders}
+                    enrolls = {this.state.enrolls}
                     onOrderCreated = {this.onOrderCreated}
         />
       </div>
