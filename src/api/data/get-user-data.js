@@ -7,9 +7,10 @@ function batchGetUserData(helpers) {
     helpers.Database.find(
       {
         Order: {key: {uid: req.uid}},
+        Enroll: {key: {enrolledTo: req.uid}, projection: ['courseId', 'enrolledAt', 'status', 'order']}
       },
       (data) => {
-        res.status(200).json({ orders: data.Order })
+        res.status(200).json({ orders: data.Order, enrolls: data.Enroll })
       }
     )
   }

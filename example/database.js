@@ -157,6 +157,41 @@ const Courses = [
   }
 ]
 
+
+const Enroll = [
+  {
+    courseId: 'c-01',
+    enrolledTo: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
+    enrolledAt: new Date(),
+    status: 'resolved',
+    resolvedBy: 'system-automation',
+    order: 'iv-001',
+    comments: [
+      { by: 'system', message: 'automatic enroll'}
+    ],
+    tests: [
+      {
+        testId: 'test-01',
+        resultId: 'r-test-01',
+        title: 'Mid-term Exam',
+        description: 'Mid-term Test for course Embedded - 01',
+        result: {
+          score: 92,
+          status: 'passed'
+        },
+        passScore: 70
+      },
+      {
+        testId: 'test-02',
+        resultId: 'r-test-02',
+        title: 'Final Exam',
+        description: 'Final Test for course Embedded - 01',
+        passScore: 70
+      }
+    ]
+  }
+]
+
 module.exports = {
   Program: {
     find({id}, projection, done) {
@@ -261,6 +296,30 @@ module.exports = {
         Order.push(order)
         done && done(null, order)
       }, 2000)
+    }
+  },
+  Enroll: {
+    find({courseId, enrolledTo}, projection, done) {
+      if ({}.toString.call(projection) === '[object Function]') {
+        done= projection
+      }
+      setTimeout(() => {
+        const data = courseId ? Enroll.filter( enroll => enroll.courseId === courseId && enroll.enrolledTo === enrolledTo )
+                              : Enroll.filter( enroll => enroll.enrolledTo === enrolledTo )
+        if (data.length > 0) {
+          let res = {}
+          if ({}.toString.call(projection) === '[object Array]') {
+            projection.forEach( prop => {
+              res[prop] = data[0][prop]
+            })
+          } else {
+            res = {...data[0]}
+          }
+          done && done([res])
+        } else {
+          done && done([])
+        }
+      }, 500)
     }
   },
   find(query, done) {
