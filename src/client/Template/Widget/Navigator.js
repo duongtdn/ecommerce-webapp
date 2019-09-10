@@ -25,7 +25,7 @@ export default class Navigator extends Component {
 
     const activePopup = this.props.activePopup
     if (activePopup && this.popups.indexOf(activePopup) === -1) { this.popups.push(activePopup)}
-
+    console.log('  - Navigator re-render')
     return (
       <div className="" >
         <Header user = {this.props.user}

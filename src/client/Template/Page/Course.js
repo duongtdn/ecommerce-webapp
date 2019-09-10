@@ -54,6 +54,7 @@ class PurchaseBtn extends Component {
       origin: course.price,
       offer: course.price - promo.deduction
     }
+    console.log('     - Course re-render')
     return (
       <div style={{marginBottom: '32px'}} >
         <div>
@@ -308,6 +309,8 @@ export default class Course extends Component {
     }
     cart.push(item)
     storage.update(storage.key.CART, cart)
-    this.props.navigate('order')
+    this.props.showPopup('yesno', {message: 'Item added to Cart. Do you want to checkout cart now?', yesLabel: 'Checkout Cart', noLabel: 'Not right now'})
+    .then( _ => this.props.navigate('order') )
+    .catch(function(){})
   }
 }

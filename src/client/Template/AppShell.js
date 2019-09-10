@@ -10,6 +10,7 @@ import Error from './Page/Error'
 import Order from './Page/Order'
 
 import Info from './Popup/Info'
+import YesNo from './Popup/YesNo'
 
 import { xhttp } from 'authenform-utils'
 import env from '../script/env'
@@ -23,7 +24,8 @@ const routes = {
 }
 
 const popups = {
-  info: Info
+  info: Info,
+  yesno: YesNo
 }
 
 class AppShell extends Component {
@@ -47,11 +49,13 @@ class AppShell extends Component {
         }
       })
     })
+    this.showPopup = this.showPopup.bind(this)
   }
   componentDidMount() {
     this.props.href && this.props.href.on('popState', e => this.props.href.set(`/${this.props.href.getPathName()}`) )
   }
   render() {
+    console.log('AppShell re-render')
     return (
       <div>
         <Navigator  routes = {routes}
@@ -61,7 +65,7 @@ class AppShell extends Component {
                     popups = {popups}
                     activePopup = {this.state.activePopup}
                     popupArgs = {this.state.popupArgs}
-                    showPopup = { (popup, args) => this.setState({ activePopup: popup, popupArgs: args })}
+                    showPopup = {this.showPopup}
                     hidePopup = { _ => this.setState({ activePopup: undefined })}
                     {...this.props}
                     orders = {this.state.orders}
@@ -79,6 +83,11 @@ class AppShell extends Component {
     const orders = [...this.state.orders.filter(_order => _order.number !== order.number)]
     orders.push(order)
     this.setState({ orders })
+  }
+  showPopup(popup, args) {
+    return new Promise( (resolve, reject) => {
+      this.setState({ activePopup: popup, popupArgs: {...args, resolve, reject} })
+    })
   }
 }
 
