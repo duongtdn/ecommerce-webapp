@@ -34,7 +34,8 @@ class AppShell extends Component {
     const path = this.props.path || 'home'
     this.state = {
       activeRoute: path.split('/')[0],
-      orders: []
+      orders: [],
+      enrolls: []
     }
     this.onOrderCreated = this.onOrderCreated.bind(this)
     /* fetch /user to get user orders, enrolls and vouchers */
@@ -49,13 +50,26 @@ class AppShell extends Component {
         }
       })
     })
+    /* clean user-cache to signed out
+       for now, hard-coded cache name (user-cache)
+    */
+    this.props.accountClient && this.props.accountClient.on('unauthenticated', user => {
+      if (caches) {
+        caches.open('user-cache').then((cache) => {
+          cache.delete('/user').then((response) => {
+            this.setState({ orders: [], enrolls:[] })
+          })
+        })
+      } else {
+        this.setState({ orders: [], enrolls:[] })
+      }
+    })
     this.showPopup = this.showPopup.bind(this)
   }
   componentDidMount() {
     this.props.href && this.props.href.on('popState', e => this.props.href.set(`/${this.props.href.getPathName()}`) )
   }
   render() {
-    console.log('AppShell re-render')
     return (
       <div>
         <Navigator  routes = {routes}

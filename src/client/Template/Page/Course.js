@@ -54,7 +54,6 @@ class PurchaseBtn extends Component {
       origin: course.price,
       offer: course.price - promo.deduction
     }
-    console.log('     - Course re-render')
     return (
       <div style={{marginBottom: '32px'}} >
         <div>
