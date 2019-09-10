@@ -63,7 +63,7 @@ const Courses = [
     id: 'c-01',
     title: 'Beginning Embedded C Programming',
     snippet: 'C Programming for beginner, good for one who want to learn about C and Embedded Programming',
-    description: 'c01.json',
+    description: '<p>This course is super creazy</p><ul><li>super cool</li><li>super awesome</li></ul>',
     thumbnail: 'https://cdn-images-1.medium.com/max/1200/1*z8cxJptPtl2JEERdYXChkQ.png',
     picture: {
       type: "yt",
