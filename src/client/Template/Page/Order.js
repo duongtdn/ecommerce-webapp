@@ -132,7 +132,7 @@ class ItemsTable extends Component {
                         {(item.type === 'bundle' && !this.props.simpleUI)? <ul className="w3-text-blue-grey" style={{margin:'6px 0'}}> {item.items.map( item => (<li key={item.code} style={{margin:'3px 0'}}>{item.name}</li>) )} </ul> : null}
                       </div>
                       <div style={{margin: '3px 0', display: !this.props.simpleUI? 'block': 'none'}}>
-                        <span className="w3-small w3-text-grey" style = {{ textDecoration: 'none', fontStyle: 'normal'}} onClick = {e => this.removeItemFrom(item.code)}>
+                        <span className="w3-small w3-text-grey" style = {{ textDecoration: 'none', fontStyle: 'normal', cursor: 'pointer'}} onClick = {e => this.removeItemFrom(item.code)}>
                           <i className="fas fa-trash"/> Remove from cart
                         </span>
                       </div>
