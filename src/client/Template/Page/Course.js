@@ -6,6 +6,8 @@ import { localeString } from '../../lib/util'
 
 import storage from '../../lib/storage'
 
+import env from '../../script/env'
+
 function isExpire(timestamp) {
   if (!timestamp) {
     return false
@@ -273,12 +275,19 @@ export default class Course extends Component {
           <div className = "w3-half w3-container">
             <CourseInfo  course = {course} />
             <br />
-            <PurchaseBtn course = {course} promos = {promos} onPurchase = {this.onPurchase} />
-            <PurchaseBundleBtn courses = {this.props.courses} promos = {promos} onPurchase = {this.onPurchase} />
+            {
+              this.props.enrolls && this.props.enrolls.find( e => e.courseId === courseId ) ?
+              <div style={{marginBottom: '32px'}}> <a href={`${env.elearn}/${courseId}`} className="w3-button w3-blue" target="_blank">Study Now</a> </div>
+              :
+              <div>
+                <PurchaseBtn course = {course} promos = {promos} onPurchase = {this.onPurchase} />
+                <PurchaseBundleBtn courses = {this.props.courses} promos = {promos} onPurchase = {this.onPurchase} />
+              </div>
+            }
           </div>
             <div className="w3-half w3-container" style={{maxWidth: '480px', marginBottom: '32px'}}>
               <div className="embed-responsive">
-                <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" />
+                <iframe src={course.picture.uri} />
               </div>
             </div>
         </div>

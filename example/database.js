@@ -67,7 +67,7 @@ const Courses = [
     thumbnail: 'https://cdn-images-1.medium.com/max/1200/1*z8cxJptPtl2JEERdYXChkQ.png',
     picture: {
       type: "yt",
-      uri: "https://www.youtube.com/embed/tpIctyqH29Q"
+      uri: "https://www.youtube.com/embed/yTeFwuDDgDk"
     },
     level: 'Beginner',
     price: 499000,
@@ -99,7 +99,7 @@ const Courses = [
     thumbnail: 'https://harmonyed.com/wp-content/uploads/Online-Courses-1-300x20031.png',
     picture: {
       type: "yt",
-      uri: "https://www.youtube.com/embed/tpIctyqH29Q"
+      uri: "https://www.youtube.com/embed/LVJUmh9ae1Y"
     },
     price: 799000,
     level: 'Intermidate',
@@ -131,7 +131,7 @@ const Courses = [
     thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ4MSngvOcZcc_xlli8B0AuwMJCHIChtTtjt0wPTdwS-Tc8Xsi',
     picture: {
       type: "yt",
-      uri: "https://www.youtube.com/embed/tpIctyqH29Q"
+      uri: "https://www.youtube.com/embed/6R7SiDz8oFw"
     },
     price: 799000,
     level: 'Advanced',
