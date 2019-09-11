@@ -48,6 +48,12 @@ class PurchaseBtn extends Component {
   }
   render() {
     const course = this.props.course
+
+    const orders = this.props.orders
+    if (orders.some(order => order.items.some(item => item.type==='course' && item.code === course.id))) {
+      return this.renderOrderedBtn()
+    }
+
     const cart = storage.get(storage.key.CART) || []
     if (cart.some(_item => _item.code === course.id)) {
       return this.renderInCartBtn()
@@ -60,6 +66,15 @@ class PurchaseBtn extends Component {
       <div style={{marginBottom: '32px'}} >
          <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('order')}>
             In Cart
+          </button>
+      </div>
+    )
+  }
+  renderOrderedBtn() {
+    return (
+      <div style={{marginBottom: '32px'}} >
+         <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorder')}>
+            Ordered
           </button>
       </div>
     )
@@ -159,16 +174,21 @@ class PurchaseBundleBtn extends Component {
           bundle.map( offer => {
             if (offer.expireIn && isExpire(offer.expireIn)) { return null }
             const bundlePrice = this.calculateOfferBundlePrice(offer)
-            // check if in-cart button
+            const orders = this.props.orders
             const cart = storage.get(storage.key.CART) || []
-            const purchaseBtn = (cart.some(_item => _item.code === offer.id)) ?
-                <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('order')}>
-                  In Cart
-                </button>
+            const purchaseBtn = (orders.some(order => order.items.some(item => item.type==='bundle' && item.code === offer.id))) ?
+              <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorder')}>
+                Ordered
+              </button>
               :
-                <button className="w3-button w3-blue w3-card-4" onClick = { e => this.onPurchase(offer, bundlePrice)} >
-                  Purchase Bundle (-{bundlePrice.saved}%)
-                </button>
+                (cart.some(_item => _item.code === offer.id)) ?
+                  <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('order')}>
+                    In Cart
+                  </button>
+                :
+                  <button className="w3-button w3-blue w3-card-4" onClick = { e => this.onPurchase(offer, bundlePrice)} >
+                    Purchase Bundle (-{bundlePrice.saved}%)
+                  </button>
             return (
               <div key = {offer.id}>
                 <p> Buy {offer.deduction.length} at once, get super discount </p>
