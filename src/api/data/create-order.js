@@ -46,6 +46,7 @@ function validateOrder(helpers) {
         const courses = data.Course
         const promos = data.Promo
         // compare price for each item
+        let error = ''
         order.items.forEach( item => {
           if (item.type === 'course') {
             const course = courses.find(c => c.id === item.code)
@@ -58,14 +59,14 @@ function validateOrder(helpers) {
             // here also need to check voucher
             const offerPrice = course.price - deduction
             if (offerPrice !== item.price) {
-              res.status(400).json({reason: 'cart outdated'})
+              error = 'cart outdated'
               return
             }
           }
           if (item.type === 'bundle') {
             const promo = promos.find(p => p.id === item.code)
             if (promo.expireIn && _isExpire(promo.expireIn)) {
-              res.status(400).json({reason: 'expired'})
+              error = 'expired'
               return
             }
             const subTotal = promo.deduction.reduce( (acc, cur) => {
@@ -74,14 +75,18 @@ function validateOrder(helpers) {
               return acc + Math.floor(parseInt(course.price) - parseInt(cur.number))
             }, 0)
             if (subTotal !== item.price) {
-              res.status(400).json({reason: 'cart outdated'})
+              error = 'cart outdated'
               return
             }
           }
         })
+        if (error.length === 0) {
+          next()
+        } else {
+          res.status(400).json({ reason: error })
+        }
       }
     )
-    next()
   }
 }
 

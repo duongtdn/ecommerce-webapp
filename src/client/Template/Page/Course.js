@@ -89,7 +89,7 @@ class PurchaseBtn extends Component {
                     {localeString(price.offer, '.')} {'\u20ab'}
                   </span>
                 </p>
-                { this.props.promos.map( (p, index) => {
+                { this.props.promo.map( (p, index) => {
                   return (
                     <p key = {index} className="w3-text-red">
                       {p.type === 'sale' ?
@@ -116,7 +116,7 @@ class PurchaseBtn extends Component {
     const course = this.props.course
     const user = this.props.user
     const promo = { deduction: 0, gifts: false }
-    this.props.promos.forEach( p => {
+    this.props.promo.forEach( p => {
       if (p.type === 'sale' && !isExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && !isExpire(p.expireIn)) { promo.gifts = true }
     })
@@ -127,7 +127,7 @@ class PurchaseBtn extends Component {
   }
   onPurchase(price) {
     const course = this.props.course
-    const promotion = this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1).map( promo => promo.id)
+    const promotion = this.props.promo.filter( promo => promo.target.indexOf(course.id) !== -1 && promo.type !== 'bundle').map( promo => promo.id)
     const item = {
       code: course.id,
       name: course.title,
@@ -145,10 +145,10 @@ class PurchaseBundleBtn extends Component {
     super (props)
   }
   render() {
-    if (!this.props.promos) {
+    if (!this.props.promo) {
       return null
     }
-    const bundle = this.props.promos.filter( promo => promo.type === 'bundle')
+    const bundle = this.props.promo.filter( promo => promo.type === 'bundle')
     if (!bundle || bundle.length === 0) {
       return null
     }
@@ -287,7 +287,7 @@ export default class Course extends Component {
     const courseId = this.props.path.match(/\/.*$/)[0].replace('/','')
     const course = this.props.courses.find(course => course.id === courseId)
     if (!course) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
-    const promos = this.props.promos? this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1 ) : []
+    const promo = this.props.promos? this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1 ) : []
     return (
       <div className="">
 
@@ -305,8 +305,8 @@ export default class Course extends Component {
               <div style={{marginBottom: '32px'}}> <a href={`${env.elearn}/${courseId}`} className="w3-button w3-blue" target="_blank">Study Now</a> </div>
               :
               <div>
-                <PurchaseBtn course = {course} promos = {promos} onPurchase = {this.onPurchase} {...this.props} />
-                <PurchaseBundleBtn courses = {this.props.courses} promos = {promos} onPurchase = {this.onPurchase} {...this.props} />
+                <PurchaseBtn course = {course} promo = {promo} onPurchase = {this.onPurchase} {...this.props} />
+                <PurchaseBundleBtn courses = {this.props.courses} promo = {promo} onPurchase = {this.onPurchase} {...this.props} />
               </div>
             }
           </div>
