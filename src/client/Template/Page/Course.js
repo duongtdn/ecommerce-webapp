@@ -326,15 +326,24 @@ export default class Course extends Component {
     )
   }
   onPurchase(item) {
-    const cart = storage.get(storage.key.CART) || []
-    if (cart.some(_item => _item.code === item.code)) {
-      // item is already in cart
-      return
+    const _addToCart = () => {
+      const cart = storage.get(storage.key.CART) || []
+      if (cart.some(_item => _item.code === item.code)) {
+        // item is already in cart
+        return
+      }
+      cart.push(item)
+      storage.update(storage.key.CART, cart)
+      this.props.showPopup('yesno', {message: 'Item added to Cart. Do you want to checkout cart now?', yesLabel: 'Checkout Cart', noLabel: 'Not right now'})
+      .then( _ => this.props.navigate('order') )
+      .catch(function(){})
     }
-    cart.push(item)
-    storage.update(storage.key.CART, cart)
-    this.props.showPopup('yesno', {message: 'Item added to Cart. Do you want to checkout cart now?', yesLabel: 'Checkout Cart', noLabel: 'Not right now'})
-    .then( _ => this.props.navigate('order') )
-    .catch(function(){})
+    if (this.props.user) {
+      _addToCart()
+    } else {
+      this.props.showPopup('login', {message: 'Please login to make purchase'})
+      .then( _ => { _addToCart() })
+      .catch(function(){})
+    }
   }
 }
