@@ -27,9 +27,7 @@ export default class Navigator extends Component {
     if (activePopup && this.popups.indexOf(activePopup) === -1) { this.popups.push(activePopup)}
     return (
       <div className="" >
-        <Header user = {this.props.user}
-                accountClient = {this.props.accountClient}
-                env = {this.props.env}
+        <Header {...this.props}
                 isScrollTop = {this.state.isScrollTop}
         />
         <div style={{marginTop: '96px'}} >

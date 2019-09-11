@@ -76,7 +76,7 @@ class ShoppingCart extends Component {
   }
   render() {
     return (
-      <a href='/order' className="w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0 8px'}}>
+      <span className="w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0 8px'}} onClick={e => this.props.navigate('order')}>
         <i className={`fas fa-shopping-cart ${this.state.itemCount > 0 ? 'w3-text-blue' : 'w3-text-light-blue'}`} />
         {
           this.state.itemCount > 0 ?
@@ -87,7 +87,7 @@ class ShoppingCart extends Component {
             </label>
           : null
         }
-      </a>
+      </span>
     )
   }
 }
@@ -106,7 +106,7 @@ export default class Header extends Component {
 
           <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
             <div className="w3-large" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
-              <ShoppingCart />
+              <ShoppingCart {...this.props} />
               {
                 this.props.user?
                   <UserSnipet user={this.props.user}
@@ -133,7 +133,7 @@ export default class Header extends Component {
           <span className="w3-bar-item w3-button w3-xlarge" style={{marginRight: '24px'}}><i className="fa fa-bars" /></span>
           <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
           <div className="w3-right w3-xlarge">
-            <ShoppingCart />
+            <ShoppingCart {...this.props} />
           </div>
 
         </div>
