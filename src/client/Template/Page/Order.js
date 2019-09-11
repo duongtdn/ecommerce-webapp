@@ -565,6 +565,7 @@ export default class Order extends Component {
         }
         this.props.showPopup('info', { icon: 'fas fa-spinner', message: 'creating order...' })
         xhttp.post('/data/order', { order }, {authen: true}, (status, data) => {
+          this.props.hidePopup()
           if (status === 200) {
             const order = JSON.parse(data).order
             // remove purchased item from cart
@@ -573,10 +574,9 @@ export default class Order extends Component {
             this.props.onOrderCreated && this.props.onOrderCreated(order)
             resolve(order)
           } else {
-            this.props.showPopup('info', { closeBtn: true, message: `error ${status}. Please refresh page and try again`, align: 'left' })
+            this.props.showPopup('info', { closeBtn: true, message: `Error ${status}. Please refresh page and try again`, align: 'left' })
             reject(status)
           }
-          this.props.hidePopup()
         })
       }).catch( error => {
         this.props.showPopup('info', { closeBtn: true, message: 'please complete delivery information', align: 'left' })
