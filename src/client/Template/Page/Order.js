@@ -486,7 +486,7 @@ export default class Order extends Component {
     })
   }
   render() {
-    if (!this.props.user) { return (<div className="w3-container w3-text-red w3-large bold">Unauthenticated</div>) }
+    if (!this.props.user) { return (<div className="w3-container"><p className="w3-text-red w3-large bold">Unauthenticated</p><p>Please Sign-in to see this page</p></div>) }
     return (
       <div className="w3-container">
         <ProgressBar progress = {this.state.progress} tab = {this.state.tab} />
