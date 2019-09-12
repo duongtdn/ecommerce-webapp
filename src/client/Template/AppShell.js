@@ -36,8 +36,7 @@ class AppShell extends Component {
     const path = this.props.path || 'home'
     this.state = {
       activeRoute: path.split('/')[0],
-      orders: [],
-      enrolls: []
+      me: { orders: [], enrolls: [], vouchers: [] }
     }
     this.onOrderCreated = this.onOrderCreated.bind(this)
     /* fetch /user to get user orders, enrolls and vouchers */
@@ -46,7 +45,8 @@ class AppShell extends Component {
       xhttp.get(`${urlBasePath}/user`, {authen: true}, (status, responseText) => {
         if (status === 200) {
           const data = JSON.parse(responseText)
-          this.setState({ orders: data.orders, enrolls: data.enrolls })
+          const me = { ...data }
+          this.setState({ me })
         } else {
           console.log(`fetching /user failed: return code ${status}`)
         }
@@ -56,14 +56,15 @@ class AppShell extends Component {
        for now, hard-coded cache name (user-cache)
     */
     this.props.accountClient && this.props.accountClient.on('unauthenticated', user => {
+      const me = { orders: [], enrolls: [], vouchers: [] }
       if (caches) {
         caches.open('user-cache').then((cache) => {
           cache.delete('/user').then((response) => {
-            this.setState({ orders: [], enrolls:[] })
+            this.setState({ me })
           })
         })
       } else {
-        this.setState({ orders: [], enrolls:[] })
+        this.setState({ me })
       }
     })
     this.showPopup = this.showPopup.bind(this)
@@ -84,8 +85,7 @@ class AppShell extends Component {
                     showPopup = {this.showPopup}
                     hidePopup = { _ => this.setState({ activePopup: undefined })}
                     {...this.props}
-                    orders = {this.state.orders}
-                    enrolls = {this.state.enrolls}
+                    me = {this.state.me}
                     onOrderCreated = {this.onOrderCreated}
         />
       </div>
@@ -96,9 +96,11 @@ class AppShell extends Component {
     this.setState({activeRoute: route || 'error'})
   }
   onOrderCreated(order) {
-    const orders = [...this.state.orders.filter(_order => _order.number !== order.number)]
+    const me = {...this.state.me}
+    const orders = [...me.orders.filter(_order => _order.number !== order.number)]
     orders.push(order)
-    this.setState({ orders })
+    me.orders = orders
+    this.setState({ me })
   }
   showPopup(popup, args) {
     return new Promise( (resolve, reject) => {

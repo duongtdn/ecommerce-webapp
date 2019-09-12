@@ -49,7 +49,7 @@ class PurchaseBtn extends Component {
   render() {
     const course = this.props.course
 
-    const orders = this.props.orders
+    const orders = this.props.me.orders
     if (orders.some(order => order.items.some(item => item.type==='course' && item.code === course.id))) {
       return this.renderOrderedBtn()
     }
@@ -87,6 +87,7 @@ class PurchaseBtn extends Component {
       origin: course.price,
       offer: course.price - promo.deduction
     }
+    const vouchers = this.props.me && this.props.me.vouchers ? this.props.me.vouchers.filter( _voucher => _voucher.scope.indexOf(course.id) !== -1 ) : []
     return (
       <div style={{marginBottom: '32px'}} >
         <div>
@@ -115,6 +116,13 @@ class PurchaseBtn extends Component {
                     </p>
                   )
                 })}
+                { vouchers.map( voucher => {
+                  return (
+                    <p key = {voucher.code} className="w3-text-red">
+                      { `Save - ${localeString(voucher.value, '.')} \u20ab (voucher ${voucher.code})`}
+                    </p>
+                  )
+                })}
               </div>
               :
               <p>
@@ -129,14 +137,19 @@ class PurchaseBtn extends Component {
   }
   composePromo() {
     const course = this.props.course
-    const user = this.props.user
+    const me = this.props.me
     const promo = { deduction: 0, gifts: false }
     this.props.promo.forEach( p => {
       if (p.type === 'sale' && !isExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && !isExpire(p.expireIn)) { promo.gifts = true }
     })
-    if (user && user.vouchers && user.vouchers[course.id] && !isExpire(user.vouchers[course.id].expireIn)) {
-      promo.deduction += parseInt(user.vouchers[course.id].deduction)
+    if (me && me.vouchers) {
+      const vouchers = me.vouchers.filter( _voucher => _voucher.scope.indexOf(course.id) !== -1 )
+      vouchers.forEach( voucher => {
+        if (!isExpire(voucher.expireIn)) {
+          promo.deduction += parseInt(voucher.value)
+        }
+      })
     }
     return promo
   }
@@ -174,7 +187,7 @@ class PurchaseBundleBtn extends Component {
           bundle.map( offer => {
             if (offer.expireIn && isExpire(offer.expireIn)) { return null }
             const bundlePrice = this.calculateOfferBundlePrice(offer)
-            const orders = this.props.orders
+            const orders = this.props.me.orders
             const cart = storage.get(storage.key.CART) || []
             const purchaseBtn = (orders.some(order => order.items.some(item => item.type==='bundle' && item.code === offer.id))) ?
               <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorder')}>
@@ -321,7 +334,7 @@ export default class Course extends Component {
             <CourseInfo  course = {course} />
             <br />
             {
-              this.props.enrolls && this.props.enrolls.find( e => e.courseId === courseId ) ?
+              this.props.me && this.props.me.enrolls && this.props.me.enrolls.find( e => e.courseId === courseId ) ?
               <div style={{marginBottom: '32px'}}> <a href={`${env.elearn}/${courseId}`} className="w3-button w3-blue" target="_blank">Study Now</a> </div>
               :
               <div>
