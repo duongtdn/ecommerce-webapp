@@ -192,6 +192,15 @@ const Enroll = [
   }
 ]
 
+const User = [
+  {
+    uid: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
+    vouchers: [
+      {code: 'NEWBIE', scope: ['c-02'], value: 100000}
+    ]
+  }
+]
+
 module.exports = {
   Program: {
     find({id}, projection, done) {
@@ -306,6 +315,29 @@ module.exports = {
       setTimeout(() => {
         const data = courseId ? Enroll.filter( enroll => enroll.courseId === courseId && enroll.enrolledTo === enrolledTo )
                               : Enroll.filter( enroll => enroll.enrolledTo === enrolledTo )
+        if (data.length > 0) {
+          let res = {}
+          if ({}.toString.call(projection) === '[object Array]') {
+            projection.forEach( prop => {
+              res[prop] = data[0][prop]
+            })
+          } else {
+            res = {...data[0]}
+          }
+          done && done([res])
+        } else {
+          done && done([])
+        }
+      }, 500)
+    }
+  },
+  User: {
+    find({uid}, projection, done) {
+      if ({}.toString.call(projection) === '[object Function]') {
+        done= projection
+      }
+      setTimeout(() => {
+        const data = User.filter(user => user.uid === uid)
         if (data.length > 0) {
           let res = {}
           if ({}.toString.call(projection) === '[object Array]') {
