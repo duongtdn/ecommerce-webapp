@@ -55,18 +55,30 @@ export default class Sidebar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      accordions: { program: true, management: true }
+      accordions: { program: true, management: true },
+      width: 0
     }
+    this.ref = React.createRef()
+    this.updateStateWidth = this.updateStateWidth.bind(this)
+  }
+  componentDidMount() {
+    window.addEventListener("resize", this.updateStateWidth)
+  }
+  componentWillUnmount() {
+      window.removeEventListener("resize", this.updateStateWidth)
+  }
+  componentDidUpdate() {
+    this.updateStateWidth()
   }
   render() {
-    const style = {width: this.props.sidebarWidth, top: 0, zIndex: 99}
+    const style = {width: this.props.sidebarWidth, minWidth: this.props.sidebarMinWidth, top: 0, zIndex: 99}
     const programs = this.props.programs
     return (
-      <div className="w3-modal" style={{display: this.props.show? 'block' : 'none'}} onClick={e => this.props.sidebar(false)}>
-        <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey w3-hide-large" style={style} onClick={e => e.stopPropagation()}>
+      <div className="w3-modal w3-hide-large" style={{display: this.props.show? 'block' : 'none'}} onClick={e => this.props.sidebar(false)}>
+        <div ref={this.ref} className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={style} onClick={e => e.stopPropagation()}>
 
           {/* close button */}
-          <span className="w3-button w3-xlarge" style={{position: 'fixed', left: this.props.sidebarWidth, background: 'none'}} onClick={e => this.props.sidebar(false)}>
+          <span className="w3-button w3-xlarge" style={{position: 'fixed', left: `${this.state.width}px`, background: 'none'}} onClick={e => this.props.sidebar(false)}>
             <i className="fa fa-bars" />
           </span>
 
@@ -110,6 +122,12 @@ export default class Sidebar extends Component {
       const accordions = {...this.state.accordions}
       accordions[name] = !this.state.accordions[name]
       this.setState({ accordions })
+    }
+  }
+  updateStateWidth() {
+    const node = this.ref.current
+    if (node && node.offsetWidth !== this.state.width) {
+      this.setState({ width: node.offsetWidth })
     }
   }
 }
