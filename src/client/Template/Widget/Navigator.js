@@ -32,6 +32,7 @@ export default class Navigator extends Component {
         <Sidebar  sidebarWidth = '200px'
                   sidebar = {this.setSidebarDisplay}
                   show = {this.state.showSidebar}
+                  {...this.props}
         />
         <div >
           <Header {...this.props}
