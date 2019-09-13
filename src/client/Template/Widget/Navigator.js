@@ -4,14 +4,16 @@ import React, { Component } from 'react'
 
 import Header from './Header'
 import Footer from './Footer'
+import Sidebar from './Sidebar'
 
 export default class Navigator extends Component {
   constructor(props) {
     super(props)
-    this.state = { isScrollTop: true }
+    this.state = { isScrollTop: true, showSidebar: false }
     this.routes =[]
     this.popups = []
     this.handleScroll = this.handleScroll.bind(this)
+    this.setSidebarDisplay = this.setSidebarDisplay.bind(this)
   }
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
@@ -27,34 +29,41 @@ export default class Navigator extends Component {
     if (activePopup && this.popups.indexOf(activePopup) === -1) { this.popups.push(activePopup)}
     return (
       <div className="" >
-        <Header {...this.props}
-                isScrollTop = {this.state.isScrollTop}
+        <Sidebar  sidebarWidth = '200px'
+                  sidebar = {this.setSidebarDisplay}
+                  show = {this.state.showSidebar}
         />
-        <div style={{marginTop: '96px'}} >
-        {
-          this.routes.map(route => {
-            const page = this.props.routes[route]
-            const display = activeRoute === route ? 'block' : 'none'
-            return (
-              <div key={route} style={{ display }} >
-                { React.createElement( page, { ...this.props }) }
-              </div>
-            )
-          })
-        }
-        {
-          this.popups.map(popup => {
-            const content = this.props.popups[popup]
-            const display = activePopup === popup ? 'block' : 'none'
-            return (
-              <div key = {popup} style= {{ display }} className = "w3-modal">
-                { React.createElement(content, { ...this.props }) }
-              </div>
-            )
-          })
-        }
+        <div >
+          <Header {...this.props}
+                  isScrollTop = {this.state.isScrollTop}
+                  sidebar = {this.setSidebarDisplay}
+          />
+          <div style={{marginTop: '96px'}} >
+          {
+            this.routes.map(route => {
+              const page = this.props.routes[route]
+              const display = activeRoute === route ? 'block' : 'none'
+              return (
+                <div key={route} style={{ display }} >
+                  { React.createElement( page, { ...this.props }) }
+                </div>
+              )
+            })
+          }
+          {
+            this.popups.map(popup => {
+              const content = this.props.popups[popup]
+              const display = activePopup === popup ? 'block' : 'none'
+              return (
+                <div key = {popup} style= {{ display }} className = "w3-modal">
+                  { React.createElement(content, { ...this.props }) }
+                </div>
+              )
+            })
+          }
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
     )
   }
@@ -64,5 +73,8 @@ export default class Navigator extends Component {
     } else {
       !this.state.isScrollTop && this.setState({ isScrollTop : true })
     }
+  }
+  setSidebarDisplay(show) {
+    this.setState({ showSidebar: show })
   }
 }

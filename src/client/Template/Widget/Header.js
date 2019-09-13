@@ -130,7 +130,9 @@ export default class Header extends Component {
 
         {/* render in small and medium screen */}
         <div className="w3-hide-large">
-          <span className="w3-bar-item w3-button w3-xlarge" style={{marginRight: '24px'}}><i className="fa fa-bars" /></span>
+          <span className="w3-bar-item w3-button w3-xlarge" style={{marginRight: '24px'}} onClick={e => this.props.sidebar(true)}>
+            <i className="fa fa-bars" />
+          </span>
           <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
           <div className="w3-right w3-xlarge">
             <ShoppingCart {...this.props} />
