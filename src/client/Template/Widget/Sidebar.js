@@ -54,12 +54,16 @@ class UserWidget extends Component {
 export default class Sidebar extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      accordions: { program: true, management: true }
+    }
   }
   render() {
     const style = {width: this.props.sidebarWidth, top: 0, zIndex: 99}
+    const programs = this.props.programs
     return (
       <div className="w3-modal" style={{display: this.props.show? 'block' : 'none'}} onClick={e => this.props.sidebar(false)}>
-        <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey w3-hide-large" style={style}>
+        <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey w3-hide-large" style={style} onClick={e => e.stopPropagation()}>
 
           {/* close button */}
           <span className="w3-button w3-xlarge" style={{position: 'fixed', left: this.props.sidebarWidth, background: 'none'}} onClick={e => this.props.sidebar(false)}>
@@ -67,14 +71,45 @@ export default class Sidebar extends Component {
           </span>
 
           {/* user widget */}
-          <div className="w3-bar-item w3-border-bottom" style={{ padding: '8px 2px', margin: '8px 4px' }}>
+          <div className="w3-bar-item w3-border-bottom" style={{ padding: '8px 2px', margin: '8px 0' }}>
               <UserWidget {...this.props} />
           </div>
 
-          <span className="w3-bar-item w3-button">Link 1</span>
+          {/* Programs */}
+          <span className="w3-bar-item w3-button" onClick={this.toggleAccordions('program')}>
+            Programs { this.state.accordions['program']? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
+          </span>
+          <div className="w3-text-grey" style={{padding: '4px', display: this.state.accordions['program']? 'block':'none'}}>
+            {
+              programs.map( program => (
+                <a  className="w3-bar-item w3-button cursor-pointer" key={program.id}
+                    href = {`/browse/${program.id}`} >
+                  {program.title}
+                </a>
+              ))
+            }
+          </div>
+
+          {/* Management */}
+          {
+            this.props.user?
+            <div>
+              <span className="w3-bar-item w3-button" onClick={this.toggleAccordions('management')}>
+                Management { this.state.accordions['management']? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
+              </span>
+            </div>
+            : null
+          }
+
         </div>
       </div>
-
     )
+  }
+  toggleAccordions(name) {
+    return e => {
+      const accordions = {...this.state.accordions}
+      accordions[name] = !this.state.accordions[name]
+      this.setState({ accordions })
+    }
   }
 }

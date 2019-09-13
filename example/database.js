@@ -51,11 +51,32 @@ const Tags = [
 const Programs = [
   {
     id: 'emb',
-    title: 'Embedded Programming',
+    title: 'Embedded System',
     courses: [
       'c-01', 'c-02', 'c-03'
     ]
-  }
+  },
+  {
+    id: 'ai',
+    title: 'AI & Machine Learning',
+    courses: [
+      'c-01', 'c-02', 'c-03'
+    ]
+  },
+  {
+    id: 'webapp',
+    title: 'Web App Development',
+    courses: [
+      'c-01', 'c-02', 'c-03'
+    ]
+  },
+  {
+    id: 'mobile',
+    title: 'Mobile App Development',
+    courses: [
+      'c-01', 'c-02', 'c-03'
+    ]
+  },
 ]
 
 const Courses = [
