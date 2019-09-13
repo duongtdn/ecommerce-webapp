@@ -29,7 +29,7 @@ export default class Navigator extends Component {
     if (activePopup && this.popups.indexOf(activePopup) === -1) { this.popups.push(activePopup)}
     return (
       <div className="" >
-        <Sidebar  sidebarWidth = '200px'
+        <Sidebar  sidebarWidth = '223px'
                   sidebar = {this.setSidebarDisplay}
                   show = {this.state.showSidebar}
                   {...this.props}

@@ -56,23 +56,25 @@ export default class Sidebar extends Component {
     super(props)
   }
   render() {
-    const style = {width: this.props.sidebarWidth, top: 0, zIndex: 99, display: this.props.show? 'block' : 'none'}
-    const user = this.props.user
+    const style = {width: this.props.sidebarWidth, top: 0, zIndex: 99}
     return (
-      <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey w3-hide-large" style={style}>
+      <div className="w3-modal" style={{display: this.props.show? 'block' : 'none'}} onClick={e => this.props.sidebar(false)}>
+        <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey w3-hide-large" style={style}>
 
-        {/* close button */}
-        <span className="w3-button w3-xlarge" style={{position: 'fixed', left: this.props.sidebarWidth}} onClick={e => this.props.sidebar(false)}>
-          <i className="fa fa-bars" />
-        </span>
+          {/* close button */}
+          <span className="w3-button w3-xlarge" style={{position: 'fixed', left: this.props.sidebarWidth, background: 'none'}} onClick={e => this.props.sidebar(false)}>
+            <i className="fa fa-bars" />
+          </span>
 
-        {/* user widget */}
-        <div className="w3-bar-item w3-border-bottom" style={{ padding: '8px 2px', margin: '8px 4px' }}>
-            <UserWidget {...this.props} />
+          {/* user widget */}
+          <div className="w3-bar-item w3-border-bottom" style={{ padding: '8px 2px', margin: '8px 4px' }}>
+              <UserWidget {...this.props} />
+          </div>
+
+          <span className="w3-bar-item w3-button">Link 1</span>
         </div>
-
-        <span className="w3-bar-item w3-button">Link 1</span>
       </div>
+
     )
   }
 }
