@@ -54,6 +54,11 @@ class PurchaseBtn extends Component {
       return this.renderOrderedBtn()
     }
 
+    const enrolls = this.props.me.enrolls
+    if (enrolls.some(enroll => enroll.courseId === course.id && enroll.status === 'new')) {
+      return this.renderOrderedBtn()
+    }
+
     const cart = storage.get(storage.key.CART) || []
     if (cart.some(_item => _item.code === course.id)) {
       return this.renderInCartBtn()
@@ -337,7 +342,7 @@ export default class Course extends Component {
             <CourseInfo  course = {course} />
             <br />
             {
-              this.props.me && this.props.me.enrolls && this.props.me.enrolls.find( e => e.courseId === courseId ) ?
+              this.props.me && this.props.me.enrolls && this.props.me.enrolls.find( e => e.courseId === courseId && /(^active$|^studying$|^completed$)/i.test(e.status) ) ?
               <div style={{marginBottom: '32px'}}> <a href={`${env.elearn}/${courseId}`} className="w3-button w3-blue" target="_blank">Study Now</a> </div>
               :
               <div>
