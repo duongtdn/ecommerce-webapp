@@ -83,9 +83,9 @@ workbox.routing.registerRoute(
   })
 );
 workbox.routing.registerRoute(
-  /\/user$/i,
+  /\/me$/i,
   new workbox.strategies.NetworkFirst({
-    cacheName: 'user-cache',
+    cacheName: 'me-cache',
   })
 );
 

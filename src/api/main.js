@@ -32,8 +32,8 @@ api
   .add('/data/order', {
     post: require('./data/create-order'),
   })
-  .add('/user', {
-    get: require('./data/get-user-data')
+  .add('/me', {
+    get: require('./data/get-me')
   })
 
 module.exports = api

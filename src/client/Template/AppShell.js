@@ -44,7 +44,7 @@ class AppShell extends Component {
     /* fetch /user to get user orders, enrolls and vouchers */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
       const urlBasePath = env.urlBasePath
-      xhttp.get(`${urlBasePath}/user`, {authen: true}, (status, responseText) => {
+      xhttp.get(`${urlBasePath}/me`, {authen: true}, (status, responseText) => {
         if (status === 200) {
           const data = JSON.parse(responseText)
           const me = { ...data }
@@ -60,8 +60,8 @@ class AppShell extends Component {
     this.props.accountClient && this.props.accountClient.on('unauthenticated', user => {
       const me = { orders: [], enrolls: [], vouchers: [] }
       if (caches) {
-        caches.open('user-cache').then((cache) => {
-          cache.delete('/user').then((response) => {
+        caches.open('me-cache').then((cache) => {
+          cache.delete('/me').then((response) => {
             this.setState({ me })
           })
         })
