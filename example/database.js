@@ -28,12 +28,12 @@ const Promos = [
   {
     id: 'promo-04',
     type: 'bundle',
-    target: ['c-01', 'c-02'],
+    target: ['c-02', 'c-03'],
     deduction: [
-      {target: 'c-01', number: 150000},
       {target: 'c-02', number: 150000},
+      {target: 'c-03', number: 150000},
     ],
-    description: 'Bundle Offer: Embedded completion courses'
+    description: 'Bundle Offer: Embedded Advanced bundle'
   }
 ]
 
@@ -53,7 +53,7 @@ const Programs = [
     id: 'emb',
     title: 'Embedded System',
     courses: [
-      'c-01', 'c-02', 'c-03'
+      'c-01', 'c-02', 'c-03', 'c-04'
     ]
   },
   {
@@ -175,6 +175,38 @@ const Courses = [
         exam: 'c-02-f'
       }
     ]
+  },
+  {
+    id: 'c-04',
+    title: 'Motor Control: Pratical applied in Embedded System and IoT',
+    snippet: 'Study theory of motor control, types and their application in Embedded & IoT. Study through pratical projects',
+    description: '<p>This course is super creazy</p><ul><li>super cool</li><li>super awesome</li></ul>',
+    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ4MSngvOcZcc_xlli8B0AuwMJCHIChtTtjt0wPTdwS-Tc8Xsi',
+    picture: {
+      type: "yt",
+      uri: "https://www.youtube.com/embed/6R7SiDz8oFw"
+    },
+    price: 999000,
+    level: 'Advanced',
+    skills: [
+      'C Programming', 'ARM Programming', 'Motor Control'
+    ],
+    certs: [
+      'Embedded Programming Engineer'
+    ],
+    programs: ['emb'],
+    tests: [
+      {
+        title: 'Mid-term Exam',
+        description: 'Mid-term Test for course Embedded - 01',
+        exam: 'c-02-m'
+      },
+      {
+        title: 'Final Exam',
+        description: 'Final Test for course Embedded - 01',
+        exam: 'c-02-f'
+      }
+    ]
   }
 ]
 
@@ -183,8 +215,8 @@ const Enroll = [
   {
     courseId: 'c-01',
     enrolledTo: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
-    enrolledAt: new Date(),
-    status: 'resolved',
+    enrolledAt: 1564444799000,
+    status: 'active', // new, active, studying, completed
     resolvedBy: 'system-automation',
     order: 'iv-001',
     comments: [
