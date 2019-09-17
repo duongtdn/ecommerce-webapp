@@ -50,7 +50,7 @@ class PurchaseBtn extends Component {
     const course = this.props.course
 
     const orders = this.props.me.orders
-    if (orders.some(order => order.items.some(item => item.type==='course' && item.code === course.id))) {
+    if (orders.some(order => order.items.some(item => this._isOrderedItem(item, course) || (item.type==='bundle' && item.items.some(item => this._isOrderedItem(item, course))) ))) {
       return this.renderOrderedBtn()
     }
 
@@ -60,6 +60,9 @@ class PurchaseBtn extends Component {
     } else {
       return this.renderPurchaseBtn()
     }
+  }
+  _isOrderedItem(item, course) {
+    return item.type==='course' && item.code === course.id
   }
   renderInCartBtn() {
     return (
