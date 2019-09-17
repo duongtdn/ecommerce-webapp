@@ -7,6 +7,11 @@ import { xhttp } from 'authenform-utils'
 import { localeString } from '../../lib/util'
 import storage from '../../lib/storage'
 
+function _scrollTop() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+
 class ProgressBar extends Component {
   constructor(props) {
     super(props)
@@ -519,6 +524,7 @@ export default class Order extends Component {
   }
   moveToTab(tab) {
     this.setState({ tab })
+    _scrollTop()
   }
   setTabCompleted(tab) {
     const progress = {...this.state.progress}
