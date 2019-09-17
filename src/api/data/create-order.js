@@ -1,6 +1,6 @@
 "use strict"
 
-const authen = require('../lib/authen')
+const {authen} = require('../lib/authen')
 
 function _rand() {
   // return Math.random().toString(36).substr(2,9)

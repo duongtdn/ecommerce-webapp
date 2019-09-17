@@ -1,6 +1,6 @@
 "use strict"
 
-const authen = require('../lib/authen')
+const {authen} = require('../lib/authen')
 
 function batchGetUserData(helpers) {
   return function(req, res) {

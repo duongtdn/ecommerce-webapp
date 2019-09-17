@@ -25,4 +25,4 @@ function authen() {
   }
 }
 
-module.exports = authen
+module.exports = { authen }
