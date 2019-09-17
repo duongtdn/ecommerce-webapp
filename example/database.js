@@ -382,6 +382,20 @@ module.exports = {
           done && done([])
         }
       }, 500)
+    },
+    /* update function is not fully tested yet */
+    update({courseId, enrolledTo, ...props}, done) {
+      setTimeout(() => {
+        const enroll = Enroll.find( e => e.courseId === courseId && e.enrolledTo === enrolledTo)
+        if (!enroll) {
+          done && done(404)
+        } else {
+          for (let key in props) {
+            enroll[key] = props[key]
+          }
+          done && done(null, enroll)
+        }
+      }, 500)
     }
   },
   User: {

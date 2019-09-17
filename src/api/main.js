@@ -35,5 +35,8 @@ api
   .add('/me', {
     get: require('./data/get-me')
   })
+  .add('/me/enroll/:courseId', {
+    put: require('./data/update-enroll')
+  })
 
 module.exports = api
