@@ -83,15 +83,15 @@ export default class Sidebar extends Component {
           </span>
 
           {/* user widget */}
-          <div className="w3-bar-item w3-border-bottom" style={{ padding: '8px 2px', margin: '8px 0' }}>
+          <div className="w3-bar-item w3-border-bottom" style={{ padding: '8px 2px', margin: '8px 0 16px 0' }}>
               <UserWidget {...this.props} />
           </div>
 
           {/* Programs */}
-          <span className="w3-bar-item w3-button" onClick={this.toggleAccordions('program')}>
+          <span className="w3-bar-item w3-button w3-border-bottom w3-border-grey" onClick={this.toggleAccordions('program')}>
             Programs { this.state.accordions['program']? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
           </span>
-          <div className="w3-text-grey" style={{padding: '4px', display: this.state.accordions['program']? 'block':'none'}}>
+          <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.state.accordions['program']? 'block':'none'}}>
             {
               programs.map( program => (
                 <a  className="w3-bar-item w3-button cursor-pointer" key={program.id}
@@ -106,9 +106,14 @@ export default class Sidebar extends Component {
           {
             this.props.user?
             <div>
-              <span className="w3-bar-item w3-button" onClick={this.toggleAccordions('management')}>
+              <span className="w3-bar-item w3-button w3-border-bottom w3-border-grey" onClick={this.toggleAccordions('management')}>
                 Management { this.state.accordions['management']? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
               </span>
+              <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.state.accordions['management']? 'block':'none'}}>
+                <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('mycourses')}}>
+                    Manage Courses
+                </span>
+              </div>
             </div>
             : null
           }
