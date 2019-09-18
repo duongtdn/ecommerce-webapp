@@ -15,10 +15,12 @@ export default class MyCourses extends Component {
     orders && orders.forEach(order => {
       order.items.forEach( item => {
         if (item.type === 'course') {
+          if (courses.find(c => c.id === item.code)) { return }
           courses.push(this._extractCourse(item.code, order.createdAt, order.number, 'new'))
         } else if (item.type === 'bundle') {
           item.items.forEach( item => {
             if (item.type === 'course') {
+              if (courses.find(c => c.id === item.code)) { return }
               courses.push(this._extractCourse(item.code, order.createdAt, order.number, 'new'))
             }
           })
@@ -27,6 +29,7 @@ export default class MyCourses extends Component {
     })
     // extract course from enrolls
     enrolls && enrolls.forEach(enroll => {
+      if (courses.find(c => c.id === enroll.courseId)) { return }
       courses.push(this._extractCourse(enroll.courseId, enroll.enrolledAt, enroll.order, enroll.status))
     })
     if (courses.length === 0) { return null }
