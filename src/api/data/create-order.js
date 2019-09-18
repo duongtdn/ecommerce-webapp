@@ -79,6 +79,7 @@ function validateOrder(helpers) {
             const subTotal = promo.deduction.reduce( (acc, cur) => {
               /* currently, bundle only apply to course, later will support other goods such as boards, sofware licenses... */
               const course = courses.find( course => course.id === cur.target)
+              if (!course) { return acc }
               return acc + Math.floor(parseInt(course.price) - parseInt(cur.number))
             }, 0)
             if (subTotal !== item.price) {

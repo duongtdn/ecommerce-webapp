@@ -28,12 +28,13 @@ const Promos = [
   {
     id: 'promo-04',
     type: 'bundle',
-    target: ['c-02', 'c-03'],
+    target: ['c-01', 'c-02', 'c-03'],
     deduction: [
+      {target: 'c-01', number: 100000},
       {target: 'c-02', number: 150000},
       {target: 'c-03', number: 150000},
     ],
-    description: 'Bundle Offer: Embedded Advanced bundle'
+    description: 'Bundle Offer: Embedded Complete for Beginners'
   }
 ]
 

@@ -213,7 +213,6 @@ class PurchaseBundleBtn extends Component {
                     /* currently, bundle only apply to course, later will support other goods such as boards, sofware licenses... */
                     const course = this.props.courses.find( course => course.id === promo.target)
                     if (!course) { return null }
-                    if (this.isPurchased(course)) { return null }
                     const price = {
                       origin: parseInt(course.price),
                       offer: Math.floor(parseInt(course.price) - parseInt(promo.number))
@@ -221,20 +220,33 @@ class PurchaseBundleBtn extends Component {
                     return (
                       <li key={promo.target}>
                         <div className="w3-text-blue-grey"> {course.title} </div>
-                        <div>
-                          <span className="w3-text-grey" style={{textDecoration: 'line-through', marginRight: '16px'}}> {localeString(price.origin, '.')} {'\u20ab'} </span>
-                          <span className="w3-text-red w3-small"> {localeString(price.offer, '.')} {'\u20ab'} </span>
-                        </div>
+                        {
+                          this.isPurchased(course) ?
+                            <div className="w3-small w3-text-grey italic"> Ordered </div>
+                          :
+                          <div>
+                            <span className="w3-text-grey" style={{textDecoration: 'line-through', marginRight: '16px'}}> {localeString(price.origin, '.')} {'\u20ab'} </span>
+                            <span className="w3-text-red w3-small"> {localeString(price.offer, '.')} {'\u20ab'} </span>
+                          </div>
+                        }
                       </li>
                     )
                   })}
-                  <li style={{fontWeight: 'bold'}}>
-                    Bundle price: <span className="w3-text-red"> {localeString(bundlePrice.subTotal, '.')} {'\u20ab'} </span> {' '}
-                    <span className="w3-small" style={{fontStyle: "italic"}} > saved {localeString(bundlePrice.deduction, '.')} {'\u20ab'} </span>
-                  </li>
+                  {
+                    offer.deduction.every( promo => this.isPurchased(this.props.courses.find(course => course.id === promo.target)))?
+                      <li className="italic bold"> You have ordered all items in this bundle </li>
+                      :
+                      <li className="bold">
+                        Bundle price: <span className="w3-text-red"> {localeString(bundlePrice.subTotal, '.')} {'\u20ab'} </span> {' '}
+                        <span className="w3-small" style={{fontStyle: "italic"}} > saved {localeString(bundlePrice.deduction, '.')} {'\u20ab'} </span>
+                      </li>
+                  }
+
                 </ul>
                 <p>
-                  {purchaseBtn}
+                  {
+                    offer.deduction.every( promo => this.isPurchased(this.props.courses.find(course => course.id === promo.target)))? null : purchaseBtn
+                  }
                 </p>
 
               </div>
@@ -282,6 +294,12 @@ class PurchaseBundleBtn extends Component {
     })
   }
   isPurchased(course) {
+    const enrolls = this.props.me.enrolls
+    if (enrolls.find(e => e.courseId === course.id)) { return true }
+    const orders = this.props.me.orders
+    if (orders.find(order => order.items.find(item => (item.type === 'course' && item.code === course.id) || (item.type === 'bundle' && item.items.find(item => item.type === 'course' && item.code === course.id))))) {
+      return true
+    }
     return false // todo: check whether course is purchased
   }
 }

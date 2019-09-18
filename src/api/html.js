@@ -41,6 +41,9 @@ function html({script, data, dom}) {
       .bold {
         font-weight: bold;
       }
+      .italic {
+        font-style: italic;
+      }
     </style>
   </head>
   <body>
