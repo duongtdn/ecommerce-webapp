@@ -2,6 +2,10 @@
 
 import React, { Component } from 'react'
 
+import { xhttp } from 'authenform-utils'
+
+import env from '../../script/env'
+
 export default class MyCourses extends Component {
   constructor(props) {
     super(props)
@@ -89,10 +93,10 @@ export default class MyCourses extends Component {
         this.props.showPopup('info', {message: 'This course is not activated yet', closeBtn: true})
         break
       case 'active':
-        // course is already enrolled and activated, update status to studying and open elearning page
+        xhttp.post(`/me/enroll/${course.id}`, { status: 'studying' }, {authen: true})
       case 'studying':
       case 'completed':
-        // open new window to elearning page
+        window.open(`${env.elearn}/${course.id}`)
         break
       default:
         break
