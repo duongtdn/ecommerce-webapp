@@ -489,6 +489,8 @@ export default class Order extends Component {
       const error = this._validateDelivery(delivery)
       this.setState({delivery, error, editDelivery})
     })
+
+    this.props.page.on('enter', () => this.setState({ progress: {}, tab: 'cart', paymentMethod: null, }))
   }
   render() {
     if (!this.props.user) { return (<div className="w3-container"><p className="w3-text-red w3-large bold">Unauthenticated</p><p>Please Sign-in to see this page</p></div>) }

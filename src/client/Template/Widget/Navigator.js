@@ -42,11 +42,16 @@ export default class Navigator extends Component {
           <div style={{marginTop: '96px'}} >
           {
             this.routes.map(route => {
-              const page = this.props.routes[route]
+              const Comp = this.props.routes[route]
               const display = activeRoute === route ? 'block' : 'none'
+              const page = {
+                on: (event, handler) => {
+                  this.props.pages.events[route][`on${capitalize(event)}`] = handler
+                }
+              }
               return (
                 <div key={route} style={{ display }} >
-                  { React.createElement( page, { ...this.props }) }
+                  { React.createElement( Comp, { ...this.props, page }) }
                 </div>
               )
             })
@@ -78,4 +83,8 @@ export default class Navigator extends Component {
   setSidebarDisplay(show) {
     this.setState({ showSidebar: show })
   }
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }

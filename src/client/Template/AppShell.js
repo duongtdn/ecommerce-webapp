@@ -70,6 +70,8 @@ class AppShell extends Component {
       }
     })
     this.showPopup = this.showPopup.bind(this)
+    this.pages = { events: {} }
+    Object.keys(routes).forEach(route => this.pages.events[route] = {} )
   }
   componentDidMount() {
     this.props.href && this.props.href.on('popState', e => this.props.href.set(`/${this.props.href.getPathName()}`) )
@@ -89,12 +91,14 @@ class AppShell extends Component {
                     {...this.props}
                     me = {this.state.me}
                     onOrderCreated = {this.onOrderCreated}
+                    pages = {this.pages}
         />
       </div>
     )
   }
   navigate(route) {
     this.props.href && this.props.href.history().pushState({},'',`/${route}`)
+    this.pages.events[route] && this.pages.events[route].onEnter && this.pages.events[route].onEnter()
     this.setState({activeRoute: route || 'error'})
   }
   onOrderCreated(order) {
