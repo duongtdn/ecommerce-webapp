@@ -468,15 +468,21 @@ export default class Order extends Component {
       tab: 'cart',
       paymentMethod: null,
       delivery,
-      error: this._validateDelivery(delivery),
-      editDelivery
+      error: _validateDelivery(delivery),
+      editDelivery,
+      user: this.props.user
     }
 
     this.tabs = [TabCart, TabPayment, TabReceipt]
 
     const methods = ['moveToTab', 'setTabCompleted', 'setTabIncompleted', 'onSelectPaymentMethod', 'updateDelivery', 'saveDelivery', 'placeOrder']
     methods.forEach( method => this[method] = this[method].bind(this) )
-    this.props.accountClient && this.props.accountClient.on('authenticated', user => {
+
+    this.props.page.on('enter', () => this.setState({ progress: {}, tab: 'cart', paymentMethod: null, }))
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.user && !prevState.user) {
+      const user = nextProps.user
       const delivery =  {
         fullName: user.profile.fullName || '',
         phone: user.profile.phone[0] || '',
@@ -486,11 +492,11 @@ export default class Order extends Component {
             delivery.fullName && delivery.fullName.length > 0 &&
             delivery.phone && delivery.phone.length > 0 &&
             delivery.address && delivery.address.length > 0 ? false : true
-      const error = this._validateDelivery(delivery)
-      this.setState({delivery, error, editDelivery})
-    })
-
-    this.props.page.on('enter', () => this.setState({ progress: {}, tab: 'cart', paymentMethod: null, }))
+      const error = _validateDelivery(delivery)
+      return { delivery, error, editDelivery, user }
+    } else {
+      return null
+    }
   }
   render() {
     if (!this.props.user) { return (<div className="w3-container"><p className="w3-text-red w3-large bold">Unauthenticated</p><p>Please Sign-in to see this page</p></div>) }
@@ -544,7 +550,7 @@ export default class Order extends Component {
   saveDelivery() {
     const delivery = {...this.state.delivery}
     return new Promise( (resolve, reject) => {
-      const error = this._validateDelivery(delivery)
+      const error = _validateDelivery(delivery)
       if (Object.keys(error).some(key => error[key])) {
         this.setState({ error, editDelivery: true })
         reject(error)
@@ -592,17 +598,18 @@ export default class Order extends Component {
       })
     })
   }
-  _validateDelivery(delivery) {
-    if (delivery) {
-      return {
-        fullName: delivery.fullName === undefined || delivery.fullName === null || delivery.fullName.length === 0,
-        phone: delivery.phone === undefined || delivery.phone === null || delivery.phone.length === 0,
-        address: delivery.address === undefined || delivery.address === null || delivery.address.length === 0
-      }
-    } else {
-      return {
-        fullName: false, phone: false, address: false
-      }
+}
+
+function _validateDelivery(delivery) {
+  if (delivery) {
+    return {
+      fullName: delivery.fullName === undefined || delivery.fullName === null || delivery.fullName.length === 0,
+      phone: delivery.phone === undefined || delivery.phone === null || delivery.phone.length === 0,
+      address: delivery.address === undefined || delivery.address === null || delivery.address.length === 0
+    }
+  } else {
+    return {
+      fullName: false, phone: false, address: false
     }
   }
 }
