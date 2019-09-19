@@ -344,7 +344,8 @@ module.exports = {
       setTimeout(() => {
         const orders = Order.filter( _order => _order.uid === uid)
         if (orders) {
-          done && done(orders)
+          const data = orders.map(order => { return {...order} })
+          done && done(data)
         } else {
           done && done([])
         }
