@@ -168,6 +168,9 @@ export default class Header extends Component {
                 <span className="w3-bar-item w3-button cursor-pointer w3-hover-none hover-bottom-red" onClick={e => {this.closeAccordions(); this.props.navigate('mycourses')}}>
                     Manage Courses
                 </span>
+                <span className="w3-bar-item w3-button cursor-pointer w3-hover-none hover-bottom-red" onClick={e => {this.closeAccordions(); this.props.navigate('myorders')}}>
+                    Manage Orders
+                </span>
               </div>
             : null
           }
