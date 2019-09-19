@@ -95,41 +95,87 @@ class ShoppingCart extends Component {
 export default class Header extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      accordions: { program: false, management: false },
+    }
   }
   render() {
+    const programs = this.props.programs
     return (
-      <header className={`w3-bar w3-top w3-white ${!this.props.isScrollTop?'w3-card':'w3-border-bottom'}`} style={{margin: '0 0 32px 0'}}>
+      <header className={`w3-top w3-white ${!this.props.isScrollTop?'w3-card':'w3-border-bottom'}`} style={{margin: '0 0 32px 0'}}>
 
         {/* render in large screen */}
         <div className="w3-hide-small w3-hide-medium">
-          <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
+          <div className="w3-bar">
+            <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
 
-          <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
-            <div className="w3-large" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
-              <ShoppingCart {...this.props} />
-              {
-                this.props.user?
-                  <UserSnipet user={this.props.user}
-                              accountClient={this.props.accountClient}
-                              env = {this.props.env}
-                  />
-                :
-                  <LoginButton accountClient={this.props.accountClient} />
-              }
+            <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
+              <div className="w3-large" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
+                <ShoppingCart {...this.props} />
+                {
+                  this.props.user?
+                    <UserSnipet user={this.props.user}
+                                accountClient={this.props.accountClient}
+                                env = {this.props.env}
+                    />
+                  :
+                    <LoginButton accountClient={this.props.accountClient} />
+                }
+              </div>
             </div>
+
+            <div className="w3-bar-item" style={{padding: '8px', marginLeft: '48px'}}>
+              <div className="w3-large w3-text-grey" style={{display: 'inline-block', padding: '0 8px', verticalAlign: 'bottom'}}>
+                {/* Programs */}
+                <span className={`w3-button ${this.state.accordions['program']?'bottom-bar w3-border-red':''}`}
+                      style={{borderBottom: this.state.accordions['program']? '3px solid' : 'none'}}
+                      onClick={this.toggleAccordions('program')}
+                >
+                  Programs <i className={`fa ${this.state.accordions['program']?'fa-caret-up':'fa-caret-down'}`} />
+                </span>
+                {/* Managerment */}
+                {
+                  this.props.user?
+                    <span className={`w3-button ${this.state.accordions['management']?'bottom-bar w3-border-red':''}`}
+                          style={{borderBottom: this.state.accordions['management']? '3px solid' : 'none'}}
+                          onClick={this.toggleAccordions('management')}
+                    >
+                      Management <i className={`fa ${this.state.accordions['management']?'fa-caret-up':'fa-caret-down'}`} />
+                    </span>
+                  : null
+                }
+              </div>
+            </div>
+
           </div>
 
-          <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
-            <div className="w3-large w3-text-grey w3-border-right" style={{display: 'inline-block', padding: '0 8px', verticalAlign: 'bottom'}}>
-              <span className="w3-button"> Programs <i className="fa fa-caret-down" /> </span>
-              <span className="w3-button"> Management <i className="fa fa-caret-down" /> </span>
-            </div>
+          {/* Programs */}
+          <div className="w3-text-grey" style={{padding: '4px', margin: '0 0 16px 150px', display: this.state.accordions['program']? 'block':'none'}}>
+            {
+              programs.map( program => (
+                <a  className="w3-button cursor-pointer w3-hover-none hover-bottom-red" key={program.id}
+                    href = {`/browse/${program.id}`} >
+                  {program.title}
+                </a>
+              ))
+            }
           </div>
+
+          {/* Management */}
+          {
+            this.props.user?
+              <div className="w3-text-grey" style={{padding: '4px', margin: '0 0 16px 150px', display: this.state.accordions['management']? 'block':'none'}}>
+                <span className="w3-bar-item w3-button cursor-pointer w3-hover-none hover-bottom-red" onClick={e => {this.closeAccordions(); this.props.navigate('mycourses')}}>
+                    Manage Courses
+                </span>
+              </div>
+            : null
+          }
 
         </div>
 
         {/* render in small and medium screen */}
-        <div className="w3-hide-large">
+        <div className="w3-bar w3-hide-large">
           <span className="w3-bar-item w3-button w3-xlarge" style={{marginRight: '24px'}} onClick={e => this.props.sidebar(true)}>
             <i className="fa fa-bars" />
           </span>
@@ -142,5 +188,22 @@ export default class Header extends Component {
 
       </header>
     )
+  }
+  toggleAccordions(name) {
+    return e => {
+      const accordions = {...this.state.accordions}
+      for (let key in accordions) {
+        accordions[key] = false
+      }
+      accordions[name] = !this.state.accordions[name]
+      this.setState({ accordions })
+    }
+  }
+  closeAccordions() {
+    const accordions = {...this.state.accordions}
+    for (let key in accordions) {
+      accordions[key] = false
+    }
+    this.setState({ accordions })
   }
 }

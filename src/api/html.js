@@ -44,6 +44,9 @@ function html({script, data, dom}) {
       .italic {
         font-style: italic;
       }
+      .hover-bottom-red:hover {
+        border-bottom: 2px solid red;
+      }
     </style>
   </head>
   <body>
