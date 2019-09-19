@@ -13,10 +13,11 @@ export default class MyOrders extends Component {
     console.log(orders)
     return (
       <div className="w3-container">
+        <div style={{margin: '16px auto', maxWidth: '920px'}}> <h4 className="w3-text-blue"> Orders </h4> </div>
         {
           orders.map( order => {
             return (
-              <div key = {order.number} className="w3-card w3-padding" style={{margin: '16px 0'}}>
+              <div key = {order.number} className="w3-card w3-padding" style={{margin: '16px auto', maxWidth: '920px'}}>
                 <div className="w3-cell-row">
                   <div className="w3-cell">
                     <h6 className="bold w3-text-blue"> <i className="fas fa-receipt" />  #{order.number} </h6>
@@ -37,7 +38,7 @@ export default class MyOrders extends Component {
                   }</div>
                 </div>
                 <div style={{textAlign: 'right'}}>
-                  <p className="w3-small italic cursor-pointer"> show detail... </p>
+                  <span className="w3-small italic cursor-pointer w3-hover-text-blue"> show detail... </span>
                 </div>
               </div>
             )
