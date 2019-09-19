@@ -93,7 +93,7 @@ export default class MyCourses extends Component {
         this.props.showPopup('info', {message: 'This course is not activated yet', closeBtn: true})
         break
       case 'active':
-        xhttp.post(`/me/enroll/${course.id}`, { status: 'studying' }, {authen: true})
+        xhttp.put(`/me/enroll/${course.id}`, { status: 'studying' }, {authen: true})
       case 'studying':
       case 'completed':
         window.open(`${env.elearn}/${course.id}`)
