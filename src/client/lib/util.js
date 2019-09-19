@@ -17,4 +17,11 @@ function localeString(x, sep, grp) {
   return sx.join('.');
 }
 
-module.exports = { localeString }
+function getDay(timestamp) {
+  const date = new Date(timestamp)
+  const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  // return `${weekday[date.getDay()]} ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+  return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+}
+
+module.exports = { localeString, getDay }
