@@ -149,7 +149,7 @@ class OrderCard extends Component {
     return this
   }
   hideOrderDetail() {
-    this.setState({ showDetail: false })
+    this.setState({ showDetail: false, showCancelReasonInput: false })
     return this
   }
   showCancelReason() {
@@ -170,7 +170,7 @@ class OrderCard extends Component {
     xhttp.delete('/data/orders', {number, reason}, {authen: true}, (status,data) => {
       this.props.hidePopup()
       if (status === 200) {
-        this.hideCancelReason().hideOrderDetail()
+        this.hideOrderDetail()
         this.props.onOrderDeleted(number)
       } else {
         this.props.showPopup('info', { closeBtn: true, message: `Error ${status}. Please refresh page and try again`, align: 'left' })
