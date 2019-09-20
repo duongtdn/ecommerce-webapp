@@ -17,6 +17,7 @@ export default class MyCourses extends Component {
     const courses = []
     // extract courses from order
     orders && orders.forEach(order => {
+      if (order.status === 'deleted') { return }
       order.items.forEach( item => {
         if (item.type === 'course') {
           if (courses.find(c => c.id === item.code)) { return }
