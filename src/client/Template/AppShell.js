@@ -43,6 +43,7 @@ class AppShell extends Component {
       me: { orders: [], enrolls: [], vouchers: [] }
     }
     this.onOrderCreated = this.onOrderCreated.bind(this)
+    this.onOrderDeleted = this.onOrderDeleted.bind(this)
     /* fetch /user to get user orders, enrolls and vouchers */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
       const urlBasePath = env.urlBasePath
@@ -93,6 +94,7 @@ class AppShell extends Component {
                     {...this.props}
                     me = {this.state.me}
                     onOrderCreated = {this.onOrderCreated}
+                    onOrderDeleted = {this.onOrderDeleted}
                     pages = {this.pages}
         />
       </div>
@@ -107,6 +109,17 @@ class AppShell extends Component {
     const me = {...this.state.me}
     const orders = [...me.orders.filter(_order => _order.number !== order.number)]
     orders.push(order)
+    me.orders = orders
+    this.setState({ me })
+  }
+  onOrderDeleted(number) {
+    const me = {...this.state.me}
+    const orders = [...me.orders.map(_order => {
+      if (_order.number === number) {
+        _order.status = 'deleted'
+      }
+      return _order
+    })]
     me.orders = orders
     this.setState({ me })
   }
