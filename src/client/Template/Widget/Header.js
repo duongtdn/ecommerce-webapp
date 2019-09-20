@@ -8,7 +8,6 @@ import storage from '../../lib/storage'
 class UserSnipet extends Component {
   constructor(props) {
     super(props)
-    this.state = { showUserDropdown : false }
     this.signout = this.signout.bind(this)
   }
   render() {
@@ -16,14 +15,14 @@ class UserSnipet extends Component {
     const avata = this._getUserAvata()
     return (
       <div className="w3-bar-item" style={{margin: '4px 0', padding: '3px 16px', cursor: 'pointer'}}>
-        <div className="w3-white" onClick={e => this.setState({showUserDropdown:!this.state.showUserDropdown})}>
+        <div className="w3-white" onClick={e => this.props.toggleDropdown()}>
           <img className="w3-circle w3-border w3-border-white"style={{width: '35px'}} src={avata} />
           {' '}
           <span className="w3-text-blue-grey" style={{marginRight: '4px'}}>{user.profile.displayName}</span>
           {' '}
           <i className="w3-text-dark-grey fa fa-ellipsis-v" />
         </div>
-        <div className={`${this.state.showUserDropdown? 'w3-bar-block' : 'w3-hide'}`} style={{padding: '16px 0'}}>
+        <div className={`${this.props.showDropdown? 'w3-bar-block' : 'w3-hide'}`} style={{padding: '16px 0'}}>
           <button className="w3-bar-item w3-button" onClick={this.signout}> Logout </button>
         </div>
       </div>
@@ -40,7 +39,7 @@ class UserSnipet extends Component {
   }
   signout(e) {
     this.props.accountClient.signout()
-    this.setState({ showUserDropdown: false })
+    this.props.closeDropdown()
   }
 }
 
@@ -97,6 +96,7 @@ export default class Header extends Component {
     super(props)
     this.state = {
       accordions: { program: false, management: false },
+      showUserDropdown: false
     }
   }
   render() {
@@ -117,6 +117,9 @@ export default class Header extends Component {
                     <UserSnipet user={this.props.user}
                                 accountClient={this.props.accountClient}
                                 env = {this.props.env}
+                                showDropdown = {this.state.showUserDropdown}
+                                toggleDropdown = {this.toggleUserDropdown.bind(this)}
+                                closeDropdown = {this.closeUserDropdown.bind(this)}
                     />
                   :
                     <LoginButton accountClient={this.props.accountClient} />
@@ -199,14 +202,26 @@ export default class Header extends Component {
         accordions[key] = false
       }
       accordions[name] = !this.state.accordions[name]
-      this.setState({ accordions })
+      this.setState({ accordions, showUserDropdown: false })
     }
   }
   closeAccordions() {
+    const accordions = this._createClosedAccorionsState()
+    this.setState({ accordions, showUserDropdown: false })
+  }
+  toggleUserDropdown() {
+    const accordions = this._createClosedAccorionsState()
+    this.setState({ showUserDropdown: !this.state.showUserDropdown, accordions })
+  }
+  closeUserDropdown() {
+    const accordions = this._createClosedAccorionsState()
+    this.setState({ showUserDropdown: false, accordions })
+  }
+  _createClosedAccorionsState() {
     const accordions = {...this.state.accordions}
     for (let key in accordions) {
       accordions[key] = false
     }
-    this.setState({ accordions })
+    return accordions
   }
 }
