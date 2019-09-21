@@ -360,6 +360,24 @@ module.exports = {
         Order.push(order)
         done && done(null, order)
       }, 2000)
+    },
+    update({uid, number, ...props}, done) {
+      setTimeout(() => {
+        const order = Order.find( order => order.uid === uid && order.number === number)
+        if (!order) {
+          done && done(404)
+        } else {
+          for (let key in props) {
+            if (Array.isArray(order[key])) {
+              order[key].push(props[key])
+            } else {
+              order[key] = props[key]
+            }
+          }
+          console.log(order)
+          done && done(null, props)
+        }
+      }, 500)
     }
   },
   Enroll: {
@@ -395,7 +413,7 @@ module.exports = {
           for (let key in props) {
             enroll[key] = props[key]
           }
-          done && done(null, enroll)
+          done && done(null, props)
         }
       }, 500)
     }

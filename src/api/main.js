@@ -31,6 +31,7 @@ api
   })
   .add('/data/order', {
     post: require('./data/create-order'),
+    delete: require('./data/delete-order')
   })
   .add('/me', {
     get: require('./data/get-me')

@@ -50,7 +50,7 @@ class PurchaseBtn extends Component {
     const course = this.props.course
 
     const orders = this.props.me.orders
-    if (orders.some(order => order.items.some(item => this._isOrderedItem(item, course) || (item.type==='bundle' && item.items.some(item => this._isOrderedItem(item, course))) ))) {
+    if (orders.some(order => !/(^deleted$|^expired$)/.test(order.status) && order.items.some(item => this._isOrderedItem(item, course) || (item.type==='bundle' && item.items.some(item => this._isOrderedItem(item, course))) ))) {
       return this.renderOrderedBtn()
     }
 
@@ -192,7 +192,7 @@ class PurchaseBundleBtn extends Component {
             const bundlePrice = this.calculateOfferBundlePrice(offer)
             const orders = this.props.me.orders
             const cart = storage.get(storage.key.CART) || []
-            const purchaseBtn = (orders.some(order => order.items.some(item => item.type==='bundle' && item.code === offer.id))) ?
+            const purchaseBtn = (orders.some(order => !/(^deleted$|^expired$)/.test(order.status) && order.items.some(item => item.type==='bundle' && item.code === offer.id))) ?
               <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorder')}>
                 Ordered
               </button>
@@ -297,10 +297,10 @@ class PurchaseBundleBtn extends Component {
     const enrolls = this.props.me.enrolls
     if (enrolls.find(e => e.courseId === course.id)) { return true }
     const orders = this.props.me.orders
-    if (orders.find(order => order.items.find(item => (item.type === 'course' && item.code === course.id) || (item.type === 'bundle' && item.items.find(item => item.type === 'course' && item.code === course.id))))) {
+    if (orders.find(order => !/(^deleted$|^expired$)/.test(order.status) && order.items.find(item => (item.type === 'course' && item.code === course.id) || (item.type === 'bundle' && item.items.find(item => item.type === 'course' && item.code === course.id))))) {
       return true
     }
-    return false // todo: check whether course is purchased
+    return false
   }
 }
 

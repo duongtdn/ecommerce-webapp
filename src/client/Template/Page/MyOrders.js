@@ -167,7 +167,7 @@ class OrderCard extends Component {
   cancelOrder(order) {
     const number = order.number
     const reason = this.state.cancelReason
-    xhttp.delete('/data/orders', {number, reason}, {authen: true}, (status,data) => {
+    xhttp.delete('/data/order', {number, reason}, {authen: true}, (status,data) => {
       this.props.hidePopup()
       if (status === 200) {
         this.hideOrderDetail()
