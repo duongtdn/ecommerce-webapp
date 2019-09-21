@@ -185,12 +185,11 @@ export default class MyOrders extends Component {
   }
   render() {
     const orders = this.props.me.orders
-    console.log(orders)
     return (
       <div className="w3-container">
         <div style={{margin: '16px auto', maxWidth: '920px'}}> <h4 className="w3-text-blue"> Orders </h4> </div>
         {
-          orders.map(order => (
+          orders.sort( (a, b) => b.createdAt - a.createdAt ).map(order => (
             <OrderCard key = {order.number} order = {order} {...this.props} />
           ))
         }
