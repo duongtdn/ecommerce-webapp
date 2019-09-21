@@ -24,7 +24,7 @@
   "homepage": "https://github.com/duongtdn/ecommercial-webapp#readme",
   "dependencies": {
     "account-realm-client": "^1.2.4",
-    "authenform-utils": "^1.1.0",
+    "authenform-utils": "^1.2.0",
     "express-api-builder": "^1.3.0",
     "jsonwebtoken": "^8.5.1",
     "react": "^16.9.0",
