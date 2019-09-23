@@ -116,6 +116,9 @@ export default class Sidebar extends Component {
                 <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myorders')}}>
                     Manage Orders
                 </span>
+                <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myrewards')}}>
+                    Manage Rewards
+                </span>
               </div>
             </div>
             : null

@@ -10,6 +10,7 @@ import Error from './Page/Error'
 import Order from './Page/Order'
 import MyCourses from './Page/MyCourses'
 import MyOrders from './Page/MyOrders'
+import MyRewards from './Page/MyRewards'
 
 import Info from './Popup/Info'
 import YesNo from './Popup/YesNo'
@@ -26,6 +27,7 @@ const routes = {
   error: Error,
   mycourses: MyCourses,
   myorders: MyOrders,
+  myrewards: MyRewards,
 }
 
 const popups = {

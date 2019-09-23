@@ -250,7 +250,8 @@ const User = [
   {
     uid: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
     rewards: [
-      {code: 'NEWBIE', type: 'voucher', scope: ['c-02'], value: 100000}
+      {code: 'NEWBIE', type: 'voucher', scope: ['c-01', 'c-02'], value: 100000, expireIn: 1572652799000},
+      {code: 'BOOSTER', type: 'voucher', scope: ['c-04'], value: 100000}
     ]
   }
 ]
