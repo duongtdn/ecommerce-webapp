@@ -90,7 +90,7 @@ class PurchaseBtn extends Component {
       origin: course.price,
       offer: course.price - promo.deduction
     }
-    const vouchers = this.props.me && this.props.me.vouchers ? this.props.me.vouchers.filter( _voucher => _voucher.scope.indexOf(course.id) !== -1 ) : []
+    const rewards = this.props.me && this.props.me.rewards ? this.props.me.rewards.filter( _reward=> _reward.scope.indexOf(course.id) !== -1 ) : []
     return (
       <div style={{marginBottom: '32px'}} >
         <div>
@@ -119,10 +119,11 @@ class PurchaseBtn extends Component {
                     </p>
                   )
                 })}
-                { vouchers.map( voucher => {
+                { rewards.map( reward => {
+                  if (reward.type !== 'voucher') { return null }
                   return (
-                    <p key = {voucher.code} className="w3-text-red">
-                      { `Save - ${localeString(voucher.value, '.')} \u20ab (voucher ${voucher.code})`}
+                    <p key = {reward.code} className="w3-text-red">
+                      { `Save - ${localeString(reward.value, '.')} \u20ab (voucher ${reward.code})`}
                     </p>
                   )
                 })}
@@ -146,11 +147,11 @@ class PurchaseBtn extends Component {
       if (p.type === 'sale' && !isExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && !isExpire(p.expireIn)) { promo.gifts = true }
     })
-    if (me && me.vouchers) {
-      const vouchers = me.vouchers.filter( _voucher => _voucher.scope.indexOf(course.id) !== -1 )
-      vouchers.forEach( voucher => {
-        if (!isExpire(voucher.expireIn)) {
-          promo.deduction += parseInt(voucher.value)
+    if (me && me.rewards) {
+      const rewards = me.rewards.filter( _reward => _reward.scope.indexOf(course.id) !== -1 )
+      rewards.forEach( reward => {
+        if (reward.type === 'voucher' && !isExpire(reward.expireIn)) {
+          promo.deduction += parseInt(reward.value)
         }
       })
     }

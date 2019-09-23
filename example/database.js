@@ -249,8 +249,8 @@ const Enroll = [
 const User = [
   {
     uid: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
-    vouchers: [
-      {code: 'NEWBIE', scope: ['c-02'], value: 100000}
+    rewards: [
+      {code: 'NEWBIE', type: 'voucher', scope: ['c-02'], value: 100000}
     ]
   }
 ]

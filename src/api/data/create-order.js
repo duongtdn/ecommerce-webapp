@@ -41,7 +41,7 @@ function validateOrder(helpers) {
       {
         Course: {key: {id: courseIds}, projection: ['price']},
         Promo: {key: {id: promotion}},
-        User: {key: {uid: req.uid}, projection: ['vouchers']}
+        User: {key: {uid: req.uid}, projection: ['rewards']}
       },
       (data) => {
         const courses = data.Course
@@ -58,10 +58,10 @@ function validateOrder(helpers) {
               })
             })
             // here also need to check voucher
-            const vouchers = data.User[0].vouchers.filter( _voucher => _voucher.scope.indexOf(course.id) !== -1 )
-            vouchers.forEach( voucher => {
-              if (!_isExpire(voucher.expireIn)) {
-                deduction += parseInt(voucher.value)
+            const rewards = data.User[0].rewards.filter( _reward => _reward.scope.indexOf(course.id) !== -1 )
+            rewards.forEach( reward => {
+              if (reward.type === 'voucher' && !_isExpire(reward.expireIn)) {
+                deduction += parseInt(reward.value)
               }
             })
             const offerPrice = course.price - deduction

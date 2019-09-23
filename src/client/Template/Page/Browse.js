@@ -24,14 +24,14 @@ class Promotion extends Component {
   }
   composePromo() {
     const course = this.props.course
-    const user = this.props.user
+    const me = this.props.me
     const promo = { deduction: 0, gifts: false }
     this.props.promos.forEach( p => {
       if (p.type === 'sale' && this.checkExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && this.checkExpire(p.expireIn)) { promo.gifts = true }
     })
-    if (user && user.vouchers && user.vouchers[course.id] && this.checkExpire(user.vouchers[course.id].expireIn)) {
-      promo.deduction += parseInt(user.vouchers[course.id].deduction)
+    if (me && me.rewards && me.rewards[course.id] && me.rewards[course.id].type === 'voucher' && this.checkExpire(me.rewards[course.id].expireIn)) {
+      promo.deduction += parseInt(me.rewards[course.id].deduction)
     }
     return promo
   }

@@ -40,11 +40,11 @@ class AppShell extends Component {
     const path = this.props.path || 'home'
     this.state = {
       activeRoute: path.split('/')[0],
-      me: { orders: [], enrolls: [], vouchers: [] }
+      me: { orders: [], enrolls: [], rewards: [] }
     }
     this.onOrderCreated = this.onOrderCreated.bind(this)
     this.onOrderDeleted = this.onOrderDeleted.bind(this)
-    /* fetch /user to get user orders, enrolls and vouchers */
+    /* fetch /user to get user orders, enrolls and rewards */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
       const urlBasePath = env.urlBasePath
       xhttp.get(`${urlBasePath}/me`, {authen: true}, (status, responseText) => {
@@ -61,7 +61,7 @@ class AppShell extends Component {
        for now, hard-coded cache name (user-cache)
     */
     this.props.accountClient && this.props.accountClient.on('unauthenticated', user => {
-      const me = { orders: [], enrolls: [], vouchers: [] }
+      const me = { orders: [], enrolls: [], rewards: [] }
       if (caches) {
         caches.open('me-cache').then((cache) => {
           cache.delete('/me').then((response) => {
