@@ -52,14 +52,9 @@ class RewardCard extends PureComponent {
 export default class MyRewards extends PureComponent {
   render() {
     if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
-    /* comment out: after user singed-in, render will be called. However, rewards are not sync-ed yet, causing a flash screen */
-    // if (this.props.me.rewards.length === 0) {
-    //   return (
-    //     <div className="w3-container"> You have no reward right now </div>
-    //   )
-    // }
     return (
       <div className="w3-container">
+      <h4> Your Rewards </h4>
       {
         this.props.me.rewards.map((reward, index) => (
           <RewardCard key={index} reward = {reward} {...this.props} />
