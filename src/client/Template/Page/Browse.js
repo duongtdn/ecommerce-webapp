@@ -25,14 +25,13 @@ class Promotion extends Component {
   composePromo() {
     const course = this.props.course
     const me = this.props.me
+    const rewards = me? me.rewards.filter( reward => reward.type === 'voucher' && reward.scope.indexOf(course.id) !== -1 && this.checkExpire(reward.expireIn)) : []
     const promo = { deduction: 0, gifts: false }
     this.props.promos.forEach( p => {
       if (p.type === 'sale' && this.checkExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && this.checkExpire(p.expireIn)) { promo.gifts = true }
     })
-    if (me && me.rewards && me.rewards[course.id] && me.rewards[course.id].type === 'voucher' && this.checkExpire(me.rewards[course.id].expireIn)) {
-      promo.deduction += parseInt(me.rewards[course.id].deduction)
-    }
+    rewards.forEach( reward => promo.deduction += parseInt(reward.value) )
     return promo
   }
   checkExpire(timestamp) {
@@ -89,7 +88,7 @@ class Tags extends Component {
         <span>
           {
             tags.map(tag => {
-              const color = tag.toLowerCase() === 'hot' ? 'red' : 'orange'
+              const color = this.color(tag.toLowerCase())
               return (
                 <label key={tag} className={`w3-tag w3-${color}`} style={{marginRight: '4px'}}> {tag.toUpperCase()} </label>
               )
@@ -101,6 +100,14 @@ class Tags extends Component {
       return null
     }
   }
+  color(tag) {
+    switch (tag) {
+      case 'hot':
+        return 'red'
+      case 'new':
+        return 'yellow'
+    }
+  }
 }
 
 class CoursePanel extends Component {
@@ -109,6 +116,7 @@ class CoursePanel extends Component {
   }
   render() {
     const user = this.props.user
+    const me = this.props.me
     const course = this.props.course
     const promos = this.props.promos
     const tags = this.props.tags
@@ -154,14 +162,14 @@ class CoursePanel extends Component {
         {/* render course action button */}
         <div className="w3-bar-item w3-hide-large" style={{width: '100%'}}>
           <div  className="w3-hide-small" style={{width: '150px', height: '10px', display: 'inline-block'}} />
-          <Promotion course={course} promos={promos} user={user} />
+          <Promotion course={course} promos={promos} user={user} me={me} />
           {' '}
           <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4 w3-right"> View Course </a>
         </div>
         <div className="w3-bar-item w3-right w3-hide-medium w3-hide-small">
           <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4"> View Course </a>
           <br /> <br />
-          <Promotion course={course} promos={promos} user={user} />
+          <Promotion course={course} promos={promos} user={user} me={me} />
         </div>
       </div>
     )
@@ -197,7 +205,7 @@ export default class Browse extends Component {
               return (
                 <li key = {course.id} style={{padding: '0 0 8px 0'}}>
                   <LevelBar course = {course} />
-                  <CoursePanel course = {course} promos = {promos} tags = {tag.label} />
+                  <CoursePanel course = {course} promos = {promos} tags = {tag.label} user={this.props.user} me={this.props.me} />
                 </li>
               )
             })
