@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 
 import { xhttp } from 'authenform-utils'
 
+import UnAuthen from './UnAuthen'
+
 import env from '../../script/env'
 
 export default class MyCourses extends Component {
