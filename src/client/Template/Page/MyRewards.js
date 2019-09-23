@@ -54,7 +54,7 @@ export default class MyRewards extends PureComponent {
     if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
     return (
       <div className="w3-container">
-      <h4> Your Rewards </h4>
+      <h4 style={{margin: 'auto', maxWidth: '920px'}}> Your Rewards </h4>
       {
         this.props.me.rewards.map((reward, index) => (
           <RewardCard key={index} reward = {reward} {...this.props} />
