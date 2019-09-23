@@ -256,6 +256,8 @@ const User = [
   }
 ]
 
+const Activation = []
+
 module.exports = {
   Program: {
     find({id}, projection, done) {
@@ -441,6 +443,18 @@ module.exports = {
         }
       }, 500)
     }
+  },
+  Activation: {
+    insert({ code }, done) {
+      setTimeout(() => {
+        if (Activation.find( _code => _code.uid === code.uid && _code.code === code.code)) {
+          done && done('Activation: Document exist')
+          return
+        }
+        Activation.push(code)
+        done && done(null, code)
+      }, 2000)
+    },
   },
   find(query, done) {
     const data = {}

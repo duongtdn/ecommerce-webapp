@@ -15,8 +15,8 @@ function batchGetUserData(helpers) {
       },
       (data) => {
         data.User.forEach(user => user.uid && delete user.uid)
-        data.Enroll.forEach(enroll => enroll.enrolledTo && delete  enroll.enrolledTo)
-        data.Order.forEach(order => order.uid && delete order.uid)
+        data.Enroll.forEach(enroll => enroll.enrolledTo && delete enroll.enrolledTo)
+        data.Order.forEach(order => order.uid && delete order.uid && delete order.activationCode)
         res.status(200).json({ orders: data.Order, enrolls: data.Enroll, rewards: data.User[0].rewards })
       }
     )

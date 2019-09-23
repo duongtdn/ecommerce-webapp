@@ -7,6 +7,10 @@ function _rand() {
   return Math.floor(100000 + Math.random() * 900000)
 }
 
+function _ustring(ln) {
+  return Math.random().toString(36).substr(2,ln)
+}
+
 function _isExpire(timestamp) {
   if (!timestamp) { return false }
   const now = (new Date()).getTime()
@@ -112,6 +116,9 @@ function insertOrderToDB(helpers) {
     order.status = 'new'
     order.createdAt = now.getTime()
     order.notes = [{ by: 'system', message: 'new order created', at: now.getTime() }]
+    if (order.paymentMethod === 'cod') {
+      order.activationCode = _ustring(8).toUpperCase()
+    }
     helpers.Database.Order.insert({order}, (err, data) => {
       if (err) {
         res.status(403).json({err})
@@ -122,12 +129,43 @@ function insertOrderToDB(helpers) {
   }
 }
 
+function insertActivationCodeToDB(helpers) {
+  return function(req, res, next) {
+    const order = req.body.order
+    if (order.paymentMethod !== 'cod') {
+      next()
+    } else {
+      const courses = []
+      order.items.forEach( item => {
+        if (item.type === 'course') {
+          courses.push(item.code)
+        } else if (item.type === 'bundle') {
+          item.items.forEach( item => {
+            if (item.type === 'course') {
+              courses.push(item.code)
+            }
+          })
+        }
+      })
+      const code = { uid: req.uid, code: order.activationCode, courses }
+      helpers.Database.Activation.insert({code}, (err, data) => {
+        if (err) {
+          res.status(403).json({err})
+        } else {
+          next()
+        }
+      })
+    }
+  }
+}
+
 function reponse() {
   return function(req, res) {
     const order = {...req.body.order}
     delete order.uid
+    delete order.activationCode
     res.status(200).json({ order })
   }
 }
 
-module.exports = [authen, validateOrder, insertOrderToDB, reponse]
+module.exports = [authen, validateOrder, insertOrderToDB, insertActivationCodeToDB, reponse]
