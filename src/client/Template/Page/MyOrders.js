@@ -6,6 +6,8 @@ import { xhttp } from 'authenform-utils'
 
 import { getDay, localeString } from '../../lib/util'
 
+import UnAuthen from './UnAuthen'
+
 const _dict = {
   'cod': 'Pay when received items',
   'bank': 'Bank transfer',
