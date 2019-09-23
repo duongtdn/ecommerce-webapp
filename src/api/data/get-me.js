@@ -4,6 +4,9 @@ const {authen} = require('../lib/authen')
 
 function batchGetUserData(helpers) {
   return function(req, res) {
+    /* need a condition to filter expired order and rewards when querying database
+       may be done in database driver
+    */
     helpers.Database.find(
       {
         Order: {key: {uid: req.uid}},
