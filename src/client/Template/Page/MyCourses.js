@@ -11,7 +11,7 @@ export default class MyCourses extends Component {
     super(props)
   }
   render() {
-    if (!this.props.user) { return (<div> Unauthenticated</div>) }
+    if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
     const enrolls = this.props.me.enrolls // TBD: need to sort by enrolledAt
     const orders = this.props.me.orders
     const courses = []

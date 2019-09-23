@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 
 import { xhttp } from 'authenform-utils'
 
+import UnAuthen from './UnAuthen'
+
 import { localeString } from '../../lib/util'
 import storage from '../../lib/storage'
 
@@ -499,7 +501,7 @@ export default class Order extends Component {
     }
   }
   render() {
-    if (!this.props.user) { return (<div className="w3-container"><p className="w3-text-red w3-large bold">Unauthenticated</p><p>Please Sign-in to see this page</p></div>) }
+    if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
     return (
       <div className="w3-container">
         <ProgressBar progress = {this.state.progress} tab = {this.state.tab} />

@@ -25,7 +25,7 @@ const routes = {
   order: Order,
   error: Error,
   mycourses: MyCourses,
-  myorders: MyOrders
+  myorders: MyOrders,
 }
 
 const popups = {

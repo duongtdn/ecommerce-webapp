@@ -184,6 +184,7 @@ export default class MyOrders extends Component {
     super(props)
   }
   render() {
+    if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
     const orders = this.props.me.orders
     return (
       <div className="w3-container">
