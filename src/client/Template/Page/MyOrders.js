@@ -134,7 +134,7 @@ class OrderCard extends Component {
                       <p className="italic w3-text-grey w3-small"> Please share us why you would like to cancel this order</p>
                       <textarea className="w3-small w3-text-grey" style={{width: '100%', padding: '3px'}} value={this.state.cancelReason} onChange={e => this.handleReasonInputChange(e)} />
                       <div style={{margin: '8px 0', textAlign: 'right'}}>
-                        <button className="w3-button w3-small w3-blue" onClick={e=>this.cancelOrder(order)}> Cancel Order </button>
+                        <button className="w3-button w3-small w3-red" onClick={e=>this.cancelOrder(order)}> Cancel Order </button>
                       </div>
                     </div>
                 }
@@ -169,7 +169,7 @@ class OrderCard extends Component {
   cancelOrder(order) {
     const number = order.number
     const reason = this.state.cancelReason
-    xhttp.delete('/data/order', {number, reason}, {authen: true}, (status,data) => {
+    xhttp.delete('/me/order', {number, reason}, {authen: true}, (status,data) => {
       this.props.hidePopup()
       if (status === 200) {
         this.hideOrderDetail()

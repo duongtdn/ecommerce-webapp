@@ -31,13 +31,15 @@ api
   })
   .add('/data/order', {
     post: require('./data/create-order'),
-    delete: require('./data/delete-order')
   })
   .add('/me', {
-    get: require('./data/get-me')
+    get: require('./me/get-me')
   })
   .add('/me/enroll/:courseId', {
-    put: require('./data/update-enroll')
+    put: require('./me/update-enroll')
+  })
+  .add('/me/order', {
+    delete: require('./me/delete-order')
   })
 
 module.exports = api
