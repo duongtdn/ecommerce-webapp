@@ -364,6 +364,22 @@ module.exports = {
         done && done(null, order)
       }, 2000)
     },
+    query({...props}, done) {
+      setTimeout(() => {
+        const order = Order.filter( order => {
+          for (let key in props) {
+            if (!order[key]) { return false }
+            if (order[key] !== props[key]) { return false }
+          }
+          return true
+        })
+        if (order && order.length > 0) {
+          done && done([...order])
+        } else {
+          done && done([])
+        }
+      }, 500)
+    },
     update({uid, number, ...props}, done) {
       setTimeout(() => {
         const order = Order.find( order => order.uid === uid && order.number === number)
