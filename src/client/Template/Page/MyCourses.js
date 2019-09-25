@@ -14,7 +14,7 @@ export default class MyCourses extends Component {
   }
   render() {
     if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
-    const enrolls = this.props.me.enrolls // TBD: need to sort by enrolledAt
+    const enrolls = this.props.me.enrolls // TBD: need to sort by enrollAt
     const orders = this.props.me.orders
     const courses = []
     // extract courses from order
@@ -37,7 +37,7 @@ export default class MyCourses extends Component {
     // extract course from enrolls
     enrolls && enrolls.forEach(enroll => {
       if (courses.find(c => c.id === enroll.courseId)) { return }
-      courses.push(this._extractCourse(enroll.courseId, enroll.enrolledAt, enroll.order, enroll.status))
+      courses.push(this._extractCourse(enroll.courseId, enroll.enrollAt, enroll.order, enroll.status))
     })
     if (courses.length === 0) { return null }
     return (

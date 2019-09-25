@@ -147,7 +147,7 @@ function insertActivationCodeToDB(helpers) {
           })
         }
       })
-      const code = { uid: req.uid, code: order.activationCode, courses }
+      const code = { uid: req.uid, code: order.activationCode, order: order.number, courses }
       helpers.Database.Activation.insert({code}, (err, data) => {
         if (err) {
           res.status(403).json({err})

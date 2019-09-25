@@ -42,5 +42,8 @@ api
   .add('/me/order', {
     delete: require('./me/delete-order')
   })
+  .add('/me/enroll', {
+    post: require('./me/create-enroll')
+  })
 
 module.exports = api

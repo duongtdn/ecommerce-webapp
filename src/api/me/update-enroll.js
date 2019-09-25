@@ -23,7 +23,7 @@ function validateParams() {
 
 function checkPermission(helpers) {
   return function(req, res, next) {
-    helpers.Database.Enroll.find({ courseId: req.courseId, enrolledTo: req.uid }, (data) => {
+    helpers.Database.Enroll.find({ courseId: req.courseId, enrollTo: req.uid }, (data) => {
       if (data.length === 0) {
         res.status(404).json({ error: "Resource not found" })
       } else {
@@ -41,7 +41,7 @@ function checkPermission(helpers) {
 
 function updateEnrollStatus(helpers) {
   return function(req, res, next) {
-    helpers.Database.Enroll.update({ courseId: req.courseId, enrolledTo: req.uid, status: req.status }, (error) => {
+    helpers.Database.Enroll.update({ courseId: req.courseId, enrollTo: req.uid, status: req.status }, (error) => {
       if (error) {
         res.status(403).json({ error: "Cannot update" })
       } else {

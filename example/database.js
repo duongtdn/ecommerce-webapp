@@ -215,8 +215,8 @@ const Courses = [
 const Enroll = [
   {
     courseId: 'c-01',
-    enrolledTo: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
-    enrolledAt: 1564444799000,
+    enrollTo: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
+    enrollAt: 1564444799000,
     status: 'active', // new, active, studying, completed
     resolvedBy: 'system-automation',
     order: 'iv-001',
@@ -400,13 +400,13 @@ module.exports = {
     }
   },
   Enroll: {
-    find({courseId, enrolledTo}, projection, done) {
+    find({courseId, enrollTo}, projection, done) {
       if ({}.toString.call(projection) === '[object Function]') {
         done= projection
       }
       setTimeout(() => {
-        const data = courseId ? Enroll.filter( enroll => enroll.courseId === courseId && enroll.enrolledTo === enrolledTo )
-                              : Enroll.filter( enroll => enroll.enrolledTo === enrolledTo )
+        const data = courseId ? Enroll.filter( enroll => enroll.courseId === courseId && enroll.enrollTo === enrollTo )
+                              : Enroll.filter( enroll => enroll.enrollTo === enrollTo )
         if (data.length > 0) {
           let res = {}
           if ({}.toString.call(projection) === '[object Array]') {
@@ -422,10 +422,16 @@ module.exports = {
         }
       }, 500)
     },
-    /* update function is not fully tested yet */
-    update({courseId, enrolledTo, ...props}, done) {
+    batchInsert({ enrolls }, done) {
       setTimeout(() => {
-        const enroll = Enroll.find( e => e.courseId === courseId && e.enrolledTo === enrolledTo)
+        Enroll.push(...enrolls)
+        done && done(null)
+      }, 2000)
+    },
+    /* update function is not fully tested yet */
+    update({courseId, enrollTo, ...props}, done) {
+      setTimeout(() => {
+        const enroll = Enroll.find( e => e.courseId === courseId && e.enrollTo === enrollTo)
         if (!enroll) {
           done && done(404)
         } else {
@@ -471,6 +477,12 @@ module.exports = {
         done && done(null, code)
       }, 2000)
     },
+    find({ uid, code }, done) {
+      setTimeout(() => {
+        const act = Activation.find( _code => _code.uid === uid && _code.code === code)
+        done && done([act])
+      }, 2000)
+    }
   },
   find(query, done) {
     const data = {}
