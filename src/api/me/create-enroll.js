@@ -38,6 +38,7 @@ function createEnroll(helpers) {
       if (err) {
         res.status(403).json({ error: 'Could not create enroll' })
       } else {
+        req.enrolls = enrolls
         next()
       }
     })
@@ -61,10 +62,17 @@ function updateOrderStatus(helpers) {
   }
 }
 
-function response() {
-  return function(req, res) {
-    res.status(200).json({ status: 'success' })
+function removeActivationCode(helpers) {
+  return function(req, res, next) {
+    helpers.Database.Activation.delete({ uid: req.uid, code: req.body.code })
+    next()
   }
 }
 
-module.exports = [authen, validateCode, createEnroll, updateOrderStatus, response]
+function response() {
+  return function(req, res) {
+    res.status(200).json({ enrolls: req.enrolls })
+  }
+}
+
+module.exports = [authen, validateCode, createEnroll, updateOrderStatus, removeActivationCode, response]

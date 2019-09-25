@@ -51,7 +51,7 @@ export default class Navigator extends Component {
               }
               return (
                 <div key={route} style={{ display }} >
-                  { React.createElement( Comp, { ...this.props, page }) }
+                  { React.createElement( Comp, { ...this.props, page, sidebar: this.setSidebarDisplay }) }
                 </div>
               )
             })
@@ -62,7 +62,7 @@ export default class Navigator extends Component {
               const display = activePopup === popup ? 'block' : 'none'
               return (
                 <div key = {popup} style= {{ display }} className = "w3-modal">
-                  { React.createElement(content, { ...this.props }) }
+                  { React.createElement(content, { ...this.props, sidebar: this.setSidebarDisplay }) }
                 </div>
               )
             })

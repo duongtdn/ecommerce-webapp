@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 export default class Info extends Component {
   constructor(props) {
     super(props)
+    this.close = this.close.bind(this)
   }
   componentDidMount() {
     if (this.props.popupArgs && this.props.popupArgs.duration) {
@@ -27,11 +28,15 @@ export default class Info extends Component {
         <p style={{textAlign: 'center'}}>
           {
             this.props.popupArgs && this.props.popupArgs.closeBtn?
-              <button className="w3-button w3-blue" onClick={this.props.hidePopup}> Close </button>
+              <button className="w3-button w3-blue" onClick={this.close}> Close </button>
             : null
           }
         </p>
       </div>
     )
+  }
+  close() {
+    this.props.hidePopup()
+    this.props.popupArgs && this.props.popupArgs.resolve && this.props.popupArgs.resolve()
   }
 }

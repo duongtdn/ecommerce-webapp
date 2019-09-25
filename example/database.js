@@ -485,6 +485,13 @@ module.exports = {
         const act = Activation.find( _code => _code.uid === uid && _code.code === code)
         done && done([act])
       }, 2000)
+    },
+    delete({ uid, code }, done) {
+      setTimeout(() => {
+        const index = Activation.findIndex(act => act.uid === uid && act.code === code)
+        Activation.splice(index, 1)
+        done && done(null, code)
+      }, 2000)
     }
   },
   find(query, done) {

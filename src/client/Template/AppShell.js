@@ -48,6 +48,7 @@ class AppShell extends Component {
     }
     this.onOrderCreated = this.onOrderCreated.bind(this)
     this.onOrderDeleted = this.onOrderDeleted.bind(this)
+    this.onEnrollCreated = this.onEnrollCreated.bind(this)
     /* fetch /user to get user orders, enrolls and rewards */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
       const urlBasePath = env.urlBasePath
@@ -99,6 +100,7 @@ class AppShell extends Component {
                     me = {this.state.me}
                     onOrderCreated = {this.onOrderCreated}
                     onOrderDeleted = {this.onOrderDeleted}
+                    onEnrollCreated = {this.onEnrollCreated}
                     pages = {this.pages}
         />
       </div>
@@ -125,6 +127,14 @@ class AppShell extends Component {
       return _order
     })]
     me.orders = orders
+    this.setState({ me })
+  }
+  onEnrollCreated(enrolls) {
+    if (!enrolls || enrolls.length === 0) { return }
+    const me = {...this.state.me}
+    const _enrolls = [...me.enrolls.filter(_enroll => !enrolls.find(e => e.courseId === _enroll.courseId))]
+    _enrolls.push(...enrolls)
+    me.enrolls = _enrolls
     this.setState({ me })
   }
   showPopup(popup, args) {
