@@ -15,6 +15,7 @@ import MyRewards from './Page/MyRewards'
 import Info from './Popup/Info'
 import YesNo from './Popup/YesNo'
 import Login from './Popup/Login'
+import CoursesActivation from './Popup/CoursesActivation'
 
 import { xhttp } from 'authenform-utils'
 import env from '../script/env'
@@ -33,7 +34,8 @@ const routes = {
 const popups = {
   info: Info,
   yesno: YesNo,
-  login: Login
+  login: Login,
+  activation: CoursesActivation
 }
 
 class AppShell extends Component {
