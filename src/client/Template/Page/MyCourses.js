@@ -17,6 +17,11 @@ export default class MyCourses extends Component {
     const enrolls = this.props.me.enrolls // TBD: need to sort by enrollAt
     const orders = this.props.me.orders
     const courses = []
+    // extract course from enrolls
+    enrolls && enrolls.forEach(enroll => {
+      if (courses.find(c => c.id === enroll.courseId)) { return }
+      courses.push(this._extractCourse(enroll.courseId, enroll.enrollAt, enroll.order, enroll.status))
+    })
     // extract courses from order
     orders && orders.forEach(order => {
       if (/(^deleted$|^expired$)/.test(order.status)) { return }
@@ -34,16 +39,11 @@ export default class MyCourses extends Component {
         }
       })
     })
-    // extract course from enrolls
-    enrolls && enrolls.forEach(enroll => {
-      if (courses.find(c => c.id === enroll.courseId)) { return }
-      courses.push(this._extractCourse(enroll.courseId, enroll.enrollAt, enroll.order, enroll.status))
-    })
     if (courses.length === 0) { return null }
     return (
       <div className="w3-container">
         <ul className="w3-ul"> {
-          courses.map(course => {
+          courses.sort((a, b)=> b.registeredAt - a.registeredAt).map(course => {
             const d = new Date(parseInt(course.registeredAt))
             const tag = this._generateTag(course)
             return (
