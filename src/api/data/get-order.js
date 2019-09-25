@@ -10,7 +10,6 @@ function authenAdmin() {
 function getOrder(helpers) {
   return function(req, res, next) {
     const query = req.query
-    console.log(query)
     helpers.Database.Order.query(query, (data) => {
       res.status(200).json({ orders: data })
     })

@@ -46,9 +46,10 @@ function createEnroll(helpers) {
 
 function updateOrderStatus(helpers) {
   return function(req, res, next) {
-    const number = req.activation.number
+    const number = req.activation.order
     helpers.Database.Order.update({ uid: req.uid, number, status: 'fulfill' }, err => {
       if (err) {
+        console.log(err)
         helpers.alert && helpers.alert({
           message: 'Could not update order status to fulfill',
           action: 'POST /me/enroll',

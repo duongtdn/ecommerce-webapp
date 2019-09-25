@@ -393,7 +393,6 @@ module.exports = {
               order[key] = props[key]
             }
           }
-          console.log(order)
           done && done(null, props)
         }
       }, 500)
@@ -429,7 +428,6 @@ module.exports = {
     batchInsert({ enrolls }, done) {
       setTimeout(() => {
         Enroll.push(...enrolls)
-        console.log(Enroll)
         done && done(null)
       }, 2000)
     },
