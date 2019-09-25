@@ -10,12 +10,14 @@ const {authen} = require('../lib/authen')
 
 function validateParams() {
   return function(req, res, next) {
-    const courseId = req.params.courseId
+    const courseId = req.body.courseId
     const status = req.body.status
     if (!courseId || !status || status !== 'studying') { // TBD: completed is allowed or not?
       res.status(400).json({ error: 'Bad parameters'})
       return
     } else {
+      req.courseId = courseId
+      req.status = status
       next()
     }
   }

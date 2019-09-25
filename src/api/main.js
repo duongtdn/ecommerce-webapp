@@ -36,13 +36,11 @@ api
   .add('/me', {
     get: require('./me/get-me')
   })
-  .add('/me/enroll/:courseId', {
-    put: require('./me/update-enroll')
-  })
   .add('/me/order', {
     delete: require('./me/delete-order')
   })
   .add('/me/enroll', {
+    put: require('./me/update-enroll'),
     post: require('./me/create-enroll')
   })
 
