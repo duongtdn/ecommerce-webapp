@@ -408,15 +408,19 @@ module.exports = {
         const data = courseId ? Enroll.filter( enroll => enroll.courseId === courseId && enroll.enrollTo === enrollTo )
                               : Enroll.filter( enroll => enroll.enrollTo === enrollTo )
         if (data.length > 0) {
-          let res = {}
-          if ({}.toString.call(projection) === '[object Array]') {
-            projection.forEach( prop => {
-              res[prop] = data[0][prop]
-            })
-          } else {
-            res = {...data[0]}
-          }
-          done && done([res])
+          const enrolls = []
+          data.forEach( d => {
+            let res = {}
+            if ({}.toString.call(projection) === '[object Array]') {
+              projection.forEach( prop => {
+                res[prop] = d[prop]
+              })
+            } else {
+              res = {...d}
+            }
+            enrolls.push(res)
+          })
+          done && done(enrolls)
         } else {
           done && done([])
         }
@@ -425,6 +429,7 @@ module.exports = {
     batchInsert({ enrolls }, done) {
       setTimeout(() => {
         Enroll.push(...enrolls)
+        console.log(Enroll)
         done && done(null)
       }, 2000)
     },

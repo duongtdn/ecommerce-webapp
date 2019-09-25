@@ -24,7 +24,7 @@ function createEnroll(helpers) {
     const courses = req.activation.courses
     const enrolls = courses.map( course => {
       return {
-        courseId: course.id,
+        courseId: course,
         enrollTo: uid,
         enrollAt: (new Date()).getTime(),
         resolvedBy: 'user',
@@ -38,7 +38,7 @@ function createEnroll(helpers) {
       if (err) {
         res.status(403).json({ error: 'Could not create enroll' })
       } else {
-        res.status(200).json({ status: 'success' })
+        next()
       }
     })
   }
