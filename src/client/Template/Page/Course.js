@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 
+import { xhttp } from 'authenform-utils'
+
 import { localeString } from '../../lib/util'
 
 import storage from '../../lib/storage'
@@ -76,7 +78,7 @@ class PurchaseBtn extends Component {
   renderOrderedBtn() {
     return (
       <div style={{marginBottom: '32px'}} >
-         <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorder')}>
+         <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorders')}>
             Ordered
           </button>
       </div>
@@ -357,7 +359,9 @@ export default class Course extends Component {
             <br />
             {
               this.props.me && this.props.me.enrolls && this.props.me.enrolls.find( e => e.courseId === courseId && /(^active$|^studying$|^completed$)/i.test(e.status) ) ?
-              <div style={{marginBottom: '32px'}}> <a href={`${env.elearn}/${courseId}`} className="w3-button w3-blue" target="_blank">Study Now</a> </div>
+              <div style={{marginBottom: '32px'}}>
+                <button className="w3-button w3-blue" onClick={e => this.goToStudy(course)}>Study Now</button>
+              </div>
               :
               <div>
                 <PurchaseBtn course = {course} promo = {promo} onPurchase = {this.onPurchase} {...this.props} />
@@ -399,6 +403,25 @@ export default class Course extends Component {
       this.props.showPopup('login', {message: 'Please login to make purchase'})
       .then( _ => { _addToCart() })
       .catch(function(){})
+    }
+  }
+  goToStudy(course) {
+    const enroll = this.props.me.enrolls.find(e => e.courseId === course.id)
+    if (!enroll) { reuturn }
+    switch (enroll.status){
+      case 'new':
+        // show popup course is not activated yet.
+        // Actually, this case will not happen since button is only shown if enroll is active
+        this.props.showPopup('info', {message: 'This course is not activated yet', closeBtn: true})
+        break
+      case 'active':
+        xhttp.put(`/me/enroll/`, {courseId: course.id, status: 'studying' }, {authen: true})
+      case 'studying':
+      case 'completed':
+        window.open(`${env.elearn}/${course.id}`)
+        break
+      default:
+        break
     }
   }
 }
