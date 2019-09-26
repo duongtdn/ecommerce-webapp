@@ -9,6 +9,15 @@ export default class CoursesActivation extends Component {
     super(props)
     this.state = { code: '', busy: false }
     this.submitActivationCode = this.submitActivationCode.bind(this)
+    this.textInput = React.createRef()
+    this.focusTextInput = this.focusTextInput.bind(this)
+    this.handleKeyUp = this.handleKeyUp.bind(this)
+  }
+  componentDidMount() {
+    this.focusTextInput()
+  }
+  componentDidUpdate() {
+    this.focusTextInput()
   }
   render() {
     const style = {
@@ -25,7 +34,8 @@ export default class CoursesActivation extends Component {
         <input  type="text" className="w3-input w3-border w3-border-grey"
                 value={this.state.code}
                 onChange={e => this.setState({code: e.target.value.toUpperCase()})}
-                autoFocus
+                onKeyUp={this.handleKeyUp}
+                ref={this.textInput}
         />
         <div style={{textAlign: 'center', margin: '16px 0'}} >
           <button className="w3-button w3-green" onClick={this.submitActivationCode} disabled = {this.state.busy} >
@@ -49,5 +59,14 @@ export default class CoursesActivation extends Component {
         this.props.showPopup('info', {closeBtn: true, message: 'Failed! Unable to activate courses'})
       }
     })
+  }
+  focusTextInput() {
+    this.textInput.current.focus()
+  }
+  handleKeyUp(event) {
+    const key = event.which || event.keyCode
+    if (key === 13) { // 13 = enter
+      this.submitActivationCode()
+    }
   }
 }
