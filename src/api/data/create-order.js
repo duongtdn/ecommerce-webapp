@@ -159,6 +159,17 @@ function insertActivationCodeToDB(helpers) {
   }
 }
 
+function sendNotification(helpers) {
+  return function(req, res, next) {
+    helpers.notify && helpers.notify({
+      reason: 'order-created',
+      recipient: req.body.order.uid,
+      data: req.body.order
+    })
+    next()
+  }
+}
+
 function reponse() {
   return function(req, res) {
     const order = {...req.body.order}
@@ -168,4 +179,4 @@ function reponse() {
   }
 }
 
-module.exports = [authen, validateOrder, insertOrderToDB, insertActivationCodeToDB, reponse]
+module.exports = [authen, validateOrder, insertOrderToDB, insertActivationCodeToDB, sendNotification, reponse]

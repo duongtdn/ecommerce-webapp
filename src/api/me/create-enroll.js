@@ -50,7 +50,6 @@ function updateOrderStatus(helpers) {
     const number = req.activation.order
     helpers.Database.Order.update({ uid: req.uid, number, status: 'fulfill' }, err => {
       if (err) {
-        console.log(err)
         helpers.alert && helpers.alert({
           message: 'Could not update order status to fulfill',
           action: 'POST /me/enroll',
@@ -69,10 +68,26 @@ function removeActivationCode(helpers) {
   }
 }
 
-function response() {
-  return function(req, res) {
-    res.status(200).json({ enrolls: req.enrolls })
+function sendNotification(helpers) {
+  return function(req, res, next) {
+    helpers.notify && helpers.notify({
+      reason: 'enroll-created',
+      recipient: req.uid,
+      data: req.enrolls
+    })
+    next()
   }
 }
 
-module.exports = [authen, validateCode, createEnroll, updateOrderStatus, removeActivationCode, response]
+function response() {
+  return function(req, res) {
+    const enrolls = req.enrolls.map( e => {
+      const enroll = {...e}
+      enroll.enrollTo && delete enroll.enrollTo
+      return e
+    })
+    res.status(200).json({ enrolls })
+  }
+}
+
+module.exports = [authen, validateCode, createEnroll, updateOrderStatus, removeActivationCode, sendNotification, response]

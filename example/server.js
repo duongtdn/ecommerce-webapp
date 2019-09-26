@@ -5,6 +5,22 @@ require('dotenv').config()
 const api = require('../src/api/main')
 
 api.helpers({ Database: require('./database') })
+api.helpers({
+  alert({message, action, data}) {
+    console.log(`ALERT: ----------------`)
+    console.log(`  --> by action: ${action}`)
+    console.log(`  --> ${message}`)
+    console.log(`${JSON.stringify(data)}`)
+    console.log(`-----------------------`)
+  },
+  notify({reason, recipient, data}) {
+    console.log(`NOTIFICATION: ----------------`)
+    console.log(`reason: ${reason}`)
+    console.log(`to: ${recipient}`)
+    console.log(`${JSON.stringify(data)}`)
+    console.log(`------------------------------`)
+  }
+})
 
 const express = require('express')
 const webpack = require('webpack')
