@@ -95,8 +95,9 @@ workbox.routing.registerRoute(
 */
 
 self.addEventListener('activate', function(event) {
+  console.log('ServiceWorker: Active')
   clients.matchAll({includeUncontrolled: true}).then(clients => {
-    clients.forEach(client => { client.postMessage(``) })
+    clients.forEach(client => { client.postMessage({ action: 'init' }) })
   })
 });
 
@@ -107,6 +108,15 @@ self.addEventListener('message', function(event){
     caches.open(cacheName).then( cache => {
       cache.put(url, new Response(JSON.stringify(data)))
       expire.updateTimestamp(url)
+    })
+  }
+  if (event.data.type === 'BROADCAST') {
+    const clientId = event.source.id
+    console.log(`ServiceWorker: Received BROADCAST request from ${clientId} for ${event.data.action}`)
+    clients.matchAll({includeUncontrolled: true}).then(clients => {
+      clients.forEach(client => {
+        if (client.id !== clientId) { client.postMessage({ action: event.data.action })}
+      })
     })
   }
 });

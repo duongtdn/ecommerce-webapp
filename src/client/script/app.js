@@ -21,6 +21,8 @@ const acc = new AccountClient({
 import AppShell from '../Template/AppShell'
 import href from '../lib/href'
 
+const _msgQueue = []
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
@@ -28,8 +30,48 @@ if ('serviceWorker' in navigator) {
       console.log('Registration succeeded. Scope is ' + reg.scope);
     })   
   })
+  /* if service worker is activated, it will broadcast action init to all clients event though they are not controlled yet */
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    switch (event.data.action) {
+      case 'init':
+        if (_msgQueue.length > 0) {
+          console.log('Processing message queue...')
+          _msgQueue.forEach(msg => event.source.postMessage(msg))
+          _msgQueue.splice(0, _msgQueue.length) // clear array
+        }
+        break
+      case 'signin':
+        console.log('Client received request to sign-in')
+        if (acc && !acc.get('user')) {
+          console.log('Client is not signed in, perform local signin')
+          acc.lso() // in future, api may changed to signinLocally
+        } else {
+          console.log('Client is signed in already, no action needed')
+        }
+        break
+      case 'signout':
+          console.log('Client received request to sign-out')
+          if (acc && acc.get('user')) {
+            console.log('Client is signed in, perform local signout')
+            acc.signoutLocally()
+          } else {
+            console.log('Client is signed out already, no action needed')
+          }
+        break
+      default:
+    }
+  })
 }
 
+// broadcase sign-in/signut for all clients
+if (acc) {
+  acc.on('unauthenticated', () => {
+    navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage({ type: 'BROADCAST', action: 'signout' })
+  })
+  acc.on('authenticated', () => {
+    navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage({ type: 'BROADCAST', action: 'signin' })
+  })
+}
 
 /*
   Load data from either network or cache and render
@@ -93,12 +135,17 @@ if ('serviceWorker' in navigator) {
 
 function cacheData(data) {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.addEventListener('message', (event) => {
-      console.log('Cache data...')
+    if (navigator.serviceWorker.controller) {
+      console.log('Caching data...')
       data.forEach( ({ url, cacheName, data }) => {
-        event.source.postMessage({ type: 'CACHE', url, cacheName, data })
+        navigator.serviceWorker.controller.postMessage({ type: 'CACHE', url, cacheName, data })
       })
-    })
+    } else {
+      console.log('Defer Caching data...')
+      data.forEach( ({ url, cacheName, data }) => {
+        _msgQueue.push({ type: 'CACHE', url, cacheName, data })
+      })
+    }
   }
 }
 
