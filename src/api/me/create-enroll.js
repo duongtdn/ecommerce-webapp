@@ -1,19 +1,31 @@
 "use strict"
 
+const jwt = require('jsonwebtoken')
 const {authen} = require('../lib/authen')
 
 function validateCode(helpers) {
   return function(req, res, next) {
     const uid = req.uid
     const code = req.body.code
-    helpers.Database.Activation.find({uid, code}, data => {
+    helpers.Database.ACTIVECODE.find({
+      code: `= ${code}`
+    })
+    .then( data => {
       const activation = data[0]
-      if (activation) {
+      if (activation && activation.uid === uid) {
         req.activation = activation
         next()
       } else {
         res.status(403).json({ error: 'Invalid activation code' })
       }
+    })
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Could not read activation code. Database operation failed',
+        action: 'POST /me/enroll',
+        error: err
+      })
+      res.status(500).json({ reason: 'Failed to Access Database' })
     })
   }
 }
@@ -34,48 +46,65 @@ function createEnroll(helpers) {
         tests: {} // TBD, should tests is created along with enroll ?
       }
     })
-    helpers.Database.Enroll.batchInsert({ enrolls }, err => {
-      if (err) {
-        res.status(403).json({ error: 'Could not create enroll' })
-      } else {
-        req.enrolls = enrolls
-        next()
+    helpers.Database.batchWrite({
+      ENROLL: {
+        insert: enrolls
+      },
+      ACTIVECODE: {
+        remove: [{ code: req.body.code }]
       }
+    })
+    .then(data => {
+      req.enrolls = enrolls
+      next()
+    })
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Could not create enroll or remove activation code. Database operation failed',
+        action: 'POST /me/enroll',
+        error: err
+      })
+      res.status(500).json({ reason: 'Failed to Access Database' })
     })
   }
 }
 
 function updateOrderStatus(helpers) {
   return function(req, res, next) {
+    const uid = req.uid
     const number = req.activation.order
-    helpers.Database.Order.update({ uid: req.uid, number, status: 'fulfill' }, err => {
-      if (err) {
-        helpers.alert && helpers.alert({
-          message: 'Could not update order status to fulfill',
-          action: 'POST /me/enroll',
-          data: {uid: req.uid, order: number}
-        })
-      }
-      next()
+    helpers.Database.ORDER.update({uid, number}, {
+      status: 'fulfill',
+      fulfillAt: (new Date()).getTime()
     })
-  }
-}
-
-function removeActivationCode(helpers) {
-  return function(req, res, next) {
-    helpers.Database.Activation.delete({ uid: req.uid, code: req.body.code })
-    next()
+    .then(_ => next())
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Could not set order to fulfill. Database operation failed',
+        action: 'POST /me/enroll',
+        error: err
+      })
+      res.status(500).json({ reason: 'Failed to Access Database' })
+    })
   }
 }
 
 function sendNotification(helpers) {
   return function(req, res, next) {
+    const token = jwt.sign({uid: req.uid}, process.env.PRIVATE_AUTH_KEY)
     helpers.notify && helpers.notify({
-      reason: 'enroll-created',
-      recipient: req.uid,
+      template: 'enroll-created',
+      recipient: token,
       data: req.enrolls
     })
-    next()
+    .then(next)
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        info: 'Cannot send notification',
+        error: err
+      })
+      next()
+    })
   }
 }
 
@@ -90,4 +119,4 @@ function response() {
   }
 }
 
-module.exports = [authen, validateCode, createEnroll, updateOrderStatus, removeActivationCode, sendNotification, response]
+module.exports = [authen, validateCode, createEnroll, updateOrderStatus, sendNotification, response]

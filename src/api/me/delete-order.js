@@ -11,13 +11,17 @@ function deleteOrder(helpers) {
       return
     }
     const reason = req.body.reason
-    const notes = { by: 'user', message: `User has deleted the order. Reason: ${reason}`, at: (new Date()).getTime() }
-    helpers.Database.Order.update({uid, number, status: 'deleted', notes}, (err) => {
-      if (err) {
-        res.status(err).json({ error: `Cannot update order from database. Error code: ${err}` })
-      } else {
-        res.status(200).json({ status: 'success' })
-      }
+    const notes = {}
+    notes[(new Date()).getTime()] = `User has deleted the order. Reason: ${reason}`
+    helpers.Database.ORDER.update({uid, number}, { status: 'deleted', notes })
+    .then( () => res.status(200).json({ status: 'success' }))
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Database operation failed',
+        action: 'DELETE /me/order',
+        error: err
+      })
+      res.status(500).json({ reason: 'Failed to Access Database' })
     })
   }
 }

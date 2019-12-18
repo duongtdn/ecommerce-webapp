@@ -5,15 +5,14 @@ if (module.hot) { module.hot.accept() }
 import React, { Component } from 'react'
 import { render, hydrate } from 'react-dom'
 
-import AccountClient from 'account-realm-client'
-import { xhttp } from 'authenform-utils'
+import AccountClient from '@realmjs/account-client'
+import xhttp from '@realmjs/xhttp-request'
 
 import _c_env from '../script/env'
 
 const env = window && window._s_env ? _s_env : _c_env
 
 const acc = new AccountClient({
-  realm: env.realm,
   app: env.app,
   baseurl: env.urlAccount
 })
@@ -28,7 +27,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
     .then ( reg => {
       console.log('Registration succeeded. Scope is ' + reg.scope);
-    })   
+    })
   })
   /* if service worker is activated, it will broadcast action init to all clients event though they are not controlled yet */
   navigator.serviceWorker.addEventListener('message', (event) => {
@@ -63,7 +62,7 @@ if ('serviceWorker' in navigator) {
   })
 }
 
-// broadcase sign-in/signut for all clients
+// broadcast sign-in/signut for all clients
 if (acc) {
   acc.on('unauthenticated', () => {
     navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage({ type: 'BROADCAST', action: 'signout' })
@@ -116,7 +115,7 @@ if (acc) {
     const data = __data.props
     cacheData([
       {url: '/data/content', cacheName: 'data-cache', data: { programs: data.programs, courses: data.courses }},
-      {url: '/data/promotion', cacheName: 'promotion-cache', data: { promos: data.promos, tags: data.tags }}
+      {url: '/data/promotion', cacheName: 'promotion-cache', data: { promos: data.promos }}
     ])
     renderApp(data)
   } else {
@@ -151,7 +150,8 @@ function cacheData(data) {
 
 function get(url, option) {
   return new Promise( (resolve, reject) => {
-    xhttp.get(url, option, (status, responseText) => {
+    xhttp.get(url, option)
+    .then( ({status, responseText}) => {
       if (status === 200) {
         const data = JSON.parse(responseText)
         resolve(data)

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-import { xhttp } from 'authenform-utils'
+import xhttp from '@realmjs/xhttp-request'
 
 import { getDay, localeString } from '../../lib/util'
 
@@ -169,7 +169,8 @@ class OrderCard extends Component {
   cancelOrder(order) {
     const number = order.number
     const reason = this.state.cancelReason
-    xhttp.delete('/me/order', {number, reason}, {authen: true}, (status,data) => {
+    xhttp.delete('/me/order', {number, reason}, {authen: true, timeout: 300000})
+    .then( ({status}) => {
       this.props.hidePopup()
       if (status === 200) {
         this.hideOrderDetail()
@@ -177,6 +178,9 @@ class OrderCard extends Component {
       } else {
         this.props.showPopup('info', { closeBtn: true, message: `Error ${status}. Please refresh page and try again`, align: 'left' })
       }
+    })
+    .catch( err=> {
+      this.props.showPopup('info', { closeBtn: true, message: `Error: Cannot connect to server!`, align: 'left' })
     })
   }
 }

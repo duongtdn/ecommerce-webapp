@@ -4,21 +4,31 @@ require('dotenv').config()
 
 const api = require('../src/api/main')
 
-api.helpers({ Database: require('./database') })
+// helpers database driver
+const DatabaseHelper = require('@realmjs/dynamodb-helper')
+const aws = { region: process.env.REGION, endpoint: process.env.ENDPOINT }
+const dbh = new DatabaseHelper({ aws, measureExecutionTime: true })
+dbh.addTable(['PROGRAM', 'COURSE', 'PROMOTE', 'ORDER', 'ENROLL', 'MEMBER', 'ACTIVECODE'])
+api.helpers({ Database: dbh.drivers})
+
+// helpers alert & notify
 api.helpers({
-  alert({message, action, data}) {
-    console.log(`ALERT: ----------------`)
-    console.log(`  --> by action: ${action}`)
-    console.log(`  --> ${message}`)
-    console.log(`${JSON.stringify(data)}`)
-    console.log(`-----------------------`)
+  alert({message, action, error}) {
+    console.log(`\nALERT: -----------------------------------------------------------`)
+    console.log(`--> by action: ${action}`)
+    console.log(`--> ${message}`)
+    console.log(error)
+    console.log(`------------------------------------------------------------------`)
   },
-  notify({reason, recipient, data}) {
-    console.log(`NOTIFICATION: ----------------`)
-    console.log(`reason: ${reason}`)
-    console.log(`to: ${recipient}`)
-    console.log(`${JSON.stringify(data)}`)
-    console.log(`------------------------------`)
+  notify({template, recipient, data}) {
+    return new Promise( (resolve, reject) => {
+      console.log(`\nNOTIFICATION:  -------------------------------------------------`)
+      console.log(`--> template: ${template}`)
+      console.log(`--> to: ${recipient}`)
+      console.log(`${JSON.stringify(data)}`)
+      console.log(`------------------------------------------------------------------`)
+      resolve()
+    })
   }
 })
 
@@ -30,11 +40,11 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const app = express()
 
 const path = require('path')
-console.log(path.join(__dirname, '../assets'))
+console.log(`Assets path: ${path.join(__dirname, '../assets')}`)
 app.use('/public', express.static(path.join(__dirname, '../assets')))
 app.use('/', express.static(path.join(__dirname, '../build')))
 
-app.use('/', (req,res,next) => { console.log(`request to: ${req.path}`); next() }, api.generate())
+app.use('/', (req,res,next) => { console.log(`${req.method.toUpperCase()} request to: ${req.path}`); next() }, api.generate())
 
 const config = require('../webpack.dev.config')
 const compiler = webpack(config)
@@ -54,6 +64,6 @@ app.listen(PORT, (err) => {
   if (err) {
     console.log('Failed to start API Server')
   } else {
-    console.log(`API Server is running at port ${PORT}`)
+    console.log(`API Server is running at port ${PORT}\n`)
   }
 })

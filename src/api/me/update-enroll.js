@@ -25,7 +25,11 @@ function validateParams() {
 
 function checkPermission(helpers) {
   return function(req, res, next) {
-    helpers.Database.Enroll.find({ courseId: req.courseId, enrollTo: req.uid }, (data) => {
+    helpers.Database.ENROLL.find({
+      courseId: `= ${req.courseId}`,
+      enrollTo: `= ${req.uid}`
+    })
+    .then(data => {
       if (data.length === 0) {
         res.status(404).json({ error: "Resource not found" })
       } else {
@@ -38,17 +42,30 @@ function checkPermission(helpers) {
         next()
       }
     })
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Read access to Database failed',
+        action: 'PUT /me/enroll',
+        error: err
+      })
+      res.status(500).json({ reason: 'Read access to Database failed' })
+    })
   }
 }
 
 function updateEnrollStatus(helpers) {
   return function(req, res, next) {
-    helpers.Database.Enroll.update({ courseId: req.courseId, enrollTo: req.uid, status: req.status }, (error) => {
-      if (error) {
-        res.status(403).json({ error: "Cannot update" })
-      } else {
-        res.status(200).json({ status: req.status })
-      }
+    helpers.Database.ENROLL.update({ enrollTo: req.uid, courseId: req.courseId }, {
+      status: req.status
+    })
+    .then( () =>  res.status(200).json({ status: req.status }))
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Write access to Database failed',
+        action: 'PUT /me/enroll',
+        error: err
+      })
+      res.status(500).json({ reason: 'Write access to Database failed' })
     })
   }
 }

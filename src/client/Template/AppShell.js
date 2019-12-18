@@ -17,7 +17,7 @@ import YesNo from './Popup/YesNo'
 import Login from './Popup/Login'
 import CoursesActivation from './Popup/CoursesActivation'
 
-import { xhttp } from 'authenform-utils'
+import xhttp from '@realmjs/xhttp-request'
 import env from '../script/env'
 
 const routes = {
@@ -52,7 +52,8 @@ class AppShell extends Component {
     /* fetch /user to get user orders, enrolls and rewards */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
       const urlBasePath = env.urlBasePath
-      xhttp.get(`${urlBasePath}/me`, {authen: true}, (status, responseText) => {
+      xhttp.get(`${urlBasePath}/me`, {authen: true})
+      .then( ({status, responseText}) => {
         if (status === 200) {
           const data = JSON.parse(responseText)
           const me = { ...data }
@@ -144,7 +145,7 @@ class AppShell extends Component {
   }
 }
 
-import { UserProvider } from 'react-user'
+import { UserProvider } from '@realmjs/react-user'
 
 export default class extends Component {
   constructor(props) {

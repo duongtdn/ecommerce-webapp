@@ -4,37 +4,37 @@ const Order = []
 
 const Promos = [
   {
-    id: 'promo-01',
-    type: 'sale',
-    target: ['c-01'],
-    deduction: 100000,
-    description: 'on sale program',
-    // expireIn: '1564444799000' // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
+    "id": "promo-01",
+    "type": "sale",
+    "target": ["c-01"],
+    "deduction": 100000,
+    "description": "on sale program",
+    // expireIn: "1564444799000" // expired = (new Date(Date.UTC(2019,7,1,23,59,59))).getTime()
   },
   {
-    id: 'promo-02',
-    type: 'sale',
-    target: ['c-02'],
-    deduction: 100000,
-    description: 'on sale program',
+    "id": "promo-02",
+    "type": "sale",
+    "target": ["c-02"],
+    "deduction": 100000,
+    "description": "on sale program"
   },
   {
-    id: 'promo-03',
-    type: 'gift',
-    target: ['c-02'],
-    deduction: 0,
-    description: '+ 1 board STM32 Discovery F0'
+    "id": "promo-03",
+    "type": "gift",
+    "target": ["c-02"],
+    "deduction": 0,
+    "description": "+ 1 board STM32 Discovery F0"
   },
   {
-    id: 'promo-04',
-    type: 'bundle',
-    target: ['c-01', 'c-02', 'c-03'],
-    deduction: [
-      {target: 'c-01', number: 100000},
-      {target: 'c-02', number: 150000},
-      {target: 'c-03', number: 150000},
+    "id": "promo-04",
+    "type": "bundle",
+    "target": ["c-01", "c-02", "c-03"],
+    "deduction": [
+      {"target": "c-01", "number": 100000},
+      {"target": "c-02", "number": 150000},
+      {"target": "c-03", "number": 150000}
     ],
-    description: 'Bundle Offer: Embedded Complete for Beginners'
+    "description": "Bundle Offer: Embedded Complete for Beginners"
   }
 ]
 
@@ -51,161 +51,161 @@ const Tags = [
 
 const Programs = [
   {
-    id: 'emb',
-    title: 'Embedded System',
-    courses: [
-      'c-01', 'c-02', 'c-03', 'c-04'
+    "id": "emb",
+    "title": "Embedded System",
+    "courses": [
+      "c-01", "c-02", "c-03", "c-04"
     ]
   },
   {
-    id: 'ai',
-    title: 'AI & Machine Learning',
-    courses: [
-      'c-01', 'c-02', 'c-03'
+    "id": "ai",
+    "title": "AI & Machine Learning",
+    "courses": [
+      "c-01", "c-02", "c-03"
     ]
   },
   {
-    id: 'webapp',
-    title: 'Web App Development',
-    courses: [
-      'c-01', 'c-02', 'c-03'
+    "id": "webapp",
+    "title": "Web App Development",
+    "courses": [
+      "c-01", "c-02", "c-03"
     ]
   },
   {
-    id: 'mobile',
-    title: 'Mobile App Development',
-    courses: [
-      'c-01', 'c-02', 'c-03'
+    "id": "mobile",
+    "title": "Mobile App Development",
+    "courses": [
+      "c-01", "c-02", "c-03"
     ]
   },
 ]
 
 const Courses = [
   {
-    id: 'c-01',
-    title: 'Beginning Embedded C Programming',
-    snippet: 'C Programming for beginner, good for one who want to learn about C and Embedded Programming',
-    description: '<p>This course is super creazy</p><ul><li>super cool</li><li>super awesome</li></ul>',
-    thumbnail: 'https://cdn-images-1.medium.com/max/1200/1*z8cxJptPtl2JEERdYXChkQ.png',
-    picture: {
-      type: "yt",
-      uri: "https://www.youtube.com/embed/yTeFwuDDgDk"
+    "id": "c-01",
+    "title": "Beginning Embedded C Programming",
+    "snippet": "C Programming for beginner, good for one who want to learn about C and Embedded Programming",
+    "description": "<p>This course is super creazy</p><ul><li>super cool</li><li>super awesome</li></ul>",
+    "thumbnail": "https://cdn-images-1.medium.com/max/1200/1*z8cxJptPtl2JEERdYXChkQ.png",
+    "picture": {
+      "type": "yt",
+      "uri": "https://www.youtube.com/embed/yTeFwuDDgDk"
     },
-    level: 'Beginner',
-    price: 499000,
-    skills: [
-      'C Programming'
+    "level": "Beginner",
+    "price": 499000,
+    "skills": [
+      "C Programming"
     ],
-    certs: [
-      'Embedded C Programmer'
+    "certs": [
+      "Embedded C Programmer"
     ],
-    programs: ['emb'],
-    tests: [
+    "programs": ["emb"],
+    "tests": [
       {
-        title: 'Mid-term Exam',
-        description: 'Mid-term Test for course Embedded - 01',
-        exam: 'c-01-m'
+        "title": "Mid-term Exam",
+        "description": "Mid-term Test for course Embedded - 01",
+        "exam": "c-01-m"
       },
       {
-        title: 'Final Exam',
-        description: 'Final Test for course Embedded - 01',
-        exam: 'c-01-f'
+        "title": "Final Exam",
+        "description": "Final Test for course Embedded - 01",
+        "exam": "c-01-f"
       }
     ]
   },
   {
-    id: 'c-02',
-    title: 'Applied C for Embedded ARM System',
-    snippet: 'Advanced C Programming, ARM embedded processor and with pratice on famous STM32 series',
-    description: '<p>This course cover bla bla bla about <span class="w3-text-blue">C language use in ARM system</span>. You will gain all matter knowledge of C and bla bla bla.</p> <p>What you will get after this course:</p><ul class="w3-ul"><li class="w3-border-0">Point 1</li><li class="w3-border-0">Point 2</ul>',
-    thumbnail: 'https://harmonyed.com/wp-content/uploads/Online-Courses-1-300x20031.png',
-    picture: {
-      type: "yt",
-      uri: "https://www.youtube.com/embed/LVJUmh9ae1Y"
+    "id": "c-02",
+    "title": "Applied C for Embedded ARM System",
+    "snippet": "Advanced C Programming, ARM embedded processor and with pratice on famous STM32 series",
+    "description": "<p>This course cover bla bla bla about <span class=\"w3-text-blue\">C language use in ARM system</span>. You will gain all matter knowledge of C and bla bla bla.</p> <p>What you will get after this course:</p><ul class=\"w3-ul\"><li class=\"w3-border-0\">Point 1</li><li class=\"w3-border-0\">Point 2</ul>",
+    "thumbnail": "https://harmonyed.com/wp-content/uploads/Online-Courses-1-300x20031.png",
+    "picture": {
+      "type": "yt",
+      "uri": "https://www.youtube.com/embed/LVJUmh9ae1Y"
     },
-    price: 799000,
-    level: 'Intermidate',
-    skills: [
-      'C Programming', 'ARM Programming'
+    "price": 799000,
+    "level": "Intermidate",
+    "skills": [
+      "C Programming", "ARM Programming"
     ],
-    certs: [
-      'Embedded Programming Engineer'
+    "certs": [
+      "Embedded Programming Engineer"
     ],
-    programs: ['emb'],
-    tests: [
+    "programs": ["emb"],
+    "tests": [
       {
-        title: 'Mid-term Exam',
-        description: 'Mid-term Test for course Embedded - 01',
-        exam: 'c-02-m'
+        "title": "Mid-term Exam",
+        "description": "Mid-term Test for course Embedded - 01",
+        "exam": "c-02-m"
       },
       {
-        title: 'Final Exam',
-        description: 'Final Test for course Embedded - 01',
-        exam: 'c-02-f'
+        "title": "Final Exam",
+        "description": "Final Test for course Embedded - 01",
+        "exam": "c-02-f"
       }
     ]
   },
   {
-    id: 'c-03',
-    title: 'Applied C for Embedded Programming in Detail',
-    snippet: 'Advanced C Programming, ARM embedded processor and with pratice on famous STM32 series',
-    description: 'c02.json',
-    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ4MSngvOcZcc_xlli8B0AuwMJCHIChtTtjt0wPTdwS-Tc8Xsi',
-    picture: {
-      type: "yt",
-      uri: "https://www.youtube.com/embed/6R7SiDz8oFw"
+    "id": "c-03",
+    "title": "Applied C for Embedded Programming in Detail",
+    "snippet": "Advanced C Programming, ARM embedded processor and with pratice on famous STM32 series",
+    "description": "c02.json",
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ4MSngvOcZcc_xlli8B0AuwMJCHIChtTtjt0wPTdwS-Tc8Xsi",
+    "picture": {
+      "type": "yt",
+      "uri": "https://www.youtube.com/embed/6R7SiDz8oFw"
     },
-    price: 799000,
-    level: 'Advanced',
-    skills: [
-      'C Programming', 'ARM Programming'
+    "price": 799000,
+    "level": "Advanced",
+    "skills": [
+      "C Programming", "ARM Programming"
     ],
-    certs: [
-      'Embedded Programming Engineer'
+    "certs": [
+      "Embedded Programming Engineer"
     ],
-    programs: ['emb'],
-    tests: [
+    "programs": ["emb"],
+    "tests": [
       {
-        title: 'Mid-term Exam',
-        description: 'Mid-term Test for course Embedded - 01',
-        exam: 'c-02-m'
+        "title": "Mid-term Exam",
+        "description": "Mid-term Test for course Embedded - 01",
+        "exam": "c-02-m"
       },
       {
-        title: 'Final Exam',
-        description: 'Final Test for course Embedded - 01',
-        exam: 'c-02-f'
+        "title": "Final Exam",
+        "description": "Final Test for course Embedded - 01",
+        "exam": "c-02-f"
       }
     ]
   },
   {
-    id: 'c-04',
-    title: 'Motor Control: Pratical applied in Embedded System and IoT',
-    snippet: 'Study theory of motor control, types and their application in Embedded & IoT. Study through pratical projects',
-    description: '<p>This course is super creazy</p><ul><li>super cool</li><li>super awesome</li></ul>',
-    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ4MSngvOcZcc_xlli8B0AuwMJCHIChtTtjt0wPTdwS-Tc8Xsi',
-    picture: {
-      type: "yt",
-      uri: "https://www.youtube.com/embed/6R7SiDz8oFw"
+    "id": "c-04",
+    "title": "Motor Control: Pratical applied in Embedded System and IoT",
+    "snippet": "Study theory of motor control, types and their application in Embedded & IoT. Study through pratical projects",
+    "description": "<p>This course is super creazy</p><ul><li>super cool</li><li>super awesome</li></ul>",
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ4MSngvOcZcc_xlli8B0AuwMJCHIChtTtjt0wPTdwS-Tc8Xsi",
+    "picture": {
+      "type": "yt",
+      "uri": "https://www.youtube.com/embed/6R7SiDz8oFw"
     },
-    price: 999000,
-    level: 'Advanced',
-    skills: [
-      'C Programming', 'ARM Programming', 'Motor Control'
+    "price": 999000,
+    "level": "Advanced",
+    "skills": [
+      "C Programming", "ARM Programming", "Motor Control"
     ],
-    certs: [
-      'Embedded Programming Engineer'
+    "certs": [
+      "Embedded Programming Engineer"
     ],
-    programs: ['emb'],
-    tests: [
+    "programs": ["emb"],
+    "tests": [
       {
-        title: 'Mid-term Exam',
-        description: 'Mid-term Test for course Embedded - 01',
-        exam: 'c-02-m'
+        "title": "Mid-term Exam",
+        "description": "Mid-term Test for course Embedded - 01",
+        "exam": "c-02-m"
       },
       {
-        title: 'Final Exam',
-        description: 'Final Test for course Embedded - 01',
-        exam: 'c-02-f'
+        "title": "Final Exam",
+        "description": "Final Test for course Embedded - 01",
+        "exam": "c-02-f"
       }
     ]
   }
@@ -214,32 +214,32 @@ const Courses = [
 
 const Enroll = [
   {
-    courseId: 'c-01',
-    enrollTo: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
-    enrollAt: 1564444799000,
-    status: 'active', // new, active, studying, completed
-    resolvedBy: 'system-automation',
-    order: 'iv-001',
+    "courseId": "c-01",
+    "enrollTo": "4fc9d440-8f7a-11e9-95d5-315e185d3a06",
+    "enrollAt": 1564444799000,
+    "status": "active", // new, active, studying, completed
+    "resolvedBy": "system-automation",
+    "order": "iv-001",
     comments: [
-      { by: 'system', message: 'automatic enroll'}
+      { by: "system", message: "automatic enroll"}
     ],
     tests: [
       {
-        testId: 'test-01',
-        resultId: 'r-test-01',
-        title: 'Mid-term Exam',
-        description: 'Mid-term Test for course Embedded - 01',
+        testId: "test-01",
+        resultId: "r-test-01",
+        title: "Mid-term Exam",
+        description: "Mid-term Test for course Embedded - 01",
         result: {
           score: 92,
-          status: 'passed'
+          status: "passed"
         },
         passScore: 70
       },
       {
-        testId: 'test-02',
-        resultId: 'r-test-02',
-        title: 'Final Exam',
-        description: 'Final Test for course Embedded - 01',
+        testId: "test-02",
+        resultId: "r-test-02",
+        title: "Final Exam",
+        description: "Final Test for course Embedded - 01",
         passScore: 70
       }
     ]
@@ -250,8 +250,8 @@ const User = [
   {
     uid: '4fc9d440-8f7a-11e9-95d5-315e185d3a06',
     rewards: [
-      {code: 'NEWBIE', type: 'voucher', scope: ['c-01', 'c-02'], value: 100000, expireIn: 1572652799000},
-      {code: 'BOOSTER', type: 'voucher', scope: ['c-04'], value: 100000}
+      {code: 'NEWBIE', type: 'voucher', scope: ['c-01', 'c-02'], value: 100000, expireIn: 1572652799000, description: ''},
+      {code: 'BOOSTER', type: 'voucher', scope: ['c-04'], value: 100000, description: ''}
     ]
   }
 ]
@@ -274,7 +274,7 @@ module.exports = {
           if ({}.toString.call(projection) === '[object Array]') {
             const _ret = {}
             projection.forEach( prop => _ret[prop] = program[prop] )
-            done && done([_ret]) 
+            done && done([_ret])
           } else {
             done && done([program])
           }

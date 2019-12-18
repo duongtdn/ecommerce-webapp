@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-import { xhttp } from 'authenform-utils'
+import xhttp from '@realmjs/xhttp-request'
 
 import UnAuthen from './UnAuthen'
 

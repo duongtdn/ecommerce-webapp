@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-import { xhttp } from 'authenform-utils'
+import xhttp from '@realmjs/xhttp-request'
 
 import UnAuthen from './UnAuthen'
 
@@ -580,10 +580,11 @@ export default class Order extends Component {
           items: storage.get(storage.key.CART).filter( item => item.checked )
         }
         this.props.showPopup('info', { icon: 'fas fa-spinner', message: 'creating order...' })
-        xhttp.post('/data/order', { order }, {authen: true}, (status, data) => {
+        xhttp.post('/data/order', { order }, {authen: true,  timeout: 300000})
+        .then( ({status, responseText}) => {
           this.props.hidePopup()
           if (status === 200) {
-            const order = JSON.parse(data).order
+            const order = JSON.parse(responseText).order
             // remove purchased item from cart
             const cart = storage.get(storage.key.CART).filter( item => !order.items.find( _item => _item.code === item.code) )
             storage.update(storage.key.CART, cart)
@@ -593,6 +594,9 @@ export default class Order extends Component {
             this.props.showPopup('info', { closeBtn: true, message: `Error ${status}. Please refresh page and try again`, align: 'left' })
             reject(status)
           }
+        })
+        .catch( err => {
+          this.props.showPopup('info', { closeBtn: true, message: `Error: Cannot connect to server!`, align: 'left' })
         })
       }).catch( error => {
         this.props.showPopup('info', { closeBtn: true, message: 'please complete delivery information', align: 'left' })

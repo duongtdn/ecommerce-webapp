@@ -2,7 +2,10 @@
 
 function getProgram(helpers) {
   return function(req, res, next) {
-    helpers.Database.Program.find({}, data => {
+    // fetch perform a scan through the whole table and take too much time
+    // considering restructure PROGRAM table into a single item which contain all program in an array
+    helpers.Database.PROGRAM.fetch()
+    .then(data => {
       if (data.length > 0) {
         req.programs = data
         next()
@@ -10,18 +13,40 @@ function getProgram(helpers) {
         res.status(404).json({message: 'no program'})
       }
     })
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Read access to Database failed',
+        action: `GET /data/content`,
+        error: err
+      })
+      res.status(500).json({ reason: 'Read access to Database failed' })
+    })
   }
 }
 
 function getCourses(helpers) {
   return function(req, res, next) {
-    helpers.Database.Course.find({},
-      ['id', 'title', 'snippet', 'description', 'thumbnail', 'picture', 'level', 'price', 'skills', 'certs', 'promo', 'programs', 'tags'],
-      data => {
-        req.courses = data
-        next()
+    const all = []
+    req.programs.forEach(program => {
+      program.courses.forEach( id => !all.find(k => k.id === id) && all.push({ id }) )
+    })
+    helpers.Database.batchGet({
+      COURSE: {
+        keys: all,
       }
-    )
+    })
+    .then(data => {
+      req.courses = data.COURSE
+      next()
+    })
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Read access to Database failed',
+        action: `GET /data/content`,
+        error: err
+      })
+      res.status(500).json({ reason: 'Read access to Database failed' })
+    })
   }
 }
 

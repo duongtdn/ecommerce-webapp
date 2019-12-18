@@ -2,27 +2,27 @@
 
 function getPromos(helpers) {
   return function(req, res, next) {
-    helpers.Database.Promo.find({}, data => {
+    helpers.Database.PROMOTE.fetch()
+    .then(data => {
       req.promos = data
       next()
+    })
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Read access to Database failed',
+        action: `GET /data/promotion`,
+        error: err
+      })
+      res.status(500).json({ reason: 'Read access to Database failed' })
     })
   }
 }
 
-function getTags(helpers) {
-  return function(req, res, next) {
-    helpers.Database.Tag.find({}, data => {
-        req.tags = data
-        next()
-      }
-    )
-  }
-}
 
 function response() {
   return function(req, res) {
-    res.status(200).json({ promos: req.promos, tags: req.tags })
+    res.status(200).json({ promos: req.promos })
   }
 }
 
-module.exports = [getPromos, getTags, response]
+module.exports = [getPromos, response]

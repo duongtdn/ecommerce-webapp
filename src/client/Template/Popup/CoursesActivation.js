@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-import { xhttp } from 'authenform-utils'
+import xhttp from '@realmjs/xhttp-request'
 
 export default class CoursesActivation extends Component {
   constructor(props) {
@@ -48,7 +48,8 @@ export default class CoursesActivation extends Component {
   submitActivationCode(e) {
     if (this.state.code.length === 0) { return }
     this.setState({ busy: true })
-    xhttp.post('/me/enroll', {code: this.state.code}, {authen: true}, (status, responseText) => {
+    xhttp.post('/me/enroll', {code: this.state.code}, {authen: true, timeout: 300000})
+    .then( ({status, responseText}) => {
       this.setState({ busy: false, code: '' })
       this.props.hidePopup()
       if (status === 200) {
@@ -58,6 +59,9 @@ export default class CoursesActivation extends Component {
       } else {
         this.props.showPopup('info', {closeBtn: true, message: 'Failed! Unable to activate courses'})
       }
+    })
+    .catch( err => {
+      this.props.showPopup('info', { closeBtn: true, message: `Error: Cannot connect to server!`, align: 'left' })
     })
   }
   focusTextInput() {

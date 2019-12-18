@@ -34,7 +34,8 @@ api
     get: require('./data/get-order'),
   })
   .add('/me', {
-    get: require('./me/get-me')
+    get: require('./me/get-me'),
+    post: require('./me/create-membership')
   })
   .add('/me/order', {
     delete: require('./me/delete-order')

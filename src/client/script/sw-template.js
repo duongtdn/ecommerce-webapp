@@ -71,15 +71,20 @@ workbox.routing.registerRoute(
     cacheName: 'data-cache',
     plugins: [
       new workbox.expiration.Plugin({
-        maxAgeSeconds: 60,
+        maxAgeSeconds: 60*5,
       }),
     ]
   })
 );
 workbox.routing.registerRoute(
   /\/data\/promotion$/i,
-  new workbox.strategies.NetworkFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'promotion-cache',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60*2,
+      }),
+    ]
   })
 );
 workbox.routing.registerRoute(

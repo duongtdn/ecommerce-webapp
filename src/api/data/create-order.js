@@ -1,9 +1,9 @@
 "use strict"
 
+const jwt = require('jsonwebtoken')
 const {authen} = require('../lib/authen')
 
 function _rand() {
-  // return Math.random().toString(36).substr(2,9)
   return Math.floor(100000 + Math.random() * 900000)
 }
 
@@ -33,72 +33,91 @@ function validateOrder(helpers) {
     const courseIds = []
     order.items.forEach(item => {
       if (item.type === 'course') {
-        courseIds.indexOf(item.code) && courseIds.push(item.code)
+        courseIds.indexOf(item.code) === -1 && courseIds.push(item.code)
       }
       if (item.type === 'bundle') {
-        item.items.map(i=>i.code).forEach(c => courseIds.indexOf(c) && courseIds.push(c))
+        item.items.map(i=>i.code).forEach(c => courseIds.indexOf(c) === -1 && courseIds.push(c))
       }
     })
     const promotion = []
+    // here I load promotion from order sent by client. I need to re-validate it later
     order.items.forEach(item => item.promotion.forEach(p => (promotion.indexOf(p) === -1) && promotion.push(p)))
-    helpers.Database.find(
-      {
-        Course: {key: {id: courseIds}, projection: ['price']},
-        Promo: {key: {id: promotion}},
-        User: {key: {uid: req.uid}, projection: ['rewards']}
+    helpers.Database.batchGet({
+      COURSE: {
+        keys: courseIds.map(id => {return { id }}),
+        projection: ['id', 'price']
       },
-      (data) => {
-        const courses = data.Course
-        const promos = data.Promo
-        // compare price for each item
-        let error = ''
-        order.items.forEach( item => {
-          if (item.type === 'course') {
-            const course = courses.find(c => c.id === item.code)
-            let deduction = 0
-            item.promotion.forEach(promo => {
-              promos.filter(p => p.id === promo).forEach( p => {
-                if (p.type === 'sale' && !_isExpire(p.expireIn)) { deduction += parseInt(p.deduction) }
-              })
-            })
-            // here also need to check voucher
-            const rewards = data.User[0].rewards.filter( _reward => _reward.scope.indexOf(course.id) !== -1 )
-            rewards.forEach( reward => {
-              if (reward.type === 'voucher' && !_isExpire(reward.expireIn)) {
-                deduction += parseInt(reward.value)
-              }
-            })
-            const offerPrice = course.price - deduction
-            if (offerPrice !== item.price) {
-              error = 'cart outdated'
-              return
-            }
-          }
-          if (item.type === 'bundle') {
-            const promo = promos.find(p => p.id === item.code)
-            if (promo.expireIn && _isExpire(promo.expireIn)) {
-              error = 'expired'
-              return
-            }
-            const subTotal = promo.deduction.reduce( (acc, cur) => {
-              /* currently, bundle only apply to course, later will support other goods such as boards, sofware licenses... */
-              const course = courses.find( course => course.id === cur.target)
-              if (!course) { return acc }
-              return acc + Math.floor(parseInt(course.price) - parseInt(cur.number))
-            }, 0)
-            if (subTotal !== item.price) {
-              error = 'cart outdated'
-              return
-            }
-          }
-        })
-        if (error.length === 0) {
-          next()
-        } else {
-          res.status(400).json({ reason: error })
-        }
+      PROMOTE: {
+        keys: promotion.map(id => {return { id }})
+      },
+      MEMBER: {
+        keys: [{ uid: req.uid }],
+        projection: ['rewards']
       }
-    )
+    })
+    .then( data => {
+      const courses = data.COURSE
+      const promos = data.PROMOTE
+      // compare price for each item
+      let error = ''
+      order.items.forEach( item => {
+        if (item.type === 'course') {
+          const course = courses.find(c => c.id === item.code)
+          let deduction = 0
+          item.promotion.forEach(promo => {
+            promos.filter(p => p.id === promo).forEach( p => {
+              // here should validate the promotion
+              if (p.type === 'sale' && !_isExpire(p.expireIn) && p.target.indexOf(course.id) !== -1) { deduction += parseInt(p.deduction) }
+            })
+          })
+          // here also need to check voucher
+          const rewards = data.MEMBER[0].rewards && data.MEMBER[0].rewards.length > 0 ?
+                            data.MEMBER[0].rewards.filter( _reward => _reward.scope.indexOf(course.id) !== -1 )
+                            : []
+          rewards.forEach( reward => {
+            if (reward.type === 'voucher' && !_isExpire(reward.expireIn)) {
+              deduction += parseInt(reward.value)
+            }
+          })
+          const offerPrice = course.price - deduction
+          if (offerPrice !== item.price) {
+            error = 'cart outdated'
+            return
+          }
+        }
+        if (item.type === 'bundle') {
+          const promo = promos.find(p => p.id === item.code)
+          // validate if bundle offer is expired
+          if (promo.expireIn && _isExpire(promo.expireIn)) {
+            error = 'expired'
+            return
+          }
+          const subTotal = promo.deduction.reduce( (acc, cur) => {
+            /* currently, bundle only apply to course, later will support other goods such as boards, sofware licenses... */
+            const course = courses.find( course => course.id === cur.target)
+            if (!course) { return acc }
+            return acc + Math.floor(parseInt(course.price) - parseInt(cur.number))
+          }, 0)
+          if (subTotal !== item.price) {
+            error = 'cart outdated'
+            return
+          }
+        }
+      })
+      if (error.length === 0) {
+        next()
+      } else {
+        res.status(400).json({ reason: error })
+      }
+    })
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Database operation failed',
+        action: 'BatchGet COURSE, PROMOTE, MEMBER',
+        error: err
+      })
+      res.status(500).json({ reason: 'Failed to Access Database' })
+    })
   }
 }
 
@@ -111,20 +130,25 @@ function insertOrderToDB(helpers) {
   return function(req, res, next) {
     const now = new Date()
     const order = req.body.order
-    order.number = _rand()
+    order.number = _rand().toString()
     order.uid = req.uid
     order.status = 'new'
     order.createdAt = now.getTime()
-    order.notes = [{ by: 'system', message: 'new order created', at: now.getTime() }]
+    order.notes = {}
+    order.notes[now.getTime()] = 'new order created'
     if (order.paymentMethod === 'cod') {
       order.activationCode = _ustring(8).toUpperCase()
     }
-    helpers.Database.Order.insert({order}, (err, data) => {
-      if (err) {
-        res.status(403).json({err})
-      } else {
-        next()
-      }
+    helpers.Database.ORDER.insert(order)
+    .then(_ => next())
+    .catch(err => {
+      console.log(err)
+      helpers.alert && helpers.alert({
+        message: 'Database operation failed',
+        action: 'Inser to ORDER',
+        error: err
+      })
+      res.status(500).json({ reason: 'Failed to Access Database' })
     })
   }
 }
@@ -148,12 +172,15 @@ function insertActivationCodeToDB(helpers) {
         }
       })
       const code = { uid: req.uid, code: order.activationCode, order: order.number, courses }
-      helpers.Database.Activation.insert({code}, (err, data) => {
-        if (err) {
-          res.status(403).json({err})
-        } else {
-          next()
-        }
+      helpers.Database.ACTIVECODE.insert(code)
+      .then(_ => next())
+      .catch(err => {
+        helpers.alert && helpers.alert({
+          message: 'Database operation failed',
+          action: 'Insert to ACTIVECODE',
+          error: err
+        })
+        res.status(500).json({ reason: 'Failed to Access Database' })
       })
     }
   }
@@ -161,12 +188,20 @@ function insertActivationCodeToDB(helpers) {
 
 function sendNotification(helpers) {
   return function(req, res, next) {
+    const token = jwt.sign({uid: req.body.order.uid}, process.env.PRIVATE_AUTH_KEY)
     helpers.notify && helpers.notify({
-      reason: 'order-created',
-      recipient: req.body.order.uid,
+      template: 'order-created',
+      recipient: token,
       data: req.body.order
     })
-    next()
+    .then(next)
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        info: 'Cannot send notification',
+        error: err
+      })
+      next()
+    })
   }
 }
 
