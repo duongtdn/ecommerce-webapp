@@ -1,3 +1,4 @@
 src/clients
 node_modules/
 npm-debug.*
+build/app.js

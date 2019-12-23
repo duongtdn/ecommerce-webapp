@@ -19,13 +19,14 @@ module.exports = {
       }
     ]
   },
-  mode: 'development',
+  mode: 'production',
   devtool: 'inline-source-map',
   plugins: [
     new WorkboxPlugin.InjectManifest({
       swDest: 'sw.js',
       swSrc: './src/client/script/sw-template.js',
-      include: ['/app-shell', /\.js$/, /\.css$/],
+      // include: ['/app-shell', /\.js$/, /\.css$/],
+      include: ['/app-shell', /\.css$/],
       templatedURLs: {
         '/app-shell': new Date().toString(),
       },

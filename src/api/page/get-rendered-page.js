@@ -16,11 +16,11 @@ function getPrograms(helpers) {
   return function(req, res, next) {
     helpers.Database.PROGRAM.fetch()
     .then(data => {
-      if (data.length > 0 && data.find(p => p.id === req.params.program)) {
+      if (data.length > 0) {
         req.programs = data
         next()
       } else {
-        res.status(404).send("Page not found / no program")
+        res.status(404).send("There is no program")
       }
     })
     .catch(err => {

@@ -197,7 +197,8 @@ function sendNotification(helpers) {
     .then(next)
     .catch(err => {
       helpers.alert && helpers.alert({
-        info: 'Cannot send notification',
+        message: 'Cannot send notification',
+        action: 'Send Notification',
         error: err
       })
       next()
