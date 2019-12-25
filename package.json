@@ -1,6 +1,6 @@
 {
   "name": "@elearn/ecommerce-webapp",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Project EDEN: e-commerce web application for selling courses",
   "main": "src/api/main.js",
   "scripts": {

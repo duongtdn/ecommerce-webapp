@@ -188,7 +188,7 @@ function insertActivationCodeToDB(helpers) {
 
 function sendNotification(helpers) {
   return function(req, res, next) {
-    const token = jwt.sign({uid: req.body.order.uid}, process.env.PRIVATE_AUTH_KEY)
+    const token = jwt.sign({uid: req.uid}, process.env.PRIVATE_AUTH_KEY)
     helpers.notify && helpers.notify({
       template: 'order-created',
       recipient: token,
