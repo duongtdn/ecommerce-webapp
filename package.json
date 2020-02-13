@@ -1,7 +1,7 @@
 {
-  "name": "@elearn/ecommerce-webapp",
+  "name": "@elearn/webstore-app",
   "version": "1.0.4",
-  "description": "Project EDEN: e-commerce web application for selling courses",
+  "description": "Project EDEN: webstore application for selling courses",
   "main": "src/api/main.js",
   "scripts": {
     "clean": "rm -rf build",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/duongtdn/ecommercial-webapp.git"
+    "url": "git+https://github.com/duongtdn/webstore-app.git"
   },
   "author": "duongtdn",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/duongtdn/ecommercial-webapp/issues"
+    "url": "https://github.com/duongtdn/webstore-app/issues"
   },
-  "homepage": "https://github.com/duongtdn/ecommercial-webapp#readme",
+  "homepage": "https://github.com/duongtdn/webstore-app#readme",
   "dependencies": {
     "@realmjs/account-client": "^1.0.0",
     "@realmjs/react-user": "^1.0.1",
