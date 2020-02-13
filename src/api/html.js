@@ -9,6 +9,7 @@ function html({script, data, dom}) {
     <meta name="viewport" content="width=device-width, initial-scale=1,  shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>ecomm</title>
+    <link rel="icon" href="${process.env.FAVICON}" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/4/w3.css">
 	  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swa" rel="stylesheet">
