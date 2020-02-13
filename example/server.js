@@ -7,6 +7,12 @@ const api = require('../src/api/main')
 // helpers database driver
 const DatabaseHelper = require('@realmjs/dynamodb-helper')
 const aws = { region: process.env.REGION, endpoint: process.env.ENDPOINT }
+if (process.env.PROXY) {
+  console.log('# User proxy-agent')
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED= '0'
+  const proxy = require('proxy-agent')
+  aws.httpOptions = { agent: proxy(process.env.PROXY) }
+}
 const dbh = new DatabaseHelper({ aws, measureExecutionTime: true })
 dbh.addTable(['PROGRAM', 'COURSE', 'PROMOTE', 'ORDER', 'ENROLL', 'MEMBER', 'ACTIVECODE', 'PROGRESS'])
 api.helpers({ Database: dbh.drivers})
