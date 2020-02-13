@@ -30,7 +30,11 @@ function validateCode(helpers) {
   }
 }
 
-function createEnroll(helpers) {
+function registerTests(helpers) {
+  req.tests = {} // register new test, then provide test here
+}
+
+function createEnrollAndProgress(helpers) {
   return function(req, res, next) {
     const uid = req.uid
     const courses = req.activation.courses
@@ -43,12 +47,22 @@ function createEnroll(helpers) {
         order: req.activation.order,
         status: 'active',
         comments: [{by: 'system', message: 'user activate course by code'}],
-        tests: {} // TBD, should tests is created along with enroll ?
+      }
+    })
+    const progresses = courses.map( course => {
+      return {
+        uid,
+        id: course,
+        study: {},
+        test: req.tests[course]
       }
     })
     helpers.Database.batchWrite({
       ENROLL: {
         insert: enrolls
+      },
+      PROGRESS: {
+        insert: progresses
       },
       ACTIVECODE: {
         remove: [{ code: req.body.code }]
@@ -119,4 +133,4 @@ function response() {
   }
 }
 
-module.exports = [authen, validateCode, createEnroll, updateOrderStatus, sendNotification, response]
+module.exports = [authen, validateCode, createEnrollAndProgress, updateOrderStatus, sendNotification, response]
