@@ -102,7 +102,7 @@ export default class Header extends Component {
   render() {
     const programs = this.props.programs
     return (
-      <header className={`w3-top w3-white ${!this.props.isScrollTop?'w3-card':'w3-border-bottom'}`} style={{margin: '0 0 32px 0'}}>
+      <header className={`w3-top w3-white ${!this.props.isScrollTop?'w3-card':''}`} style={{margin: '0 0 32px 0'}}>
 
         {/* render in large screen */}
         <div className="w3-hide-small w3-hide-medium">
