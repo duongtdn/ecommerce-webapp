@@ -177,31 +177,6 @@ class CoursePanel extends Component {
   }
 }
 
-class Sidebar extends Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    const active = this.props.activeProgram
-    const programs = this.props.programs
-    return (
-      <div className="w3-sidebar w3-bar-block w3-border-right" style={{width: '250px', padding: '16px 0'}}>
-        {
-          programs.map(program => {
-            return (
-              <a  key={program.id}
-                  href={`/browse/${program.id}`}
-                  className={`w3-bar-item w3-button ${program.id===active?'w3-pale-blue bold':''}`} >
-                {program.title}
-              </a>
-            )
-          })
-        }
-      </div>
-    )
-  }
-}
-
 export default class Browse extends Component {
   constructor(props) {
     super(props)
@@ -214,28 +189,20 @@ export default class Browse extends Component {
     const courses = this.props.courses.filter( course => course.programs.indexOf(program.id) !== -1 )
     return (
       <div>
-        <div className="w3-hide-small">
-          <Sidebar programs={programs} activeProgram={prog} />
-        </div>
-        <div className="w3-container w3-cell-row">
-          <div className="w3-cell w3-hide-small" style={{width: '250px'}} />
-          <div className="w3-cell">
-            {/* <span className="w3-text-blue"> {program.title} </span>
-            <hr /> */}
-            <ul className="w3-ul">
-              {
-                courses.map( course => {
-                  const promos = this.props.promos? this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1 ) : []
-                  return (
-                    <li key = {course.id} style={{padding: '0 0 8px 0'}}>
-                      <LevelBar course = {course} />
-                      <CoursePanel course = {course} promos = {promos} user={this.props.user} me={this.props.me} />
-                    </li>
-                  )
-                })
-              }
-            </ul>
-          </div>
+        <div className="w3-cell">
+          <ul className="w3-ul">
+            {
+              courses.map( course => {
+                const promos = this.props.promos? this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1 ) : []
+                return (
+                  <li key = {course.id} style={{padding: '0 0 8px 0'}}>
+                    <LevelBar course = {course} />
+                    <CoursePanel course = {course} promos = {promos} user={this.props.user} me={this.props.me} />
+                  </li>
+                )
+              })
+            }
+          </ul>
         </div>
       </div>
     )

@@ -51,6 +51,67 @@ class UserWidget extends Component {
   }
 }
 
+class Programs extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    const programs = this.props.programs
+    const active = this.props.path.match(/\/.*$/)[0].replace('/','')
+    console.log(active)
+    return (
+      <div>
+        <span className="w3-bar-item w3-button w3-text-blue w3-large" onClick={this.props.toggleAccordions}>
+          <i className="fas fa-book-open" /> Programs { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
+        </span>
+        <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.props.collapse? 'block':'none'}}>
+          {
+            programs.map( program => (
+              <a  key={program.id}
+                  className={`w3-bar-item w3-button cursor-pointer ${program.id===active?'w3-pale-blue':''}`}
+                  href = {`/browse/${program.id}`} >
+                {program.title}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    )
+  }
+}
+
+class Managers extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    return (
+      <div>
+        {
+          this.props.user?
+          <div>
+            <span className="w3-bar-item w3-button w3-text-blue" onClick={this.props.toggleAccordions}>
+            <i className="fas fa-tasks " /> Management { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
+            </span>
+            <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.props.collapse? 'block':'none'}}>
+              <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('mycourses')}}>
+                  Manage Courses
+              </span>
+              <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myorders')}}>
+                  Manage Orders
+              </span>
+              <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myrewards')}}>
+                  Manage Rewards
+              </span>
+            </div>
+          </div>
+          : null
+        }
+      </div>
+    )
+  }
+}
+
 export default class Sidebar extends Component {
   constructor(props) {
     super(props)
@@ -59,6 +120,7 @@ export default class Sidebar extends Component {
       width: 0
     }
     this.ref = React.createRef()
+    this.toggleAccordions = this.toggleAccordions.bind(this)
     this.updateStateWidth = this.updateStateWidth.bind(this)
   }
   componentDidMount() {
@@ -71,63 +133,43 @@ export default class Sidebar extends Component {
     this.updateStateWidth()
   }
   render() {
-    const style = {width: this.props.sidebarWidth, minWidth: this.props.sidebarMinWidth, top: 0, zIndex: 99}
-    const programs = this.props.programs
+    const style = {width: this.props.sidebarWidth, minWidth: this.props.sidebarMinWidth, top: 0, zIndex: 1}
+    if (this.props.marginTop) {
+      style.marginTop = this.props.marginTop
+    }
     return (
-      <div className="w3-modal w3-hide-large" style={{display: this.props.show? 'block' : 'none'}} onClick={e => this.props.sidebar(false)}>
-        <div ref={this.ref} className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={style} onClick={e => e.stopPropagation()}>
+      <div>
+        <div className="w3-modal w3-hide-large" style={{display: this.props.show? 'block' : 'none'}} onClick={e => this.props.sidebar(false)}>
+          <div ref={this.ref} className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={style} onClick={e => e.stopPropagation()}>
 
-          {/* close button */}
-          <span className="w3-button w3-xlarge" style={{position: 'fixed', left: `${this.state.width}px`, background: 'none'}} onClick={e => this.props.sidebar(false)}>
-            <i className="fa fa-bars" />
-          </span>
+            {/* close button */}
+            <span className="w3-button w3-xlarge" style={{position: 'fixed', left: `${this.state.width}px`, background: 'none'}} onClick={e => this.props.sidebar(false)}>
+              <i className="fa fa-bars" />
+            </span>
 
-          {/* user widget */}
-          <div className="w3-bar-item w3-border-bottom" style={{ padding: '8px 2px', margin: '8px 0 8px 0' }}>
-              <UserWidget {...this.props} />
-          </div>
-
-          <div className="w3-small" style={{textAlign: 'center', padding: '8px 2px', margin: '0 0 8px 0'}}>
-            <button className="w3-button w3-green" onClick={e => this.props.showPopup('activation')} > Activate Courses </button>
-          </div>
-
-          {/* Programs */}
-          <span className="w3-bar-item w3-button w3-border-bottom w3-border-grey" onClick={this.toggleAccordions('program')}>
-            <i className="fas fa-book-open w3-text-grey" /> Programs { this.state.accordions['program']? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
-          </span>
-          <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.state.accordions['program']? 'block':'none'}}>
-            {
-              programs.map( program => (
-                <a  className="w3-bar-item w3-button cursor-pointer" key={program.id}
-                    href = {`/browse/${program.id}`} >
-                  {program.title}
-                </a>
-              ))
-            }
-          </div>
-
-          {/* Management */}
-          {
-            this.props.user?
-            <div>
-              <span className="w3-bar-item w3-button w3-border-bottom w3-border-grey" onClick={this.toggleAccordions('management')}>
-              <i className="fas fa-tasks w3-text-grey" /> Management { this.state.accordions['management']? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
-              </span>
-              <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.state.accordions['management']? 'block':'none'}}>
-                <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('mycourses')}}>
-                    Manage Courses
-                </span>
-                <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myorders')}}>
-                    Manage Orders
-                </span>
-                <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myrewards')}}>
-                    Manage Rewards
-                </span>
-              </div>
+            {/* user widget */}
+            <div className="w3-bar-item w3-border-bottom" style={{ padding: '8px 2px', margin: '8px 0 8px 0' }}>
+                <UserWidget {...this.props} />
             </div>
-            : null
-          }
 
+            <div className="w3-small" style={{textAlign: 'center', padding: '8px 2px', margin: '0 0 8px 0'}}>
+              <button className="w3-button w3-green" onClick={e => this.props.showPopup('activation')} > Activate Courses </button>
+            </div>
+
+            <Programs collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
+
+            <Managers collapse = {this.state.accordions['management']} {...this.props} toggleAccordions = {this.toggleAccordions('management')} />
+
+          </div>
+        </div>
+        <div className="w3-hide-small w3-hide-medium" >
+          <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={style} onClick={e => e.stopPropagation()}>
+
+            <Programs collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
+
+            <Managers collapse = {this.state.accordions['management']} {...this.props} toggleAccordions = {this.toggleAccordions('management')} />
+
+          </div>
         </div>
       </div>
     )

@@ -29,44 +29,56 @@ export default class Navigator extends Component {
     if (activePopup && this.popups.indexOf(activePopup) === -1) { this.popups.push(activePopup)}
     return (
       <div className="" >
-        <Sidebar  sidebarWidth = '35%' sidebarMinWidth = '223px'
-                  sidebar = {this.setSidebarDisplay}
-                  show = {this.state.showSidebar}
-                  {...this.props}
-        />
+        <div className="w3-hide-large">
+          <Sidebar  sidebarWidth = '35%' sidebarMinWidth = '223px'
+                    sidebar = {this.setSidebarDisplay}
+                    show = {this.state.showSidebar}
+                    {...this.props}
+          />
+        </div>
         <div >
           <Header {...this.props}
                   isScrollTop = {this.state.isScrollTop}
                   sidebar = {this.setSidebarDisplay}
           />
-          <div style={{marginTop: '96px'}} >
-          {
-            this.routes.map(route => {
-              const Comp = this.props.routes[route]
-              const display = activeRoute === route ? 'block' : 'none'
-              const page = {
-                on: (event, handler) => {
-                  this.props.pages.events[route][`on${capitalize(event)}`] = handler
+          <div className="w3-hide-small w3-hide-medium" >
+            <Sidebar  sidebarWidth = '250px' marginTop = '96px'
+                      sidebar = {this.setSidebarDisplay}
+                      show = {true}
+                      {...this.props}
+            />
+          </div>
+          <div className="w3-cell-row" style={{marginTop: '96px'}} >
+            <div className="w3-cell w3-hide-small w3-hide-medium" style={{width: '250px'}} />
+            <div className="w3-cell">
+            {
+              this.routes.map(route => {
+                const Comp = this.props.routes[route]
+                const display = activeRoute === route ? 'block' : 'none'
+                const page = {
+                  on: (event, handler) => {
+                    this.props.pages.events[route][`on${capitalize(event)}`] = handler
+                  }
                 }
-              }
-              return (
-                <div key={route} style={{ display }} >
-                  { React.createElement( Comp, { ...this.props, page, sidebar: this.setSidebarDisplay }) }
-                </div>
-              )
-            })
-          }
-          {
-            this.popups.map(popup => {
-              const content = this.props.popups[popup]
-              const display = activePopup === popup ? 'block' : 'none'
-              return (
-                <div key = {popup} style= {{ display }} className = "w3-modal">
-                  { React.createElement(content, { ...this.props, sidebar: this.setSidebarDisplay }) }
-                </div>
-              )
-            })
-          }
+                return (
+                  <div key={route} style={{ display }} >
+                    { React.createElement( Comp, { ...this.props, page, sidebar: this.setSidebarDisplay }) }
+                  </div>
+                )
+              })
+            }
+            {
+              this.popups.map(popup => {
+                const content = this.props.popups[popup]
+                const display = activePopup === popup ? 'block' : 'none'
+                return (
+                  <div key = {popup} style= {{ display }} className = "w3-modal">
+                    { React.createElement(content, { ...this.props, sidebar: this.setSidebarDisplay }) }
+                  </div>
+                )
+              })
+            }
+            </div>
           </div>
           <Footer />
         </div>
