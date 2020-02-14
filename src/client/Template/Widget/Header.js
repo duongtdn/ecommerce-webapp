@@ -52,7 +52,7 @@ class LoginButton extends Component {
     return (
       <div className="w3-bar-item w3-button">
         <span className="w3-text-grey" onClick={this.signin}>
-          <i className="fas fa-user" /> <span className="w3-hide-small" style={{marginLeft: '4px'}} >Sign In</span>
+          <span className="w3-hide-small" style={{marginLeft: '4px'}} >Sign In</span>
         </span>
       </div>
     )
@@ -95,7 +95,6 @@ export default class Header extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      accordions: { program: false, management: false },
       showUserDropdown: false
     }
   }
@@ -111,6 +110,7 @@ export default class Header extends Component {
 
             <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
               <div className="w3-large" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
+                <button className="w3-bar-item w3-button w3-green" style={{marginRight: '48px'}} onClick={e => this.props.showPopup('activation')} > Activate Courses </button>
                 <ShoppingCart {...this.props} />
                 {
                   this.props.user?
@@ -127,59 +127,7 @@ export default class Header extends Component {
               </div>
             </div>
 
-            <div className="w3-bar-item" style={{padding: '8px', marginLeft: '48px'}}>
-              <div className="w3-large w3-text-grey" style={{display: 'inline-block', padding: '0 8px', verticalAlign: 'bottom'}}>
-                {/* Programs */}
-                <span className={`w3-button ${this.state.accordions['program']?'bottom-bar w3-border-red':''}`}
-                      style={{borderBottom: this.state.accordions['program']? '3px solid' : 'none'}}
-                      onClick={this.toggleAccordions('program')}
-                >
-                  Programs <i className={`fa ${this.state.accordions['program']?'fa-caret-up':'fa-caret-down'}`} />
-                </span>
-                {/* Managerment */}
-                {
-                  this.props.user?
-                    <span className={`w3-button ${this.state.accordions['management']?'bottom-bar w3-border-red':''}`}
-                          style={{borderBottom: this.state.accordions['management']? '3px solid' : 'none'}}
-                          onClick={this.toggleAccordions('management')}
-                    >
-                      Management <i className={`fa ${this.state.accordions['management']?'fa-caret-up':'fa-caret-down'}`} />
-                    </span>
-                  : null
-                }
-              </div>
-            </div>
-
           </div>
-
-          {/* Programs */}
-          <div className="w3-text-grey" style={{padding: '4px', margin: '0 0 16px 150px', display: this.state.accordions['program']? 'block':'none'}}>
-            {
-              programs.map( program => (
-                <a  className="w3-button cursor-pointer w3-hover-none hover-bottom-red" key={program.id}
-                    href = {`/browse/${program.id}`} >
-                  {program.title}
-                </a>
-              ))
-            }
-          </div>
-
-          {/* Management */}
-          {
-            this.props.user?
-              <div className="w3-text-grey" style={{padding: '4px', margin: '0 0 16px 150px', display: this.state.accordions['management']? 'block':'none'}}>
-                <span className="w3-bar-item w3-button cursor-pointer w3-hover-none hover-bottom-red" onClick={e => {this.closeAccordions(); this.props.navigate('mycourses')}}>
-                    Manage Courses
-                </span>
-                <span className="w3-bar-item w3-button cursor-pointer w3-hover-none hover-bottom-red" onClick={e => {this.closeAccordions(); this.props.navigate('myorders')}}>
-                    Manage Orders
-                </span>
-                <span className="w3-bar-item w3-button cursor-pointer w3-hover-none hover-bottom-red" onClick={e => {this.closeAccordions(); this.props.navigate('myrewards')}}>
-                    Manage Rewards
-                </span>
-              </div>
-            : null
-          }
 
         </div>
 
@@ -198,33 +146,10 @@ export default class Header extends Component {
       </header>
     )
   }
-  toggleAccordions(name) {
-    return e => {
-      const accordions = {...this.state.accordions}
-      for (let key in accordions) {
-        accordions[key] = false
-      }
-      accordions[name] = !this.state.accordions[name]
-      this.setState({ accordions, showUserDropdown: false })
-    }
-  }
-  closeAccordions() {
-    const accordions = this._createClosedAccorionsState()
-    this.setState({ accordions, showUserDropdown: false })
-  }
   toggleUserDropdown() {
-    const accordions = this._createClosedAccorionsState()
-    this.setState({ showUserDropdown: !this.state.showUserDropdown, accordions })
+    this.setState({ showUserDropdown: !this.state.showUserDropdown })
   }
   closeUserDropdown() {
-    const accordions = this._createClosedAccorionsState()
-    this.setState({ showUserDropdown: false, accordions })
-  }
-  _createClosedAccorionsState() {
-    const accordions = {...this.state.accordions}
-    for (let key in accordions) {
-      accordions[key] = false
-    }
-    return accordions
+    this.setState({ showUserDropdown: false })
   }
 }
