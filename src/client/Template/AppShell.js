@@ -20,6 +20,10 @@ import CoursesActivation from './Popup/CoursesActivation'
 import xhttp from '@realmjs/xhttp-request'
 import env from '../script/env'
 
+import {IntlProvider} from 'react-intl'
+import messages_vi from '../../translation/vi.json'
+// import messages_en from '../../translation/en.json'
+
 const routes = {
   home: Home,
   browse: Browse,
@@ -37,6 +41,13 @@ const popups = {
   login: Login,
   activation: CoursesActivation
 }
+
+const messages = {
+  vi: messages_vi,
+  // en: messages_en
+}
+
+const language = 'vi'
 
 class AppShell extends Component {
   constructor(props) {
@@ -87,7 +98,7 @@ class AppShell extends Component {
   }
   render() {
     return (
-      <div>
+      <IntlProvider locale={language} messages={messages[language]}>
         <Navigator  routes = {routes}
                     activeRoute = {this.state.activeRoute}
                     navigate = {route => this.navigate(route)}
@@ -104,7 +115,7 @@ class AppShell extends Component {
                     onEnrollCreated = {this.onEnrollCreated}
                     pages = {this.pages}
         />
-      </div>
+      </IntlProvider>
     )
   }
   navigate(route) {
