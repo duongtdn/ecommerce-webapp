@@ -1,6 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
+import {FormattedMessage} from 'react-intl'
 
 class Promotion extends Component {
   constructor(props) {
@@ -136,7 +137,7 @@ class CoursePanel extends Component {
               </div>
               <div className="w3-small w3-text-dark-grey" style={{fontStyle: 'italic', padding: '0 0 8px 0'}}> {course.snippet} </div>
               <div>
-                <span className="w3-text-grey"> Develop Skills: </span>
+                <span className="w3-text-grey"> <FormattedMessage id="course.skills" />: </span>
                 <br />
                 {
                   course.skills.map(skill => (
@@ -148,7 +149,7 @@ class CoursePanel extends Component {
               </div>
               <hr style={{margin: '8px 0'}} />
               <div>
-                <span className="w3-text-grey"> Required for Certificates: </span>
+                <span className="w3-text-grey"><FormattedMessage id="course.required_for_certificate" />: </span>
                 <br />
                 {
                   course.certs.map(cert => (
@@ -165,10 +166,10 @@ class CoursePanel extends Component {
           <div  className="w3-hide-small" style={{width: '150px', height: '10px', display: 'inline-block'}} />
           <Promotion course={course} promos={promos} user={user} me={me} />
           {' '}
-          <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4 w3-right"> View Course </a>
+          <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4 w3-right"> <FormattedMessage id="button.view_course" /> </a>
         </div>
         <div className="w3-bar-item w3-right w3-hide-medium w3-hide-small">
-          <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4"> View Course </a>
+          <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4"> <FormattedMessage id="button.view_course" /> </a>
           <br /> <br />
           <Promotion course={course} promos={promos} user={user} me={me} />
         </div>

@@ -4,9 +4,12 @@
   "button.signup": "New Account",
   "button.signout": "Sign Out",
   "button.login_signup": "Login | New Account",
+  "button.view_course": "View Course",
   "sidebar.programs": "Programs",
   "sidebar.manager": "Manager",
   "sidebar.manage_courses": "Manage Courses",
   "sidebar.manage_orders": "Manage Orders",
-  "sidebar.manage_rewards": "Manage Rewards"
+  "sidebar.manage_rewards": "Manage Rewards",
+  "course.skills": "Skills",
+  "course.required_for_certificate": "Required for Certificates"
 }

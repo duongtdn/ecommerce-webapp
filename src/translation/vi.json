@@ -4,9 +4,12 @@
   "button.signup": "Đăng Ký",
   "button.signout": "Đăng Xuất",
   "button.login_signup": "Đăng Nhập | Đăng Ký",
+  "button.view_course": "Xem Khóa học",
   "sidebar.programs": "Chương trình",
   "sidebar.manager": "Quản lý",
   "sidebar.manage_courses": "Quản lý Khóa học",
   "sidebar.manage_orders": "Quản lý Đơn hàng",
-  "sidebar.manage_rewards": "Quản lý Ưu đãi"
+  "sidebar.manage_rewards": "Quản lý Ưu đãi",
+  "course.skills": "Kỹ năng",
+  "course.required_for_certificate": "Cần thiết cho Chứng chỉ"
 }
