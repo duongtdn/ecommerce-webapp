@@ -1,6 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
+import {FormattedMessage} from 'react-intl'
 
 class UserWidget extends Component {
   constructor(props) {
@@ -21,14 +22,14 @@ class UserWidget extends Component {
                 alt="user picture"
           />
           <p className=""> {user.profile.displayName || user.profile.fullName} </p>
-          <button className="w3-button w3-small w3-blue" onClick={this.signout}> Sign out </button>
+          <button className="w3-button w3-small w3-blue" onClick={this.signout}> <FormattedMessage id="button.signout" /> </button>
         </div>
       )
     } else {
       return (
         <div className="" style={{margin: 'auto', textAlign: 'center'}}>
           <p > <i className="fas fa-user w3-text-grey w3-opacity w3-xxxlarge" /> </p>
-          <button className="w3-button w3-small w3-blue" onClick={this.signin}> Login | New Account </button>
+          <button className="w3-button w3-small w3-blue" onClick={this.signin}> <FormattedMessage id="button.login_signup" /> </button>
         </div>
       )
     }
@@ -61,7 +62,7 @@ class Programs extends Component {
     return (
       <div>
         <span className="w3-bar-item w3-button w3-text-blue w3-large" onClick={this.props.toggleAccordions}>
-          <i className="fas fa-book-open" /> Programs { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
+          <i className="fas fa-book-open" /> <FormattedMessage id="sidebar.programs" /> { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
         </span>
         <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.props.collapse? 'block':'none'}}>
           {
@@ -90,17 +91,17 @@ class Managers extends Component {
           this.props.user?
           <div>
             <span className="w3-bar-item w3-button w3-text-blue" onClick={this.props.toggleAccordions}>
-            <i className="fas fa-tasks " /> Management { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
+            <i className="fas fa-tasks " /> <FormattedMessage id="sidebar.manager" /> { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
             </span>
             <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.props.collapse? 'block':'none'}}>
               <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('mycourses')}}>
-                  Manage Courses
+                <FormattedMessage id="sidebar.manage_courses" />
               </span>
               <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myorders')}}>
-                  Manage Orders
+                <FormattedMessage id="sidebar.manage_orders" />
               </span>
               <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myrewards')}}>
-                  Manage Rewards
+                <FormattedMessage id="sidebar.manage_rewards" />
               </span>
             </div>
           </div>
@@ -152,7 +153,7 @@ export default class Sidebar extends Component {
             </div>
 
             <div className="w3-small" style={{textAlign: 'center', padding: '8px 2px', margin: '0 0 8px 0'}}>
-              <button className="w3-button w3-green" onClick={e => this.props.showPopup('activation')} > Activate Courses </button>
+              <button className="w3-button w3-green" onClick={e => this.props.showPopup('activation')} > <FormattedMessage id="button.activate_course" /> </button>
             </div>
 
             <Programs collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
