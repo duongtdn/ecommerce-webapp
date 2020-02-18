@@ -1,6 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
+import {FormattedMessage} from 'react-intl'
 
 import Logo from './Logo'
 import storage from '../../lib/storage'
@@ -52,7 +53,7 @@ class LoginButton extends Component {
     return (
       <div className="w3-bar-item w3-button w3-hover-pale-blue w3-hover-border-blue w3-border w3-border-white" style={{marginRight: '8px'}}>
         <span className="w3-text-grey" onClick={this.signin}>
-          <span className="w3-hide-small" style={{marginLeft: '4px'}} >Login</span>
+          <span className="w3-hide-small" style={{marginLeft: '4px'}} ><FormattedMessage id="button.login" /></span>
         </span>
       </div>
     )
@@ -71,7 +72,7 @@ class SignUpButton extends Component {
     return (
       <div className="w3-bar-item w3-button w3-text-orange w3-border w3-border-orange w3-hover-pale-red">
         <span onClick={this.signup}>
-          <span className="" style={{marginLeft: '4px'}} >New Account</span>
+          <span className="" style={{marginLeft: '4px'}} ><FormattedMessage id="button.signup" /></span>
         </span>
       </div>
     )
@@ -129,7 +130,9 @@ export default class Header extends Component {
 
             <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
               <div className="" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
-                <button className="w3-bar-item w3-button w3-green" style={{marginRight: '68px'}} onClick={e => this.props.showPopup('activation')} > Activate Courses </button>
+                <button className="w3-bar-item w3-button w3-green" style={{marginRight: '68px'}} onClick={e => this.props.showPopup('activation')} >
+                  <FormattedMessage id="button.activate_course" />
+                </button>
                 <div className="w3-bar-item w3-border-left" style={{height: '40px', borderLeftWidth: '2px !important'}} />
                 <ShoppingCart {...this.props} />
                 {
