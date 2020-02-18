@@ -50,15 +50,34 @@ class LoginButton extends Component {
   }
   render() {
     return (
-      <div className="w3-bar-item w3-button">
+      <div className="w3-bar-item w3-button w3-hover-pale-blue w3-hover-border-blue w3-border w3-border-white" style={{marginRight: '8px'}}>
         <span className="w3-text-grey" onClick={this.signin}>
-          <span className="w3-hide-small" style={{marginLeft: '4px'}} >Sign In</span>
+          <span className="w3-hide-small" style={{marginLeft: '4px'}} >Login</span>
         </span>
       </div>
     )
   }
   signin() {
     this.props.accountClient.signin()
+  }
+}
+
+class SignUpButton extends Component {
+  constructor(props) {
+    super(props)
+    this.signup = this.signup.bind(this)
+  }
+  render() {
+    return (
+      <div className="w3-bar-item w3-button w3-text-orange w3-border w3-border-orange w3-hover-pale-red">
+        <span onClick={this.signup}>
+          <span className="" style={{marginLeft: '4px'}} >New Account</span>
+        </span>
+      </div>
+    )
+  }
+  signup() {
+    this.props.accountClient.signup()
   }
 }
 
@@ -75,7 +94,7 @@ class ShoppingCart extends Component {
   }
   render() {
     return (
-      <span className="w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0 8px'}} onClick={e => this.props.navigate('order')}>
+      <span className="w3-large w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0 8px'}} onClick={e => this.props.navigate('order')}>
         <i className={`fas fa-shopping-cart ${this.state.itemCount > 0 ? 'w3-text-blue' : 'w3-text-light-blue'}`} />
         {
           this.state.itemCount > 0 ?
@@ -109,8 +128,9 @@ export default class Header extends Component {
             <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
 
             <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
-              <div className="w3-large" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
-                <button className="w3-bar-item w3-button w3-green" style={{marginRight: '48px'}} onClick={e => this.props.showPopup('activation')} > Activate Courses </button>
+              <div className="" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
+                <button className="w3-bar-item w3-button w3-green" style={{marginRight: '68px'}} onClick={e => this.props.showPopup('activation')} > Activate Courses </button>
+                <div className="w3-bar-item w3-border-left" style={{height: '40px', borderLeftWidth: '2px !important'}} />
                 <ShoppingCart {...this.props} />
                 {
                   this.props.user?
@@ -122,7 +142,10 @@ export default class Header extends Component {
                                 closeDropdown = {this.closeUserDropdown.bind(this)}
                     />
                   :
-                    <LoginButton accountClient={this.props.accountClient} />
+                    <span>
+                      <LoginButton accountClient={this.props.accountClient} />
+                      <SignUpButton accountClient={this.props.accountClient} />
+                    </span>
                 }
               </div>
             </div>
