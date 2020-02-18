@@ -58,7 +58,6 @@ class Programs extends Component {
   render() {
     const programs = this.props.programs
     const active = this.props.path.match(/\/.*$/)[0].replace('/','')
-    console.log(active)
     return (
       <div>
         <span className="w3-bar-item w3-button w3-text-blue w3-large" onClick={this.props.toggleAccordions}>
