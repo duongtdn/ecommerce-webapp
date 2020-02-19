@@ -90,8 +90,8 @@ class Managers extends Component {
         {
           this.props.user?
           <div>
-            <span className="w3-bar-item w3-button w3-text-blue" onClick={this.props.toggleAccordions}>
-            <i className="fas fa-tasks " /> <FormattedMessage id="sidebar.manager" /> { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
+            <span className="w3-bar-item w3-button w3-text-blue w3-large" onClick={this.props.toggleAccordions}>
+              <i className="fas fa-tasks " /> <FormattedMessage id="sidebar.manager" /> { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
             </span>
             <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.props.collapse? 'block':'none'}}>
               <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('mycourses')}}>
