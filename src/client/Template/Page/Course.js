@@ -1,6 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
+import { FormattedMessage, injectIntl } from 'react-intl'
 
 import xhttp from '@realmjs/xhttp-request'
 
@@ -27,13 +28,13 @@ class CourseInfo extends Component {
     return (
       <div>
         <p className="w3-text-grey" style={{fontStyle: 'italic'}} > {course.snippet} </p>
-        <p className="w3-text-grey" style={{fontWeight: 'bold'}}> Skills </p>
+        <p className="w3-text-grey" style={{fontWeight: 'bold'}}> <FormattedMessage id="label.skills" /> </p>
         {
           course.skills.map(skill => (
             <p key={skill}  className="cursor-pointer w3-text-blue" style={{paddingLeft: '16px', fontWeight: 'bold'}} > + {skill} </p>
           ))
         }
-        <p className="w3-text-grey" style={{fontWeight: 'bold'}}> Required for Certificates </p>
+        <p className="w3-text-grey" style={{fontWeight: 'bold'}}> <FormattedMessage id="label.required_for_certificates" /> </p>
         {
           course.certs.map(cert => (
             <p key={cert}  className="cursor-pointer w3-text-blue" style={{paddingLeft: '16px', fontWeight: 'bold'}} > + {cert} </p>
@@ -44,7 +45,7 @@ class CourseInfo extends Component {
   }
 }
 
-class PurchaseBtn extends Component {
+const PurchaseBtn = injectIntl(class extends Component {
   constructor(props) {
     super(props)
   }
@@ -69,18 +70,18 @@ class PurchaseBtn extends Component {
   renderInCartBtn() {
     return (
       <div style={{marginBottom: '32px'}} >
-         <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('order')}>
-            In Cart
-          </button>
+        <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('order')}>
+          <FormattedMessage id="button.incart" />
+        </button>
       </div>
     )
   }
   renderOrderedBtn() {
     return (
       <div style={{marginBottom: '32px'}} >
-         <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorders')}>
-            Ordered
-          </button>
+        <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorders')}>
+          <FormattedMessage id="button.ordered" />
+        </button>
       </div>
     )
   }
@@ -97,7 +98,7 @@ class PurchaseBtn extends Component {
       <div style={{marginBottom: '32px'}} >
         <div>
           <button className="w3-button w3-green w3-card-4" onClick = { e => this.onPurchase(price.offer)} >
-            Enroll Now {sale ? <span> (-{sale}%) </span> : null}
+            <FormattedMessage id="button.enroll" /> {sale ? <span> (-{sale}%) </span> : null}
           </button>
           {
             sale ?
@@ -114,8 +115,8 @@ class PurchaseBtn extends Component {
                   return (
                     <p key = {index} className="w3-text-red">
                       {p.type === 'sale' ?
-                        `Save - ${localeString(p.deduction, '.')} \u20ab (${p.description})`
-                        : p.type === 'gift' ? `Gift: ${p.description}`
+                        `${this.props.intl.formatMessage({id: 'label.money_saving'})} - ${localeString(p.deduction, '.')} \u20ab (${p.description})`
+                        : p.type === 'gift' ? `${this.props.intl.formatMessage({id: 'label.gift'})}: ${p.description}`
                         : null
                       }
                     </p>
@@ -125,7 +126,7 @@ class PurchaseBtn extends Component {
                   if (reward.type !== 'voucher') { return null }
                   return (
                     <p key = {reward.code} className="w3-text-red">
-                      { `Save - ${localeString(reward.value, '.')} \u20ab (voucher ${reward.code})`}
+                      { `${this.props.intl.formatMessage({id: 'label.money_saving'})} - ${localeString(reward.value, '.')} \u20ab (voucher ${reward.code})`}
                     </p>
                   )
                 })}
@@ -172,11 +173,12 @@ class PurchaseBtn extends Component {
     }
     this.props.onPurchase && this.props.onPurchase(item)
   }
-}
+})
 
-class PurchaseBundleBtn extends Component {
+const PurchaseBundleBtn = injectIntl(class extends Component {
   constructor(props) {
     super (props)
+
   }
   render() {
     if (!this.props.promo) {
@@ -188,7 +190,7 @@ class PurchaseBundleBtn extends Component {
     }
     return (
       <div style={{marginBottom: '32px'}} >
-        <h4 className="w3-text-blue"> <i className="fas fa-dollar-sign" /><i className="fas fa-dollar-sign" /> Bundle Offer </h4>
+        <h4 className="w3-text-blue bold"> <i className="fas fa-dollar-sign" /><i className="fas fa-dollar-sign" /> <FormattedMessage id="label.bundle_offer" /> </h4>
         {
           bundle.map( offer => {
             if (offer.expireIn && isExpire(offer.expireIn)) { return null }
@@ -197,20 +199,20 @@ class PurchaseBundleBtn extends Component {
             const cart = storage.get(storage.key.CART) || []
             const purchaseBtn = (orders.some(order => !/(^deleted$|^expired$)/.test(order.status) && order.items.some(item => item.type==='bundle' && item.code === offer.id))) ?
               <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('myorder')}>
-                Ordered
+                <FormattedMessage id="button.ordered" />
               </button>
               :
                 (cart.some(_item => _item.code === offer.id)) ?
                   <button className="w3-button w3-border w3-border-grey" onClick={e => this.props.navigate('order')}>
-                    In Cart
+                    <FormattedMessage id="button.incart" />
                   </button>
                 :
                   <button className="w3-button w3-blue w3-card-4" onClick = { e => this.onPurchase(offer, bundlePrice)} >
-                    Purchase Bundle (-{bundlePrice.saved}%)
+                      <FormattedMessage id="button.enroll_bundle" /> (-{bundlePrice.saved}%)
                   </button>
             return (
               <div key = {offer.id}>
-                <p> Buy {offer.deduction.length} at once, get super discount </p>
+                <p> <FormattedMessage id="label.bundle_description" values={{ num: offer.deduction.length}} /> </p>
                 <ul className='w3-ul'>
                   { offer.deduction.map( promo => {
                     /* currently, bundle only apply to course, later will support other goods such as boards, sofware licenses... */
@@ -225,7 +227,7 @@ class PurchaseBundleBtn extends Component {
                         <div className="w3-text-blue-grey"> {course.title} </div>
                         {
                           this.isPurchased(course) ?
-                            <div className="w3-small w3-text-grey italic"> Ordered </div>
+                            <div className="w3-small w3-text-grey italic"> <FormattedMessage id="label.ordered" /> </div>
                           :
                           <div>
                             <span className="w3-text-grey" style={{textDecoration: 'line-through', marginRight: '16px'}}> {localeString(price.origin, '.')} {'\u20ab'} </span>
@@ -237,11 +239,11 @@ class PurchaseBundleBtn extends Component {
                   })}
                   {
                     offer.deduction.every( promo => this.isPurchased(this.props.courses.find(course => course.id === promo.target)))?
-                      <li className="italic bold"> You have ordered all items in this bundle </li>
+                      <li className="italic bold"> <FormattedMessage id="label.ordered_all_items" /> </li>
                       :
                       <li className="bold">
-                        Bundle price: <span className="w3-text-red"> {localeString(bundlePrice.subTotal, '.')} {'\u20ab'} </span> {' '}
-                        <span className="w3-small" style={{fontStyle: "italic"}} > saved {localeString(bundlePrice.deduction, '.')} {'\u20ab'} </span>
+                        <FormattedMessage id="label.bundle_price" />: <span className="w3-text-red"> {localeString(bundlePrice.subTotal, '.')} {'\u20ab'} </span> {' '}
+                        <span className="w3-small" style={{fontStyle: "italic"}} > <FormattedMessage id="label.money_saving" /> {localeString(bundlePrice.deduction, '.')} {'\u20ab'} </span>
                       </li>
                   }
 
@@ -305,7 +307,7 @@ class PurchaseBundleBtn extends Component {
     }
     return false
   }
-}
+})
 
 class CourseDetail extends Component {
   constructor(props) {
@@ -317,14 +319,14 @@ class CourseDetail extends Component {
       <div>
         <div dangerouslySetInnerHTML={{__html: course.description}} style={{margin: '16px 0'}} />
 
-        <p style={{fontWeight: 'bold'}}>Skills to be gained</p>
+        <p style={{fontWeight: 'bold'}}><FormattedMessage id="label.skills" /></p>
         <ul className="w3-ul">
           {
             course.skills.map(skill => (<li key={skill} className="w3-border-0">{skill}</li> ))
           }
         </ul>
 
-        <p style={{fontWeight: 'bold'}}>This course is required for certificates</p>
+        <p style={{fontWeight: 'bold'}}><FormattedMessage id="label.required_for_certificates" /></p>
         <ul className="w3-ul">
           {
             course.certs.map(cert => (<li key={cert} className="w3-border-0">{cert}</li> ))

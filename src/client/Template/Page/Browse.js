@@ -137,7 +137,7 @@ class CoursePanel extends Component {
               </div>
               <div className="w3-small w3-text-dark-grey" style={{fontStyle: 'italic', padding: '0 0 8px 0'}}> {course.snippet} </div>
               <div>
-                <span className="w3-text-grey"> <FormattedMessage id="course.skills" />: </span>
+                <span className="w3-text-grey"> <FormattedMessage id="label.skills" />: </span>
                 <br />
                 {
                   course.skills.map(skill => (
@@ -149,7 +149,7 @@ class CoursePanel extends Component {
               </div>
               <hr style={{margin: '8px 0'}} />
               <div>
-                <span className="w3-text-grey"><FormattedMessage id="course.required_for_certificates" />: </span>
+                <span className="w3-text-grey"><FormattedMessage id="label.required_for_certificates" />: </span>
                 <br />
                 {
                   course.certs.map(cert => (
