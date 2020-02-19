@@ -149,7 +149,7 @@ class CoursePanel extends Component {
               </div>
               <hr style={{margin: '8px 0'}} />
               <div>
-                <span className="w3-text-grey"><FormattedMessage id="course.required_for_certificate" />: </span>
+                <span className="w3-text-grey"><FormattedMessage id="course.required_for_certificates" />: </span>
                 <br />
                 {
                   course.certs.map(cert => (
