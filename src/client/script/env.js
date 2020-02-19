@@ -5,9 +5,8 @@
 */
 
 export default {
-  urlAccount: 'https://auth.expiup.com',
-  realm: 'realm',
-  app: 'webapp',
+  urlAccount: 'http://localhost:3100',
+  app: 'dev',
   urlBasePath: '',
   template: {
     avata: {
