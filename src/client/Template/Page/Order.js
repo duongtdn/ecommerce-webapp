@@ -1,6 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
+import {FormattedMessage} from 'react-intl'
 
 import xhttp from '@realmjs/xhttp-request'
 
@@ -31,7 +32,7 @@ class ProgressBar extends Component {
           <div className={`w3-cell w3-center w3-text-${tabColors.cart}`} style={{width: '33.33%'}}>
             <label style={{position: 'relative'}} >
               <i className="fas fa-shopping-cart" /><br/>
-              <span className="w3-hide-small">Checkout Cart</span>
+              <span className="w3-hide-small"><FormattedMessage id="order.label.checkout_cart" /></span>
               {
                 this.props.progress.cart ?
                   <label  className={`w3-text-${tabColors.cart}`}
@@ -51,7 +52,7 @@ class ProgressBar extends Component {
           <div className={`w3-cell w3-center w3-text-${tabColors.payment}`} style={{width: '33.33%'}}>
             <label style={{position: 'relative'}} >
               <i className="far fa-credit-card" /><br/>
-              <span className="w3-hide-small">Process Payment</span>
+              <span className="w3-hide-small"><FormattedMessage id="order.label.process_payment" /></span>
               {
                 this.props.progress.payment ?
                   <label  className={`w3-text-${tabColors.payment}`}
@@ -71,7 +72,7 @@ class ProgressBar extends Component {
           <div className={`w3-cell w3-center w3-text-${tabColors.receipt}`} style={{width: '33.33%'}}>
             <label style={{position: 'relative'}} >
               <i className="fas fa-receipt" /><br/>
-              <span className="w3-hide-small">Receipt</span>
+              <span className="w3-hide-small"><FormattedMessage id="order.label.finish" /></span>
               {
                 this.props.progress.receipt ?
                   <label  className={`w3-text-${tabColors.receipt}`}
@@ -119,8 +120,8 @@ class ItemsTable extends Component {
       <table className="w3-table w3-border w3-bordered">
         <thead>
           <tr className="w3-blue">
-            <th colspan="2" className = "w3-border-right">Item</th>
-            <th style={{textAlign: 'right'}} >Value ({'\u20ab'})</th>
+            <th colspan={!this.props.simpleUI?'2':'1'} className = "w3-border-right"> <FormattedMessage id="order.label.Item" /> </th>
+            <th style={{textAlign: 'right'}} > <FormattedMessage id="order.label.Value" /> ({'\u20ab'})</th>
           </tr>
         </thead>
         <tbody>
@@ -143,7 +144,7 @@ class ItemsTable extends Component {
                       </div>
                       <div style={{margin: '3px 0', display: !this.props.simpleUI? 'block': 'none'}}>
                         <span className="w3-small w3-text-grey" style = {{ textDecoration: 'none', fontStyle: 'normal', cursor: 'pointer'}} onClick = {e => this.removeItemFrom(item.code)}>
-                          <i className="fas fa-trash"/> Remove from cart
+                          <i className="fas fa-trash"/> <FormattedMessage id="order.label.remove_item" />
                         </span>
                       </div>
                     </div>
@@ -159,7 +160,7 @@ class ItemsTable extends Component {
         </tbody>
         <tfoot>
           <tr className="w3-pale-blue">
-            <th colspan="2" className = "w3-border-right">Total</th>
+            <th colspan={!this.props.simpleUI?'2':'1'} className = "w3-border-right"><FormattedMessage id="order.label.total" /></th>
             <th className="w3-text-orange" style={{textAlign: 'right'}} > {localeString(subTotal)} </th>
           </tr>
         </tfoot>
@@ -188,15 +189,15 @@ class TabCart extends Component {
   render() {
     return(
       <div>
-        <h3> Checkout Carts </h3>
-        <p> Please verify your purchase items in cart, then process to next pay with payment method</p>
+        <h3> <FormattedMessage id = "order.cart.Checkout_Carts" /> </h3>
+        <p> <FormattedMessage id = "order.cart.message" /> </p>
         <ItemsTable onCartUpdated = {this.onCartUpdated} />
         <div style={{margin: '32px 0'}}>
           <button className={`w3-button w3-blue w3-right ${this.state.disabledBtn? 'w3-disabled' : ''}`}
                   disabled = {this.state.disabledBtn}
                   onClick = {this.onCartConfirmed }
           >
-            Continue with payment
+            <FormattedMessage id = "order.button.next_to_payment" />
           </button>
         </div>
       </div>
@@ -225,29 +226,29 @@ class Delivery extends Component {
         <h3 className="w3-text-blue"> Delivery
           <span className="w3-text-grey cursor-pointer w3-small"
                 style={{marginLeft: '6px', display: this.props.editDelivery? 'none' : 'inline'}}
-                onClick={this.props.enableEditDelivery}> <i className = "fa fa-edit" /> Edit </span>
+                onClick={this.props.enableEditDelivery}> <i className = "fa fa-edit" /> <FormattedMessage id="button.edit" /> </span>
         </h3>
-        <p>Please confirm delivery information below</p>
+        <p><FormattedMessage id="order.delivery.message" /></p>
         <div style={{ display: this.props.editDelivery? 'block': 'none' }} >
           <p>
-            <label className={`w3-small ${this.props.error.fullName?'w3-text-red':'w3-text-grey'}`}> Name </label>
+            <label className={`w3-small ${this.props.error.fullName?'w3-text-red':'w3-text-grey'}`}> <FormattedMessage id="order.delivery.name" /> </label>
             <input className={`w3-input ${this.props.error.fullName?'w3-border-red':''}`} value={this.props.delivery.fullName} onChange={this.handleTextInput('fullName')} />
           </p>
           <p>
-            <label className={`w3-small ${this.props.error.phone?'w3-text-red':'w3-text-grey'}`}> Contact number </label>
+            <label className={`w3-small ${this.props.error.phone?'w3-text-red':'w3-text-grey'}`}> <FormattedMessage id="order.delivery.phone" /> </label>
             <input className={`w3-input ${this.props.error.phone?'w3-border-red':''}`} value={this.props.delivery.phone} onChange={this.handleTextInput('phone')} />
           </p>
           <p>
-            <label className={`w3-small ${this.props.error.address?'w3-text-red':'w3-text-grey'}`}> Delivery Address </label>
+            <label className={`w3-small ${this.props.error.address?'w3-text-red':'w3-text-grey'}`}> <FormattedMessage id="order.delivery.address" /> </label>
             <input className={`w3-input ${this.props.error.address?'w3-border-red':''}`} value={this.props.delivery.address} onChange={this.handleTextInput('address')} />
           </p>
           <p>
-            <button className="w3-button w3-blue" onClick={this.saveDelivery} > Save </button>
+            <button className="w3-button w3-blue" onClick={this.saveDelivery} > <FormattedMessage id="button.save" /> </button>
           </p>
         </div>
         <div style={{ display: !this.props.editDelivery? 'block': 'none' }} >
           <div>
-            <p className="w3-small w3-text-grey"> Delivery to:</p>
+            <p className="w3-small w3-text-grey"><FormattedMessage id="order.delivery_to" />:</p>
             <label className="bold">{this.props.delivery && this.props.delivery.fullName}</label> <br />
             <label>{this.props.delivery && this.props.delivery.phone}</label> <br />
             <label>{this.props.delivery && this.props.delivery.address}</label>
@@ -277,7 +278,7 @@ class PaymentMethod extends Component {
     const normal = 'w3-border-grey w3-text-grey'
     return (
       <div style={{marginBottom: '32px'}} >
-        <h3 className="w3-text-blue"> Payment Method </h3>
+        <h3 className="w3-text-blue"> <FormattedMessage id="order.label.payment_method" /> </h3>
           <div className="w3-cell">
             <div className="w3-cell w3-center" style={{width: '90px', paddingRight: '5px'}}>
               <div  className={`w3-border w3-round w3-hover-pale-blue w3-hover-text-blue cursor-pointer ${this.props.paymentMethod === 'cod'? highlight : normal}`}
@@ -309,13 +310,13 @@ class PaymentMethod extends Component {
           </div>
           <div>
             <div style={{display: this.props.paymentMethod === 'cod'? 'block' : 'none'}} >
-              <p>You will pay when we deliver activation code to you. Please check and confirm the delivery address</p>
+              <p><FormattedMessage id="order.cod.message" /></p>
             </div>
             <div style={{display: this.props.paymentMethod === 'bank'? 'block' : 'none'}} >
-              <p>This payment method is not supported yet. We are going to make it vailable soon</p>
+              <p><FormattedMessage id="order.bank.message" /></p>
             </div>
             <div style={{display: this.props.paymentMethod === 'card'? 'block' : 'none'}} >
-              <p>This payment method is not supported yet. We are going to make it vailable soon</p>
+              <p><FormattedMessage id="order.card.message" /></p>
             </div>
           </div>
       </div>
@@ -333,10 +334,10 @@ class ConfirmPurchase extends Component {
     return (
       <div style={{marginBottom: '32px'}} >
         <h3 className="w3-text-blue"> Confirm Purchase </h3>
-        <button className="w3-button w3-small w3-right w3-text-grey w3-hover-none" onClick = {this.editCart}> <i className = "fa fa-edit" /> Edit Cart </button>
+        <button className="w3-button w3-small w3-right w3-text-grey w3-hover-none" onClick = {this.editCart}> <i className = "fa fa-edit" /> <FormattedMessage id="button.edit_cart" /> </button>
         <ItemsTable simpleUI = {true} />
         <div style={{margin: '32px 0'}}>
-          <button className="w3-button w3-blue w3-right" onClick = {this.placeOrder}> Place Order </button>
+          <button className="w3-button w3-blue w3-right" onClick = {this.placeOrder}> <FormattedMessage id="button.place_order" /> </button>
         </div>
       </div>
     )
@@ -388,25 +389,25 @@ class TabReceipt extends Component {
     const subTotal = order.items.reduce( (acc, cur) => acc + (cur.checked ? cur.price : 0), 0 )
     return(
       <div className="w3-text-grey">
-        <p className="w3-text-blue-grey"> Thank you for purchasing our service. Your order information is as below </p>
-        <h4 className="bold w3-text-blue"> <i className="fas fa-receipt" />  Order: #{order.number} </h4>
-        <p> Created At: {this.getDay(order.createdAt)} </p>
-        <p> Status: {order.status.toUpperCase()} </p>
+        <p className="w3-text-blue-grey"> <FormattedMessage id="order.receipt.message" /> </p>
+        <h4 className="bold w3-text-blue"> <i className="fas fa-receipt" />  <FormattedMessage id="order.receipt.Order" />: #{order.number} </h4>
+        <p> <FormattedMessage id="order.receipt.created_at" />: {this.getDay(order.createdAt)} </p>
+        <p> <FormattedMessage id="order.receipt.status" />: {order.status.toUpperCase()} </p>
 
         <p className="w3-card w3-padding">
-          <span className="w3-small w3-text-grey"> Delivery to </span> <br />
+          <span className="w3-small w3-text-grey"> <FormattedMessage id="order.delivery_to" /> </span> <br />
           <span className="bold w3-text-blue-grey"> {order.delivery.fullName} </span> <br/>
           <span className="w3-text-blue-grey"> {order.delivery.phone} </span> <br/>
           <span className="w3-text-blue-grey"> {order.delivery.address} </span>
         </p>
 
-        <p className="w3-text-grey"> Item Lists </p>
+        <p className="w3-text-grey"> <FormattedMessage id="order.receipt.item_lists" /> </p>
 
         <table className="w3-table w3-border w3-bordered">
           <thead>
             <tr className="w3-blue">
-              <th className = "w3-border-right">Item</th>
-              <th style={{textAlign: 'right'}} >Value ({'\u20ab'})</th>
+              <th className = "w3-border-right"><FormattedMessage id="order.label.Item" /></th>
+              <th style={{textAlign: 'right'}} ><FormattedMessage id="order.label.Value" /> ({'\u20ab'})</th>
             </tr>
           </thead>
           <tbody>
@@ -434,7 +435,7 @@ class TabReceipt extends Component {
           </tbody>
           <tfoot>
             <tr className="w3-pale-blue">
-              <th className = "w3-border-right">Total</th>
+              <th className = "w3-border-right"><FormattedMessage id="order.label.total" /></th>
               <th className="w3-text-orange" style={{textAlign: 'right'}} > {localeString(subTotal)} </th>
             </tr>
           </tfoot>
@@ -445,8 +446,10 @@ class TabReceipt extends Component {
   }
   getDay(timestamp) {
     const date = new Date(timestamp)
-    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    return `${weekday[date.getDay()]} ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+    // const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    // return `${weekday[date.getDay()]} ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+    // temporary not include ưeekday
+    return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
   }
 }
 TabReceipt.__tabname = 'receipt'
