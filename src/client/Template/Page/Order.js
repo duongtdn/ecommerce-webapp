@@ -26,6 +26,7 @@ class ProgressBar extends Component {
     }
     return(
       <div>
+        <div className=" w3-hide-small" style={{height:'50px', width: '100%'}} />
         <div className="w3-cell-row w3-border-bottom w3-padding">
           <div className={`w3-cell w3-center w3-text-${tabColors.cart}`} style={{width: '33.33%'}}>
             <label style={{position: 'relative'}} >
@@ -118,7 +119,7 @@ class ItemsTable extends Component {
       <table className="w3-table w3-border w3-bordered">
         <thead>
           <tr className="w3-blue">
-            <th className = "w3-border-right">Item</th>
+            <th colspan="2" className = "w3-border-right">Item</th>
             <th style={{textAlign: 'right'}} >Value ({'\u20ab'})</th>
           </tr>
         </thead>
@@ -128,11 +129,13 @@ class ItemsTable extends Component {
             if (this.props.simpleUI && !item.checked) { return null }
             return (
               <tr key={item.code}>
+                <td style={{borderRight: 0, width: '30px', display: !this.props.simpleUI? 'block': 'none'}} >
+                  <div>
+                    <input type="checkbox" style={{marginRight: '5px'}} checked={item.checked} onChange ={ e => this.toggleCheckItem(item.code)}/>
+                  </div>
+                </td>
                 <td className = "w3-border-right">
                   <div className="w3-cell-row">
-                    <div className="w3-cell" style={{width: '25px', display: !this.props.simpleUI? 'block': 'none'}}>
-                      <input type="checkbox" style={{marginRight: '5px'}} checked={item.checked} onChange ={ e => this.toggleCheckItem(item.code)}/>
-                    </div>
                     <div className = "w3-cell">
                       <div className={`${item.checked ? '' : 'w3-text-grey'}`} style={{ textDecoration: item.checked ? 'none' : 'line-through', fontStyle: item.checked ? 'normal' : 'italic' }}>
                         <span style={{fontWeight: 'bold'}} >{item.name}</span>
@@ -146,7 +149,7 @@ class ItemsTable extends Component {
                     </div>
                   </div>
                 </td>
-                <td style={{textAlign: 'right'}}>
+                <td style={{textAlign: 'right', minWidth:'96px'}}>
                   { item.checked ? localeString(item.price) : 0 }
                 </td>
               </tr>
@@ -156,7 +159,7 @@ class ItemsTable extends Component {
         </tbody>
         <tfoot>
           <tr className="w3-pale-blue">
-            <th className = "w3-border-right">Total</th>
+            <th colspan="2" className = "w3-border-right">Total</th>
             <th className="w3-text-orange" style={{textAlign: 'right'}} > {localeString(subTotal)} </th>
           </tr>
         </tfoot>
