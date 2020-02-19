@@ -362,7 +362,7 @@ export default class Course extends Component {
             {
               this.props.me && this.props.me.enrolls && this.props.me.enrolls.find( e => e.courseId === courseId && /(^active$|^studying$|^completed$)/i.test(e.status) ) ?
               <div style={{marginBottom: '32px'}}>
-                <button className="w3-button w3-blue" onClick={e => this.goToStudy(course)}>Study Now</button>
+                <button className="w3-button w3-blue" onClick={e => this.goToStudy(course)}><FormattedMessage id="button.study_now" /></button>
               </div>
               :
               <div>
