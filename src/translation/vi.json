@@ -10,6 +10,7 @@
   "button.incart": "Đã thêm vào giỏ hàng",
   "button.ordered": "Đã đặt hàng",
   "button.study_now": "Vào học",
+  "button.activate": "Kích hoạt",
   "label.money_saving": "Tiết kiệm",
   "label.gift": "Quà tặng",
   "label.bundle_offer": "Siêu tiết kiệm khi mua theo gói",
@@ -19,9 +20,13 @@
   "label.bundle_description": "Đăng ký {num} khóa theo gói, nhận siêu giảm giá",
   "label.skills": "Kỹ năng",
   "label.required_for_certificates": "Cần thiết cho Chứng chỉ",
+  "label.enter_activation_code": "Vui lòng nhập mã kích hoạt",
   "sidebar.programs": "Chương trình",
   "sidebar.manager": "Quản lý",
   "sidebar.manage_courses": "Quản lý Khóa học",
   "sidebar.manage_orders": "Quản lý Đơn hàng",
-  "sidebar.manage_rewards": "Quản lý Ưu đãi"
+  "sidebar.manage_rewards": "Quản lý Ưu đãi",
+  "popup.cart.label.ask_checkout": "Đã thêm vào giỏ hàng. Bạn có muốn kiểm tra giỏ hàng bay giờ?",
+  "popup.cart.button.yes_checkout": "Xem giỏ hàng",
+  "popup.cart.button.no_checkout": "Để lúc khác"
 }

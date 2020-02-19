@@ -1,6 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import xhttp from '@realmjs/xhttp-request'
 
@@ -30,7 +31,7 @@ export default class CoursesActivation extends Component {
     return (
       <div className="w3-model-content w3-sand w3-round" style={style} >
         <span  className="w3-button w3-display-topright bold w3-text-red" onClick={this.props.hidePopup} >&times;</span>
-        <p className="w3-text-grey"> Please enter activation code </p>
+        <p className="w3-text-grey"> <FormattedMessage id="label.enter_activation_code" /> </p>
         <input  type="text" className="w3-input w3-border w3-border-grey"
                 value={this.state.code}
                 onChange={e => this.setState({code: e.target.value.toUpperCase()})}
@@ -39,7 +40,7 @@ export default class CoursesActivation extends Component {
         />
         <div style={{textAlign: 'center', margin: '16px 0'}} >
           <button className="w3-button w3-green" onClick={this.submitActivationCode} disabled = {this.state.busy} >
-            <i className={this.state.busy? 'w3-spin fas fa-spinner': 'w3-hide'} /> Activate
+            <i className={this.state.busy? 'w3-spin fas fa-spinner': 'w3-hide'} /> <FormattedMessage id="button.activate" />
           </button>
         </div>
       </div>

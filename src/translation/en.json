@@ -10,6 +10,7 @@
   "button.incart": "Already in Cart",
   "button.ordered": "Already Ordered",
   "button.study_now": "Study now",
+  "button.activate": "Activate",
   "label.money_saving": "Save",
   "label.gift": "Gift",
   "label.bundle_offer": "Super save when buying bundle",
@@ -19,9 +20,13 @@
   "label.bundle_description": "Buy {num} at once, get super discount",
   "label.skills": "Skills",
   "label.required_for_certificates": "Required for Certificates",
+  "label.enter_activation_code": "Please enter activation code",
   "sidebar.programs": "Programs",
   "sidebar.manager": "Manager",
   "sidebar.manage_courses": "Manage Courses",
   "sidebar.manage_orders": "Manage Orders",
-  "sidebar.manage_rewards": "Manage Rewards"
+  "sidebar.manage_rewards": "Manage Rewards",
+  "popup.cart.label.ask_checkout": "Item added to Cart. Do you want to checkout cart now?",
+  "popup.cart.button.yes_checkout": "Checkout Cart",
+  "popup.cart.button.no_checkout": "Not right now"
 }
