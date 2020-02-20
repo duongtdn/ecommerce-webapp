@@ -16,6 +16,8 @@
   "button.edit_cart": "Chỉnh sửa",
   "button.place_order": "Đặt hàng",
   "button.close": "Đóng",
+  "button.cancel_order": "Hủy Đơn hàng",
+  "label.cancel_order_message": "Mong bạn chia sẻ lý do hủy đơn hàng",
   "label.money_saving": "Tiết kiệm",
   "label.gift": "Quà tặng",
   "label.bundle_offer": "Siêu tiết kiệm khi mua theo gói",
@@ -29,6 +31,9 @@
   "label.registered_on": "Ngày đăng ký",
   "label.expire_at": "Hết hạn vào",
   "label.can_be_used_for": "Có thể sử dụng cho",
+  "label.show_detail": "hiện chi tiết",
+  "label.hide_detail": "ẩn chi tiết",
+  "label.payment": "Thanh toán",
   "tag.pending": "Đang xử lý",
   "tag.studying": "Đang học",
   "tag.active": "Đã kích hoạt",
@@ -67,5 +72,9 @@
   "order.receipt.status": "Trạng thái",
   "order.receipt.item_lists": "Danh sách khóa học",
   "mycourses.label.title": "Khóa học đã đăng ký",
-  "myrewards.label.title": "Ưu đãi dành cho bạn"
+  "myrewards.label.title": "Ưu đãi dành cho bạn",
+  "myorders.dict.cod": "Thanh toán khi nhận hàng",
+  "myorders.dict.bank": "Chuyển khoản ngân hàng",
+  "myorders.dict.card": "Thanh toán bằng thẻ quốc tế",
+  "myorders.label.title": "Danh sách đơn hàng"
 }
