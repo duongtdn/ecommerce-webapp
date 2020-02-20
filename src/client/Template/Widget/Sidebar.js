@@ -58,7 +58,7 @@ class Programs extends Component {
   }
   render() {
     const programs = this.props.programs
-    const active = this.props.path.match(/\/.*$/) && this.props.path.match(/\/.*$/)[0].replace('/','')
+    const active = this.props.active
     return (
       <div>
         <span className="w3-bar-item w3-button w3-text-blue w3-large" onClick={this.props.toggleAccordions}>
@@ -85,6 +85,7 @@ class Managers extends Component {
     super(props)
   }
   render() {
+    const active = this.props.active
     return (
       <div>
         {
@@ -94,13 +95,13 @@ class Managers extends Component {
               <i className="fas fa-tasks " /> <FormattedMessage id="sidebar.manager" /> { this.props.collapse? <i className="fa fa-caret-up w3-right" /> : <i className="fa fa-caret-down w3-right" /> }
             </span>
             <div className="w3-text-grey" style={{padding: '4px', marginBottom: '16px', display: this.props.collapse? 'block':'none'}}>
-              <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('mycourses')}}>
+              <span className={`w3-bar-item w3-button cursor-pointer ${active==='mycourses'?'w3-pale-blue':''}`} onClick={e => {this.props.sidebar(false); this.props.navigate('mycourses')}}>
                 <FormattedMessage id="sidebar.manage_courses" />
               </span>
-              <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myorders')}}>
+              <span className={`w3-bar-item w3-button cursor-pointer ${active==='myorders'?'w3-pale-blue':''}`} onClick={e => {this.props.sidebar(false); this.props.navigate('myorders')}}>
                 <FormattedMessage id="sidebar.manage_orders" />
               </span>
-              <span className="w3-bar-item w3-button cursor-pointer" onClick={e => {this.props.sidebar(false); this.props.navigate('myrewards')}}>
+              <span className={`w3-bar-item w3-button cursor-pointer ${active==='myrewards'?'w3-pale-blue':''}`} onClick={e => {this.props.sidebar(false); this.props.navigate('myrewards')}}>
                 <FormattedMessage id="sidebar.manage_rewards" />
               </span>
             </div>
@@ -133,6 +134,8 @@ export default class Sidebar extends Component {
     this.updateStateWidth()
   }
   render() {
+    const path = this.props.href.getPathName()
+    const active = path.match(/\/.*$/)? path.match(/\/.*$/)[0].replace('/','') : path
     const style = {width: this.props.sidebarWidth, minWidth: this.props.sidebarMinWidth, top: 0, zIndex: 1}
     if (this.props.marginTop) {
       style.marginTop = this.props.marginTop
@@ -156,18 +159,18 @@ export default class Sidebar extends Component {
               <button className="w3-button w3-green" onClick={e => this.props.showPopup('activation')} > <FormattedMessage id="button.activate_course" /> </button>
             </div>
 
-            <Programs collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
+            <Programs active={active} collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
 
-            <Managers collapse = {this.state.accordions['management']} {...this.props} toggleAccordions = {this.toggleAccordions('management')} />
+            <Managers active={active} collapse = {this.state.accordions['management']} {...this.props} toggleAccordions = {this.toggleAccordions('management')} />
 
           </div>
         </div>
         <div className="w3-hide-small w3-hide-medium" >
           <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={style} onClick={e => e.stopPropagation()}>
 
-            <Programs collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
+            <Programs  active={active} collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
 
-            <Managers collapse = {this.state.accordions['management']} {...this.props} toggleAccordions = {this.toggleAccordions('management')} />
+            <Managers  active={active} collapse = {this.state.accordions['management']} {...this.props} toggleAccordions = {this.toggleAccordions('management')} />
 
           </div>
         </div>
