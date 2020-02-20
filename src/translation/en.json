@@ -27,6 +27,8 @@
   "label.required_for_certificates": "Required for Certificates",
   "label.enter_activation_code": "Please enter activation code",
   "label.registered_on": "Registered on",
+  "label.expire_at": "expire at",
+  "label.can_be_used_for": "Can be used for",
   "tag.pending": "Pending",
   "tag.studying": "Studying",
   "tag.active": "Active",
@@ -64,5 +66,6 @@
   "order.receipt.created_at": "Created at",
   "order.receipt.status": "Status",
   "order.receipt.item_lists": "Item lists",
-  "mycourses.label.title": "My courses"
+  "mycourses.label.title": "My courses",
+  "myrewards.label.title": "Rewards for you"
 }

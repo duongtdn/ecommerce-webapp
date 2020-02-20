@@ -27,6 +27,8 @@
   "label.required_for_certificates": "Cần thiết cho Chứng chỉ",
   "label.enter_activation_code": "Vui lòng nhập mã kích hoạt",
   "label.registered_on": "Ngày đăng ký",
+  "label.expire_at": "Hết hạn vào",
+  "label.can_be_used_for": "Có thể sử dụng cho",
   "tag.pending": "Đang xử lý",
   "tag.studying": "Đang học",
   "tag.active": "Đã kích hoạt",
@@ -64,5 +66,6 @@
   "order.receipt.created_at": "Thời gian tạo",
   "order.receipt.status": "Trạng thái",
   "order.receipt.item_lists": "Danh sách khóa học",
-  "mycourses.label.title": "Khóa học đã đăng ký"
+  "mycourses.label.title": "Khóa học đã đăng ký",
+  "myrewards.label.title": "Ưu đãi dành cho bạn"
 }

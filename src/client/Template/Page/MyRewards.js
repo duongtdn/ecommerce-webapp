@@ -1,6 +1,7 @@
 "use strict"
 
 import React, { PureComponent } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { localeString, getDay } from '../../lib/util'
 
@@ -25,13 +26,13 @@ class RewardCard extends PureComponent {
           </div>
           {
             reward.expireIn?
-              <div className = 'italic w3-text-red' style={{marginBottom: '16px'}}> expire at {getDay(reward.expireIn)} </div>
+              <div className = 'italic w3-text-red' style={{marginBottom: '16px'}}> <FormattedMessage id="label.expire_at" /> {getDay(reward.expireIn)} </div>
               : null
           }
         </div>
         <div>
           <p className="w3-text-grey italic w3-small">
-            Can be used for
+            <FormattedMessage id="label.can_be_used_for" />
           </p>
           {
             reward.scope.map( (target, index) => {
@@ -54,7 +55,7 @@ export default class MyRewards extends PureComponent {
     if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
     return (
       <div className="w3-container">
-      <h4 style={{margin: 'auto', maxWidth: '920px'}}> Your Rewards </h4>
+      <h3 style={{maxWidth: '920px'}}> <FormattedMessage id="myrewards.label.title" /> </h3>
       {
         this.props.me.rewards.map((reward, index) => (
           <RewardCard key={index} reward = {reward} {...this.props} />
