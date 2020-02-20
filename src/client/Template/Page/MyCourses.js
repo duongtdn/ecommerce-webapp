@@ -1,6 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
+import { FormattedMessage, injectIntl } from 'react-intl'
 
 import xhttp from '@realmjs/xhttp-request'
 
@@ -8,9 +9,10 @@ import UnAuthen from './UnAuthen'
 
 import env from '../../script/env'
 
-export default class MyCourses extends Component {
+class MyCourses extends Component {
   constructor(props) {
     super(props)
+    this.onClickStudyNowBtn = this.onClickStudyNowBtn.bind(this)
   }
   render() {
     if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
@@ -42,6 +44,7 @@ export default class MyCourses extends Component {
     if (courses.length === 0) { return null }
     return (
       <div className="w3-container">
+        <h3> <FormattedMessage id="mycourses.label.title" /> </h3>
         <ul className="w3-ul"> {
           courses.sort((a, b)=> b.registeredAt - a.registeredAt).map(course => {
             const d = new Date(parseInt(course.registeredAt))
@@ -58,10 +61,10 @@ export default class MyCourses extends Component {
                     </a>
                   </div>
                   <span className="w3-small w3-text-grey"> {course.snippet} </span>
-                  <p className="w3-small w3-text-grey italic" > Registered on: {`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`} </p>
+                  <p className="w3-small w3-text-grey italic" > <FormattedMessage id="label.registered_on" />: {`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`} </p>
                   <div className="w3-right" style={{textAlign:'center', margin: '8px 0'}}>
                     <button className="w3-button w3-border w3-text-blue" style={{fontWeight:'bold'}} onClick={() => this.onClickStudyNowBtn(course)}>
-                      Study Now
+                      <FormattedMessage id="button.study_now" />
                     </button>
                   </div>
                 </div>
@@ -79,7 +82,7 @@ export default class MyCourses extends Component {
                 </div>
                 <div className="w3-bar-item w3-right w3-hide-small w3-hide-medium" style={{textAlign:'center', paddingTop: '36px'}}>
                   <button className="w3-button w3-border w3-text-blue" style={{fontWeight:'bold'}} onClick={() => this.onClickStudyNowBtn(course)}>
-                    Study Now
+                    <FormattedMessage id="button.study_now" />
                   </button>
                 </div>
               </li>
@@ -90,10 +93,15 @@ export default class MyCourses extends Component {
     )
   }
   onClickStudyNowBtn(course) {
+    const intl = this.props.intl
     switch (course.status){
       case 'new':
         // show popup course is not activated yet
-        this.props.showPopup('info', {message: 'This course is not activated yet', closeBtn: true})
+        this.props.showPopup('info', {
+          message: intl.formatMessage({id: 'popup.message.course_not_activated'}),
+          closeBtnLabel: intl.formatMessage({id: 'button.close'}),
+          closeBtn: true
+        })
         break
       case 'active':
         xhttp.put(`/me/enroll/`, {courseId: course.id, status: 'studying' }, {authen: true})
@@ -109,16 +117,16 @@ export default class MyCourses extends Component {
     let tag = null;
     switch (e.status) {
       case 'new':
-        tag = <span className="w3-tag w3-small w3-blue-grey" style={{fontWeight: 'normal'}}> Pending </span>
+        tag = <span className="w3-tag w3-small w3-blue-grey" style={{fontWeight: 'normal'}}> <FormattedMessage id="tag.pending" /> </span>
         break
       case 'completed':
-        tag = <span className="w3-tag w3-small w3-green" style={{fontWeight: 'normal'}}> Completed </span>
+        tag = <span className="w3-tag w3-small w3-green" style={{fontWeight: 'normal'}}> <FormattedMessage id="tag.completed" /> </span>
         break
       case 'active':
-        tag = <span className="w3-tag w3-small w3-yellow" style={{fontWeight: 'normal'}}> Active </span>
+        tag = <span className="w3-tag w3-small w3-yellow" style={{fontWeight: 'normal'}}> <FormattedMessage id="tag.active" /> </span>
         break
       case 'studying':
-        tag = <span className="w3-tag w3-small w3-blue" style={{fontWeight: 'normal'}}> Studying </span>
+        tag = <span className="w3-tag w3-small w3-blue" style={{fontWeight: 'normal'}}> <FormattedMessage id="tag.studying" /> </span>
         break
     }
     return tag
@@ -137,3 +145,5 @@ export default class MyCourses extends Component {
     }
   }
 }
+
+export default injectIntl(MyCourses)

@@ -15,6 +15,7 @@
   "button.save": "Lưu",
   "button.edit_cart": "Chỉnh sửa",
   "button.place_order": "Đặt hàng",
+  "button.close": "Đóng",
   "label.money_saving": "Tiết kiệm",
   "label.gift": "Quà tặng",
   "label.bundle_offer": "Siêu tiết kiệm khi mua theo gói",
@@ -25,6 +26,11 @@
   "label.skills": "Kỹ năng",
   "label.required_for_certificates": "Cần thiết cho Chứng chỉ",
   "label.enter_activation_code": "Vui lòng nhập mã kích hoạt",
+  "label.registered_on": "Ngày đăng ký",
+  "tag.pending": "Đang xử lý",
+  "tag.studying": "Đang học",
+  "tag.active": "Đã kích hoạt",
+  "tag.completed": "Hoàn thành",
   "sidebar.programs": "Chương trình",
   "sidebar.manager": "Quản lý",
   "sidebar.manage_courses": "Quản lý Khóa học",
@@ -33,6 +39,7 @@
   "popup.cart.label.ask_checkout": "Đã thêm vào giỏ hàng. Bạn có muốn kiểm tra giỏ hàng bay giờ?",
   "popup.cart.button.yes_checkout": "Xem giỏ hàng",
   "popup.cart.button.no_checkout": "Để lúc khác",
+  "popup.message.course_not_activated": "Khóa học này chưa được kích hoạt",
   "order.label.checkout_cart": "Kiểm tra giỏ hàng",
   "order.label.process_payment": "Thanh toán",
   "order.label.finish": "Hoàn thành",
@@ -56,5 +63,6 @@
   "order.receipt.Order": "Đơn hàng",
   "order.receipt.created_at": "Thời gian tạo",
   "order.receipt.status": "Trạng thái",
-  "order.receipt.item_lists": "Danh sách khóa học"
+  "order.receipt.item_lists": "Danh sách khóa học",
+  "mycourses.label.title": "Khóa học đã đăng ký"
 }

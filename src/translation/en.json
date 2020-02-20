@@ -15,6 +15,7 @@
   "button.save": "Save",
   "button.edit_cart": "Edit cart",
   "button.place_order": "Place Order",
+  "button.close": "Close",
   "label.money_saving": "Save",
   "label.gift": "Gift",
   "label.bundle_offer": "Super save when buying bundle",
@@ -25,6 +26,11 @@
   "label.skills": "Skills",
   "label.required_for_certificates": "Required for Certificates",
   "label.enter_activation_code": "Please enter activation code",
+  "label.registered_on": "Registered on",
+  "tag.pending": "Pending",
+  "tag.studying": "Studying",
+  "tag.active": "Active",
+  "tag.completed": "Completed",
   "sidebar.programs": "Programs",
   "sidebar.manager": "Manager",
   "sidebar.manage_courses": "Manage Courses",
@@ -33,6 +39,7 @@
   "popup.cart.label.ask_checkout": "Item added to Cart. Do you want to checkout cart now?",
   "popup.cart.button.yes_checkout": "Checkout Cart",
   "popup.cart.button.no_checkout": "Not right now",
+  "popup.message.course_not_activated": "This course is not activated yet",
   "order.label.checkout_cart": "Checkout cart",
   "order.label.process_payment": "Process payment",
   "order.label.finish": "Finish",
@@ -56,5 +63,6 @@
   "order.receipt.Order": "Order",
   "order.receipt.created_at": "Created at",
   "order.receipt.status": "Status",
-  "order.receipt.item_lists": "Item lists"
+  "order.receipt.item_lists": "Item lists",
+  "mycourses.label.title": "My courses"
 }
