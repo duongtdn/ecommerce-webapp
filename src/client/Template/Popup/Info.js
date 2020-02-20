@@ -28,7 +28,7 @@ export default class Info extends Component {
         <p style={{textAlign: 'center'}}>
           {
             this.props.popupArgs && this.props.popupArgs.closeBtn?
-              <button className="w3-button w3-blue" onClick={this.close}> Close </button>
+              <button className="w3-button w3-blue" onClick={this.close}> {this.props.popupArgs.closeBtnLabel || 'Close'} </button>
             : null
           }
         </p>
