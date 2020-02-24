@@ -134,8 +134,8 @@ export default class Sidebar extends Component {
     this.updateStateWidth()
   }
   render() {
-    const path = this.props.href.getPathName()
-    const active = path.match(/\/.*$/)? path.match(/\/.*$/)[0].replace('/','') : path
+    const path = this.props.href && this.props.href.getPathName() || this.props.path
+    const active = path && path.match(/\/.*$/)? path.match(/\/.*$/)[0].replace('/','') : path
     const style = {width: this.props.sidebarWidth, minWidth: this.props.sidebarMinWidth, top: 0, zIndex: 1}
     if (this.props.marginTop) {
       style.marginTop = this.props.marginTop
