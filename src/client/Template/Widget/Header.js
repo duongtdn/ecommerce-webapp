@@ -15,16 +15,18 @@ class UserSnipet extends Component {
     const user = this.props.user
     const avata = this._getUserAvata()
     return (
-      <div className="w3-bar-item" style={{margin: '4px 0', padding: '3px 16px', cursor: 'pointer'}}>
-        <div className="w3-white" onClick={e => this.props.toggleDropdown()}>
+      <div className="w3-bar-item w3-dropdown-hover" style={{margin: '4px 0', padding: '3px 16px', cursor: 'pointer'}}>
+        <div className="w3-white">
           <img className="w3-circle w3-border w3-border-white"style={{width: '35px'}} src={avata} />
           {' '}
           <span className="w3-text-blue-grey" style={{marginRight: '4px'}}>{user.profile.displayName}</span>
           {' '}
           <i className="w3-text-dark-grey fa fa-ellipsis-v" />
         </div>
-        <div className={`${this.props.showDropdown? 'w3-bar-block' : 'w3-hide'}`} style={{padding: '16px 0'}}>
-          <button className="w3-bar-item w3-button" onClick={this.signout}> Logout </button>
+        <div className='w3-dropdown-content w3-bar-block' style={{padding: '4px', right: '4px'}}>
+          <button className="w3-bar-item w3-button w3-border w3-green" style={{textAlign: 'center'}} onClick={this.signout}>
+            <i className="fas fa-sign-out-alt" style={{marginRight: '4px'}} /> <FormattedMessage id="button.signout" />
+          </button>
         </div>
       </div>
     )
@@ -40,7 +42,6 @@ class UserSnipet extends Component {
   }
   signout(e) {
     this.props.accountClient.signout()
-    this.props.closeDropdown()
   }
 }
 
@@ -114,12 +115,9 @@ class ShoppingCart extends Component {
 export default class Header extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      showUserDropdown: false
-    }
+    this.state = {}
   }
   render() {
-    const programs = this.props.programs
     return (
       <header className={`w3-top w3-white ${!this.props.isScrollTop?'w3-card':''}`} style={{margin: '0 0 32px 0'}}>
 
@@ -140,9 +138,6 @@ export default class Header extends Component {
                     <UserSnipet user={this.props.user}
                                 accountClient={this.props.accountClient}
                                 env = {this.props.env}
-                                showDropdown = {this.state.showUserDropdown}
-                                toggleDropdown = {this.toggleUserDropdown.bind(this)}
-                                closeDropdown = {this.closeUserDropdown.bind(this)}
                     />
                   :
                     <span>
@@ -171,11 +166,5 @@ export default class Header extends Component {
 
       </header>
     )
-  }
-  toggleUserDropdown() {
-    this.setState({ showUserDropdown: !this.state.showUserDropdown })
-  }
-  closeUserDropdown() {
-    this.setState({ showUserDropdown: false })
   }
 }
