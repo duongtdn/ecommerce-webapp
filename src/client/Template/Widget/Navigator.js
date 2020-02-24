@@ -41,14 +41,14 @@ export default class Navigator extends Component {
                   isScrollTop = {this.state.isScrollTop}
                   sidebar = {this.setSidebarDisplay}
           />
-          <div className="w3-hide-small w3-hide-medium" >
+          <div className="w3-hide-small w3-hide-medium" style={{maxWidth: '1140px', margin: 'auto'}}>
             <Sidebar  sidebarWidth = '250px' marginTop = '96px'
                       sidebar = {this.setSidebarDisplay}
                       show = {true}
                       {...this.props}
             />
           </div>
-          <div className="w3-cell-row" style={{marginTop: '96px'}} >
+          <div className="w3-cell-row" style={{maxWidth: '1140px', margin: '96px auto'}} >
             <div className="w3-cell w3-hide-small w3-hide-medium" style={{width: '250px'}} />
             <div className="w3-cell">
             {

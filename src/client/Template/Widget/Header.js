@@ -122,7 +122,7 @@ export default class Header extends Component {
       <header className={`w3-top w3-white ${!this.props.isScrollTop?'w3-card':''}`} style={{margin: '0 0 32px 0'}}>
 
         {/* render in large screen */}
-        <div className="w3-hide-small w3-hide-medium">
+        <div className="w3-hide-small w3-hide-medium" style={{maxWidth: '1140px', margin: 'auto'}}>
           <div className="w3-bar">
             <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
 
