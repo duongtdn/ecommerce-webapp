@@ -29,6 +29,12 @@ if ('serviceWorker' in navigator) {
       console.log('Registration succeeded. Scope is ' + reg.scope);
     })
   })
+  self.addEventListener('install', event => {
+    self.skipWaiting()
+  })
+  self.addEventListener('activate', event => {
+    event.waitUntil(clients.claim())
+  })
   /* if service worker is activated, it will broadcast action init to all clients event though they are not controlled yet */
   navigator.serviceWorker.addEventListener('message', (event) => {
     switch (event.data.action) {
