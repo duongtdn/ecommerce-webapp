@@ -1,3 +1,10 @@
+/*
+  FOR NOW, SINCE THERE ARE FEW COURSES AND ONLY A SINGLE PROGRAM, IT IS OK TO LOAD ALL CONTENT AT STARTUP
+  In future, seperated into
+    + GET /data/programs
+    + GET /data/courses
+*/
+
 "use strict"
 
 function getProgram(helpers) {

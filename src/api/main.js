@@ -4,6 +4,7 @@ const Builder = require('express-api-builder')
 
 const api = Builder()
 
+// page navigation
 api
   .add('/app-shell', {
     get: require('./page/get-app-shell')
@@ -23,6 +24,9 @@ api
   .add('/course/:course', {
     get: require('./page/get-rendered-page')
   })
+
+// data
+api
   .add('/data/content', {
     get: require('./data/get-data-content')
   })
@@ -33,6 +37,15 @@ api
     post: require('./data/create-order'),
     get: require('./data/get-order'),
   })
+  .add('/data/course', {
+    get: require('./data/get-courses')    // GET /data/course?p=p1 || GET /data/course?c=c1+c2+c3
+  })
+  .add('/data/program', {
+    get: require('./data/get-programs')
+  })
+
+// user data
+api
   .add('/me', {
     get: require('./me/get-me'),
     post: require('./me/create-membership')

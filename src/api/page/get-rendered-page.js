@@ -34,7 +34,11 @@ function getPrograms(helpers) {
   }
 }
 
-
+/*
+  Depending on the path:
+    + /browse/:program - all courses of that program are loaded
+    + /course/:course - only that course is loaded
+*/
 function getCourses(helpers) {
   return function(req, res, next) {
     const all = []

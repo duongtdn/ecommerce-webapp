@@ -82,7 +82,7 @@ workbox.routing.registerRoute(
     cacheName: 'promotion-cache',
     plugins: [
       new workbox.expiration.Plugin({
-        maxAgeSeconds: 60*2,
+        maxAgeSeconds: 60*60*24,
       }),
     ]
   })
