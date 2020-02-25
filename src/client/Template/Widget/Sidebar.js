@@ -166,7 +166,10 @@ export default class Sidebar extends Component {
           </div>
         </div>
         <div className="w3-hide-small w3-hide-medium" >
-          <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={{...style, backgroundColor: 'inherit'}} onClick={e => e.stopPropagation()}>
+          <div  className="w3-sidebar w3-bar-block w3-border-right w3-border-grey border-gradient"
+                style={{ ...style, backgroundColor: 'inherit', }}
+                onClick={e => e.stopPropagation()}
+          >
 
             <Programs  active={active} collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
 

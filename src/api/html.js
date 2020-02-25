@@ -45,8 +45,12 @@ function html({script, data, dom}) {
       .italic {
         font-style: italic;
       }
-      .hover-bottom-red:hover {
-        border-bottom: 2px solid red;
+      .border-gradient {
+        -webkit-border-image: -webkit-gradient(linear, 0 0, 0 100%, from(#9e9e9e), to(rgba(0, 0, 0, 0))) 1 100%;
+        -webkit-border-image: -webkit-linear-gradient( #9e9e9e, rgba(0, 0, 0, 0) 70%) 1 100%;
+        -moz-border-image: -moz-linear-gradient( #9e9e9e, rgba(0, 0, 0, 0) 70%) 1 100%;
+        -o-border-image: -o-linear-gradient( #9e9e9e, rgba(0, 0, 0, 0) 70%) 1 100%;
+        border-image: linear-gradient(to bottom,  #9e9e9e, rgba(0, 0, 0, 0) 70%) 1 100%;
       }
     </style>
   </head>
