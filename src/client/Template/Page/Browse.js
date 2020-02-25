@@ -128,7 +128,7 @@ class CoursePanel extends Component {
           <div className="w3-cell-row">
             <img src={course.thumbnail} className="w3-container w3-cell w3-hide-small" style={{width:'150px', borderRadius: '24px'}} />
 
-            <div className="w3-cell">
+            <div className="w3-cell" style={{maxWidth: '530px'}}>
               <Tags tags = {tags} />
               <div className="cursor-pointer w3-text-dark-grey" style={{fontWeight: 'bold', padding: '0 0 4px 0'}}>
                 <a href={`/course/${course.id}`} className="w3-hover-text-blue" style={{textDecoration: 'none'}}>
