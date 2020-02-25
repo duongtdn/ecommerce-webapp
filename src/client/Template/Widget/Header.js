@@ -32,7 +32,7 @@ class UserSnipet extends Component {
     const avata = this._getUserAvata()
     return (
       <div ref={this.ref} className="w3-bar-item w3-dropdown-hover" style={{margin: '4px 0', padding: '3px 16px', cursor: 'pointer'}}>
-        <div className="w3-white">
+        <div>
           <img className="w3-circle w3-border w3-border-white"style={{width: '35px'}} src={avata} />
           {' '}
           <span className="w3-text-blue-grey" style={{marginRight: '4px'}}>{user.profile.displayName}</span>
@@ -112,7 +112,7 @@ class ShoppingCart extends Component {
   }
   render() {
     return (
-      <span className="w3-large w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '5px 8px'}} onClick={e => this.props.navigate('order')}>
+      <span className="w3-xlarge w3-bar-item w3-button w3-hover-none" style={{position: 'relative', margin: '0px 8px'}} onClick={e => this.props.navigate('order')}>
         <i className={`fas fa-shopping-cart ${this.state.itemCount > 0 ? 'w3-text-blue' : 'w3-text-light-blue'}`} />
         {
           this.state.itemCount > 0 ?
@@ -135,7 +135,7 @@ export default class Header extends Component {
   }
   render() {
     return (
-      <header className={`w3-top w3-white ${!this.props.isScrollTop?'w3-card':''}`} style={{margin: '0 0 32px 0'}}>
+      <header className={`w3-top ${!this.props.isScrollTop?'w3-card w3-white':''}`} style={{margin: '0 0 32px 0'}}>
 
         {/* render in large screen */}
         <div className="w3-hide-small w3-hide-medium" style={{maxWidth: '1140px', margin: 'auto'}}>
@@ -170,11 +170,11 @@ export default class Header extends Component {
 
         {/* render in small and medium screen */}
         <div className="w3-bar w3-hide-large">
-          <span className="w3-bar-item w3-button w3-xlarge" style={{marginRight: '24px'}} onClick={e => this.props.sidebar(true)}>
+          <span className="w3-bar-item w3-button w3-xxlarge" style={{marginRight: '0px'}} onClick={e => this.props.sidebar(true)}>
             <i className="fa fa-bars" />
           </span>
-          <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
-          <div className="w3-right w3-xlarge">
+          <a className="w3-bar-item w3-hover-none" style={{padding: '8px'}}><Logo /></a>
+          <div className="w3-right" style={{margin: '8px 0'}}>
             <ShoppingCart {...this.props} />
           </div>
 

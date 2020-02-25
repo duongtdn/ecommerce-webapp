@@ -146,7 +146,7 @@ export default class Sidebar extends Component {
           <div ref={this.ref} className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={style} onClick={e => e.stopPropagation()}>
 
             {/* close button */}
-            <span className="w3-button w3-xlarge" style={{position: 'fixed', left: `${this.state.width}px`, background: 'none'}} onClick={e => this.props.sidebar(false)}>
+            <span className="w3-button w3-xxlarge" style={{position: 'fixed', left: `${this.state.width}px`, background: 'none'}} onClick={e => this.props.sidebar(false)}>
               <i className="fa fa-bars" />
             </span>
 
@@ -166,7 +166,7 @@ export default class Sidebar extends Component {
           </div>
         </div>
         <div className="w3-hide-small w3-hide-medium" >
-          <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={style} onClick={e => e.stopPropagation()}>
+          <div className="w3-sidebar w3-bar-block w3-border-right w3-border-grey" style={{...style, backgroundColor: 'inherit'}} onClick={e => e.stopPropagation()}>
 
             <Programs  active={active} collapse = {this.state.accordions['program']} {...this.props} toggleAccordions = {this.toggleAccordions('program')} />
 

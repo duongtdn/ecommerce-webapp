@@ -8,7 +8,8 @@ export default class Logo extends Component {
   }
   render() {
     return (
-      <img height="45px" src="/public/logo.png" />
+      // <img height="60px" src="/public/logo.png" />
+      <img height="51px" src="/public/logo_bg.png" />
     )
   }
 }

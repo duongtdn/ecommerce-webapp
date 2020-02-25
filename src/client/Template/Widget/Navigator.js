@@ -48,7 +48,7 @@ export default class Navigator extends Component {
                       {...this.props}
             />
           </div>
-          <div className="w3-cell-row" style={{maxWidth: '1140px', margin: '96px auto'}} >
+          <div className="w3-cell-row" style={{maxWidth: '1140px', minHeight: '700px', margin: '96px auto'}} >
             <div className="w3-cell w3-hide-small w3-hide-medium" style={{width: '250px'}} />
             <div className="w3-cell">
             {

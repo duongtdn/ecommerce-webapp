@@ -8,7 +8,9 @@ export default class Footer extends Component {
   }
   render() {
     return (
-      <div style={{marginTop: '64px'}}></div>
+      <div className="w3-blue" style={{marginTop: '64px', height: '200px', width: '100%', position:'absolute', zIndex: 99}}>
+        Footer
+      </div>
     )
   }
 }
