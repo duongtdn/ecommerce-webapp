@@ -33,6 +33,7 @@
   "label.can_be_used_for": "Can be used for",
   "label.show_detail": "show detail",
   "label.hide_detail": "hide detail",
+  "label.hide_completed_course": "Hide completed courses",
   "label.payment": "Payment",
   "tag.pending": "Pending",
   "tag.studying": "Studying",

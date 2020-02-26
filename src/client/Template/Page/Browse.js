@@ -181,15 +181,36 @@ class CoursePanel extends Component {
 export default class Browse extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      hideCompletedCourses: false
+    }
   }
   render() {
     const prog = this.props.path.match(/\/.*$/)[0].replace('/','')
     const programs = this.props.programs
     const program = programs.find(program => program.id === prog)
     if (!program) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
-    const courses = this.props.courses.filter( course => course.programs.indexOf(program.id) !== -1 )
+    const courses = []
+    for (let i = 0; i < program.courses.length; i++) {
+      const id = program.courses[i]
+      const enrolled = this.props.me && this.props.me.enrolls && this.props.me.enrolls.find(c => c.courseId === id)
+      if (this.props.user && this.state.hideCompletedCourses && enrolled) {
+        continue
+      }
+      const course = this.props.courses.find(c => c.id === id)
+      if (course) { courses.push(course) }
+    }
     return (
       <div>
+        <div className="w3-container w3-text-blue" style={{display: this.props.user? 'block' : 'none'}}>
+          <input  className="w3-check"
+                  type="checkbox"
+                  checked={this.state.hideCompletedCourses}
+                  onChange={e => this.setState({hideCompletedCourses: !this.state.hideCompletedCourses})}
+                  style={{marginRight: '8px'}}
+          />
+          <FormattedMessage id="label.hide_completed_course" />
+        </div>
         <div className="w3-cell">
           <ul className="w3-ul">
             {
