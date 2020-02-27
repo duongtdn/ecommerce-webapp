@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import Sidebar from './Sidebar'
+import ScrollTopButton from './ScrollTopButton'
 
 export default class Navigator extends Component {
   constructor(props) {
@@ -82,6 +83,7 @@ export default class Navigator extends Component {
           </div>
           <Footer />
         </div>
+        <ScrollTopButton hide= {this.state.isScrollTop} />
       </div>
     )
   }
