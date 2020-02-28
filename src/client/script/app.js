@@ -164,10 +164,24 @@ if (acc) {
         renderApp(data)
       }) // tbd: catch error
     */
+
+    const t = setTimeout( () => {
+      render(
+        <div className="w3-container" style={{textAlign: 'center', padding: '128px 8px'}}>
+          <i className="w3-xxlarge fas fa-spinner w3-spin" />
+          <h3 className="w3-text-blue">Loading</h3>
+        </div>,
+        document.getElementById('root')
+      )
+    }, 500)
+
     Promise.all([get('/data/content'), get('/data/promotion')]).then(  values => {
+      clearTimeout(t)
       const data = {...values[0], ...values[1]}
       renderApp(data)
     }) // tbd: catch error
+
+
   }
 
 })()
