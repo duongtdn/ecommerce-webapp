@@ -140,7 +140,7 @@ export default class Header extends Component {
         {/* render in large screen */}
         <div className="w3-hide-small w3-hide-medium" style={{maxWidth: '1140px', margin: 'auto'}}>
           <div className="w3-bar">
-            <a className="w3-bar-item w3-button w3-hover-none"><Logo /></a>
+            <a className="w3-bar-item w3-button w3-hover-none"><Logo env = {this.props.env} /></a>
 
             <div className="w3-bar-item w3-right" style={{padding: '8px'}}>
               <div className="" style={{display: 'inline-block', verticalAlign: 'bottom'}}>
@@ -173,7 +173,7 @@ export default class Header extends Component {
           <span className="w3-bar-item w3-button w3-xxlarge" style={{marginRight: '0px'}} onClick={e => this.props.sidebar(true)}>
             <i className="fa fa-bars" />
           </span>
-          <a className="w3-bar-item w3-hover-none" style={{padding: '8px'}}><Logo /></a>
+          <a className="w3-bar-item w3-hover-none" style={{padding: '8px'}}><Logo env = {this.props.env} /></a>
           <div className="w3-right" style={{margin: '8px 0'}}>
             <ShoppingCart {...this.props} />
           </div>

@@ -7,8 +7,6 @@ import xhttp from '@realmjs/xhttp-request'
 
 import UnAuthen from './UnAuthen'
 
-import env from '../../script/env'
-
 class MyCourses extends Component {
   constructor(props) {
     super(props)
@@ -107,7 +105,7 @@ class MyCourses extends Component {
         xhttp.put(`/me/enroll/`, {courseId: course.id, status: 'studying' }, {authen: true})
       case 'studying':
       case 'completed':
-        window.open(`${env.elearn}/${course.id}`)
+        window.open(`${this.props.env.elearn}/${course.id}`)
         break
       default:
         break

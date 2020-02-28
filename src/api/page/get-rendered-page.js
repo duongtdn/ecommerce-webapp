@@ -6,6 +6,7 @@ const { renderToString  } = require('react-dom/server')
 const AppShell = require('../../../build/AppShell')
 
 const html = require('../html')
+const env = require('../env')
 
 /*
   for improvement
@@ -91,6 +92,7 @@ function render() {
       programs: req.programs,
       courses: req.courses,
       promos: req.promos,
+      env
     }))
     res.writeHead( 200, { "Content-Type": "text/html" } )
     res.end(html({

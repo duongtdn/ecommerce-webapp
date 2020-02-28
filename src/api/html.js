@@ -1,5 +1,7 @@
 'use strict'
 
+const __c_env = require('./env')
+
 function html({script, data, dom}) {
   return `
 <!DOCTYPE html>
@@ -57,6 +59,7 @@ function html({script, data, dom}) {
   <body>
     <div id="root">${dom || ''}</div>
     <script type="text/javascript"> __data = ${JSON.stringify(data)} </script>
+    <script type="text/javascript"> __c_env = ${JSON.stringify(__c_env)} </script>
     <script type="text/javascript" src="${script}" ></script>
   </body>
 </html>

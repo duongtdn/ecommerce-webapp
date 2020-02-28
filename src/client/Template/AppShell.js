@@ -18,7 +18,6 @@ import Login from './Popup/Login'
 import CoursesActivation from './Popup/CoursesActivation'
 
 import xhttp from '@realmjs/xhttp-request'
-import env from '../script/env'
 
 import {IntlProvider} from 'react-intl'
 import messages_vi from '../../translation/vi.json'
@@ -62,8 +61,7 @@ class AppShell extends Component {
     this.onEnrollCreated = this.onEnrollCreated.bind(this)
     /* fetch /user to get user orders, enrolls and rewards */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
-      const urlBasePath = env.urlBasePath
-      xhttp.get(`${urlBasePath}/me`, {authen: true})
+      xhttp.get(`/me`, {authen: true})
       .then( ({status, responseText}) => {
         if (status === 200) {
           const data = JSON.parse(responseText)

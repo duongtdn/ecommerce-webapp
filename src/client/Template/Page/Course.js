@@ -9,8 +9,6 @@ import { localeString } from '../../lib/util'
 
 import storage from '../../lib/storage'
 
-import env from '../../script/env'
-
 function isExpire(timestamp) {
   if (!timestamp) {
     return false
@@ -425,7 +423,7 @@ class Course extends Component {
         xhttp.put(`/me/enroll/`, {courseId: course.id, status: 'studying' }, {authen: true})
       case 'studying':
       case 'completed':
-        window.open(`${env.elearn}/${course.id}`)
+        window.open(`${this.props.env.elearn}/${course.id}`)
         break
       default:
         break
