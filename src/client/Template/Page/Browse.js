@@ -194,7 +194,7 @@ export default class Browse extends Component {
     for (let i = 0; i < program.courses.length; i++) {
       const id = program.courses[i]
       const enrolled = this.props.me && this.props.me.enrolls && this.props.me.enrolls.find(c => c.courseId === id)
-      if (this.props.user && this.state.hideCompletedCourses && enrolled) {
+      if (this.props.user && this.state.hideCompletedCourses && enrolled && enrolled.status === 'completed') {
         continue
       }
       const course = this.props.courses.find(c => c.id === id)
