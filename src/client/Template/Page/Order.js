@@ -120,7 +120,7 @@ class ItemsTable extends Component {
       <table className="w3-table w3-border w3-bordered">
         <thead>
           <tr className="w3-blue">
-            <th colspan={!this.props.simpleUI?'2':'1'} className = "w3-border-right"> <FormattedMessage id="order.label.Item" /> </th>
+            <th colSpan={!this.props.simpleUI?'2':'1'} className = "w3-border-right"> <FormattedMessage id="order.label.Item" /> </th>
             <th style={{textAlign: 'right'}} > <FormattedMessage id="order.label.Value" /> ({'\u20ab'})</th>
           </tr>
         </thead>
@@ -160,7 +160,7 @@ class ItemsTable extends Component {
         </tbody>
         <tfoot>
           <tr className="w3-pale-blue">
-            <th colspan={!this.props.simpleUI?'2':'1'} className = "w3-border-right"><FormattedMessage id="order.label.total" /></th>
+            <th colSpan={!this.props.simpleUI?'2':'1'} className = "w3-border-right"><FormattedMessage id="order.label.total" /></th>
             <th className="w3-text-orange" style={{textAlign: 'right'}} > {localeString(subTotal)} </th>
           </tr>
         </tfoot>
