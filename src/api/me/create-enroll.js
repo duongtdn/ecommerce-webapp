@@ -31,7 +31,23 @@ function validateCode(helpers) {
 }
 
 function registerTests(helpers) {
-  req.tests = {} // register new test, then provide test here
+  return function (req, res, next) {
+    const euid = jwt.sign({uid: req.uid}, process.env.APP_SHARE_KEY)
+    helpers.invoke.registerTests({courses: req.activation.courses, euid})
+    .then(tests => {
+      req.tests = tests
+      next()
+    })
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Could not create tests for user. Invoke failed',
+        action: 'invoke registerTests',
+        error: err
+      })
+      req.tests = {}
+      next()
+    })
+  }
 }
 
 function createEnrollAndProgress(helpers) {
@@ -98,7 +114,7 @@ function updateOrderStatus(helpers) {
         action: 'POST /me/enroll',
         error: err
       })
-      res.status(500).json({ reason: 'Failed to Access Database' })
+      next()
     })
   }
 }
@@ -111,7 +127,7 @@ function sendNotification(helpers) {
       recipient: token,
       data: req.enrolls
     })
-    .then(next)
+    .then(_ => next())
     .catch(err => {
       helpers.alert && helpers.alert({
         info: 'Cannot send notification',
@@ -133,4 +149,4 @@ function response() {
   }
 }
 
-module.exports = [authen, validateCode, createEnrollAndProgress, updateOrderStatus, sendNotification, response]
+module.exports = [authen, validateCode, registerTests, createEnrollAndProgress, updateOrderStatus, sendNotification, response]

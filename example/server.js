@@ -35,6 +35,26 @@ api.helpers({
       console.log(`------------------------------------------------------------------`)
       resolve()
     })
+  },
+  invoke: {
+    registerTests({courses, euid}) {
+      return new Promise( (resolve, reject) => {
+        try {
+          const tests = {}
+          courses.forEach(course => {
+            tests[course] = {
+              'exam-01':  {
+                testId: `${course}-t-01`,
+                resultId: `${course}-r-01`
+              }
+            }
+          })
+          resolve(tests)
+        } catch(err) {
+          reject(err)
+        }
+      })
+    }
   }
 })
 
