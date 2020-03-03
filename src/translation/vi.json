@@ -35,6 +35,8 @@
   "label.hide_detail": "ẩn chi tiết",
   "label.hide_completed_course": "Ẩn khóa học đã hoàn thành",
   "label.payment": "Thanh toán",
+  "label.activate_success": "Kích hoạt khóa học thành công",
+  "label.activate_failed": "Kích hoạt khóa học không thành công. Vui lòng kiểm tra lại mã kích hoạt",
   "tag.pending": "Chưa kích hoạt",
   "tag.studying": "Đang học",
   "tag.active": "Đã kích hoạt",

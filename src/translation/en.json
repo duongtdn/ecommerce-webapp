@@ -35,6 +35,8 @@
   "label.hide_detail": "hide detail",
   "label.hide_completed_course": "Hide completed courses",
   "label.payment": "Payment",
+  "label.activate_success": "Success! Activated courses",
+  "label.activate_failed": "Failed! Unable to activate courses",
   "tag.pending": "Pending",
   "tag.studying": "Studying",
   "tag.active": "Active",
