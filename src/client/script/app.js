@@ -49,7 +49,7 @@ if ('serviceWorker' in navigator) {
         console.log('Client received request to sign-in')
         if (acc && !acc.get('user')) {
           console.log('Client is not signed in, perform local signin')
-          acc.lso() // in future, api may changed to signinLocally
+          acc.signinLocally()
         } else {
           console.log('Client is signed in already, no action needed')
         }
@@ -89,10 +89,10 @@ if (acc) {
       <AppShell accountClient = {acc} env = {env} href = {href} path = {href.getPathName()} {...data} />,
       document.getElementById('root')
     )
-    // after page rendered, perform user lso | sso
-    acc.lso( (status, user) => {
+    // after page rendered, perform user sign-in
+    acc.signinLocally( (status, user) => {
       if (status === 200) {
-        console.log(`LSO finished with status code: ${status}`)
+        console.log(`Sing-in locally finished with status code: ${status}`)
         console.log(user)
       } else {
         acc.sso( (status, user) => {
