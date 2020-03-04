@@ -341,7 +341,9 @@ class Course extends Component {
     this.onPurchase = this.onPurchase.bind(this)
   }
   render() {
-    const courseId = this.props.path.match(/\/.*$/)[0].replace('/','')
+    const path = this.props.href && this.props.href.getPathName() || this.props.path
+    if (!path.match(/\/.*$/)) { return null }
+    const courseId = path.match(/\/.*$/)[0].replace('/','')
     const course = this.props.courses.find(course => course.id === courseId)
     if (!course) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
     const promo = this.props.promos? this.props.promos.filter( promo => promo.target.indexOf(course.id) !== -1 ) : []

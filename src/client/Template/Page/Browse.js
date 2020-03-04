@@ -131,7 +131,11 @@ class CoursePanel extends Component {
             <div className="w3-cell" style={{maxWidth: '530px'}}>
               <Tags tags = {tags} />
               <div className="cursor-pointer w3-text-dark-grey" style={{fontWeight: 'bold', padding: '0 0 4px 0'}}>
-                <a href={`/course/${course.id}`} className="w3-hover-text-blue" style={{textDecoration: 'none'}}>
+                <a  href={`/course/${course.id}`}
+                    className="w3-hover-text-blue"
+                    style={{textDecoration: 'none'}}
+                    onClick = { e => { e.preventDefault(); this.props.navigate(`course/${course.id}`)}}
+                >
                   {course.title}
                 </a>
               </div>
@@ -166,10 +170,20 @@ class CoursePanel extends Component {
           <div  className="w3-hide-small" style={{width: '150px', height: '10px', display: 'inline-block'}} />
           <Promotion course={course} promos={promos} user={user} me={me} />
           {' '}
-          <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4 w3-right"> <FormattedMessage id="button.view_course" /> </a>
+          <a  href={`/course/${course.id}`}
+              className="w3-button w3-round w3-blue w3-card-4 w3-right"
+              onClick = { e => { e.preventDefault(); this.props.navigate(`course/${course.id}`)}}
+          >
+            <FormattedMessage id="button.view_course" />
+          </a>
         </div>
         <div className="w3-bar-item w3-right w3-hide-medium w3-hide-small">
-          <a href={`/course/${course.id}`} className="w3-button w3-round w3-blue w3-card-4"> <FormattedMessage id="button.view_course" /> </a>
+          <a  href={`/course/${course.id}`}
+              className="w3-button w3-round w3-blue w3-card-4"
+              onClick = { e => { e.preventDefault(); this.props.navigate(`course/${course.id}`)}}
+          >
+            <FormattedMessage id="button.view_course" />
+          </a>
           <br /> <br />
           <Promotion course={course} promos={promos} user={user} me={me} />
         </div>
@@ -186,7 +200,9 @@ export default class Browse extends Component {
     }
   }
   render() {
-    const prog = this.props.path.match(/\/.*$/)[0].replace('/','')
+    const path = this.props.href && this.props.href.getPathName() || this.props.path
+    if (!path.match(/\/.*$/)) { return null }
+    const prog = path.match(/\/.*$/)[0].replace('/','')
     const programs = this.props.programs
     const program = programs.find(program => program.id === prog)
     if (!program) { return (<div className="w3-container w3-text-red"> 404 Page not found </div>) }
@@ -219,7 +235,7 @@ export default class Browse extends Component {
                 return (
                   <li key = {course.id} style={{padding: '0 0 8px 0'}}>
                     <LevelBar course = {course} />
-                    <CoursePanel course = {course} promos = {promos} user={this.props.user} me={this.props.me} />
+                    <CoursePanel course = {course} promos = {promos} user={this.props.user} me={this.props.me} navigate={this.props.navigate} />
                   </li>
                 )
               })

@@ -118,8 +118,10 @@ class AppShell extends Component {
   }
   navigate(route) {
     this.props.href && this.props.href.history().pushState({},'',`/${route}`)
-    this.pages.events[route] && this.pages.events[route].onEnter && this.pages.events[route].onEnter()
-    this.setState({activeRoute: route || 'error'})
+    const activeRoute = route.split('/')[0]
+    this.pages.events[activeRoute] && this.pages.events[activeRoute].onEnter && this.pages.events[activeRoute].onEnter()
+    this.setState({activeRoute: activeRoute || 'error'})
+    window.scrollTo({ top: 0 })
   }
   onOrderCreated(order) {
     const me = {...this.state.me}

@@ -55,6 +55,7 @@ class UserWidget extends Component {
 class Programs extends Component {
   constructor(props) {
     super(props)
+    this.navigate = this.navigate.bind(this)
   }
   render() {
     const programs = this.props.programs
@@ -69,7 +70,9 @@ class Programs extends Component {
             programs.map( program => (
               <a  key={program.id}
                   className={`w3-bar-item w3-button cursor-pointer ${program.id===active?'w3-pale-blue':''}`}
-                  href = {`/browse/${program.id}`} >
+                  href = {`/browse/${program.id}`}
+                  onClick = { e => { e.preventDefault(); this.navigate(`browse/${program.id}`)}}
+              >
                 {program.title}
               </a>
             ))
@@ -77,6 +80,10 @@ class Programs extends Component {
         </div>
       </div>
     )
+  }
+  navigate(route) {
+    this.props.sidebar(false)
+    this.props.navigate(route)
   }
 }
 
