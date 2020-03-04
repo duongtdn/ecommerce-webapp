@@ -1,3 +1,8 @@
+/*
+scroll behavior option is still not supported by some browser such as Edge
+a polyfill solution can be found here: https://github.com/iamdustan/smoothscroll
+*/
+
 "use strict"
 
 import React, { Component } from 'react'
