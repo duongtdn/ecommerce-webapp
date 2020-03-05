@@ -407,7 +407,11 @@ class Course extends Component {
     if (this.props.user) {
       _addToCart()
     } else {
-      this.props.showPopup('login', {message: 'Please login to make purchase'})
+      this.props.showPopup('login', {
+        message: intl.formatMessage({id: 'popup.require_login_to_purchase'}),
+        yesLabel: intl.formatMessage({id: 'button.login'}),
+        noLabel: intl.formatMessage({id: 'button.close'})
+      })
       .then( _ => { _addToCart() })
       .catch(function(){})
     }
