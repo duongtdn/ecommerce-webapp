@@ -219,7 +219,7 @@ export default class MyOrders extends Component {
   }
   render() {
     if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
-    const orders = this.props.me.orders
+    const orders = [...this.props.me.orders]
     return (
       <div className="w3-container">
         <div style={{maxWidth: '920px'}}>
