@@ -15,6 +15,28 @@ const _dict = {
   'card': "myorders.dict.card",
 }
 
+class Tag extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    let _color = ''
+    switch (this.props.label) {
+      case 'FULFILL':
+        _color = 'w3-green'
+        break
+      case 'NEW':
+        _color = 'w3-yellow'
+        break
+      case 'DELETED':
+      _color = "w3-grey"
+    }
+    return (
+    <span className={`w3-tag w3-small ${_color}`} style={{marginRight: '6px'}}> {this.props.label} </span>
+    )
+  }
+}
+
 const OrderCard = injectIntl(class extends Component {
   constructor(props) {
     super(props)
@@ -34,7 +56,7 @@ const OrderCard = injectIntl(class extends Component {
           <div className="w3-cell-row">
             <div className="w3-cell">
               <h6 className="bold" style={{textDecoration: order.status === 'deleted'? 'line-through' : 'none'}}>
-                <i className="fas fa-receipt" />  #{order.number}
+                <i className="fas fa-receipt" />  #{order.number} <Tag label={order.status.toUpperCase()} />
               </h6>
             </div>
             <div className="w3-cell" style={{textAlign: 'right'}}>
