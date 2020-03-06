@@ -127,7 +127,7 @@ class AppShell extends Component {
   onOrderCreated(order) {
     const me = {...this.state.me}
     const orders = [...me.orders.filter(_order => _order.number !== order.number)]
-    orders.push(order)
+    orders.unshift(order)
     me.orders = orders
     this.setState({ me })
   }

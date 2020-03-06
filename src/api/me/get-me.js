@@ -4,7 +4,9 @@ const {authen} = require('../lib/authen')
 
 function getOrder(helpers) {
   return function(req, res, next) {
-    helpers.Database.ORDER.find({uid: `= ${req.uid}`},null,null,{Limit: 20, ScanIndexForward: false})
+    // There should no Limit in order queried.
+    // Because if order for a course is not loaded to client, that course can be purchased again for that user.
+    helpers.Database.ORDER.find({uid: `= ${req.uid}`},null,null,{ScanIndexForward: false})
     .then( data => {
       if (data && data.length > 0) {
         req.orders = data

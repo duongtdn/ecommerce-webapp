@@ -123,7 +123,6 @@ function validateOrder(helpers) {
 
 
 /*
-  order.uid is hashkey while order.number is range key
   order.billTo is ignored for the time being
 */
 function insertOrderToDB(helpers) {

@@ -384,7 +384,7 @@ class TabReceipt extends Component {
     super(props)
   }
   render() {
-    const order = this.props.me.orders[this.props.me.orders.length-1]
+    const order = this.props.me.orders[0]
     if (!order) { return null }
     const subTotal = order.items.reduce( (acc, cur) => acc + (cur.checked ? cur.price : 0), 0 )
     return(
