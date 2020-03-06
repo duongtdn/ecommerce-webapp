@@ -66,6 +66,7 @@ class AppShell extends Component {
         if (status === 200) {
           const data = JSON.parse(responseText)
           const me = { ...data }
+          console.log(me)
           this.setState({ me })
         } else {
           console.log(`fetching /user failed: return code ${status}`)
@@ -130,10 +131,10 @@ class AppShell extends Component {
     me.orders = orders
     this.setState({ me })
   }
-  onOrderDeleted(number) {
+  onOrderDeleted(createdAt) {
     const me = {...this.state.me}
     const orders = [...me.orders.map(_order => {
-      if (_order.number === number) {
+      if (_order.createdAt === createdAt) {
         _order.status = 'deleted'
       }
       return _order

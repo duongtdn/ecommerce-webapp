@@ -195,14 +195,14 @@ const OrderCard = injectIntl(class extends Component {
     return this
   }
   cancelOrder(order) {
-    const number = order.number
+    const createdAt = order.createdAt
     const reason = this.state.cancelReason
-    xhttp.delete('/me/order', {number, reason}, {authen: true, timeout: 300000})
+    xhttp.delete('/me/order', {createdAt, reason}, {authen: true, timeout: 300000})
     .then( ({status}) => {
       this.props.hidePopup()
       if (status === 200) {
         this.hideOrderDetail()
-        this.props.onOrderDeleted(number)
+        this.props.onOrderDeleted(createdAt)
       } else {
         this.props.showPopup('info', { closeBtn: true, message: `Error ${status}. Please refresh page and try again`, align: 'left' })
       }

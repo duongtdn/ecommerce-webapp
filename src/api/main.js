@@ -34,7 +34,6 @@ api
     get: require('./data/get-data-promo')
   })
   .add('/data/order', {
-    post: require('./data/create-order'),
     get: require('./data/get-order'),
   })
   .add('/data/course', {
@@ -51,11 +50,13 @@ api
     post: require('./me/create-membership')
   })
   .add('/me/order', {
+    post: require('./me/create-order'),
     delete: require('./me/delete-order')
   })
   .add('/me/enroll', {
     put: require('./me/update-enroll'),
     post: require('./me/create-enroll')
   })
+
 
 module.exports = api

@@ -4,7 +4,7 @@ const {authen} = require('../lib/authen')
 
 function getOrder(helpers) {
   return function(req, res, next) {
-    helpers.Database.ORDER.find({uid: `= ${req.uid}`})
+    helpers.Database.ORDER.find({uid: `= ${req.uid}`},null,null,{Limit: 20, ScanIndexForward: false})
     .then( data => {
       if (data && data.length > 0) {
         req.orders = data

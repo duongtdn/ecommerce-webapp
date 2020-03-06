@@ -4,7 +4,7 @@ const {authen} = require('../lib/authen')
 
 function validateParams() {
   return function(req, res, next) {
-    if (req.body.number) {
+    if (req.body.createdAt) {
       next()
     } else {
       res.status(400).json({ error: 'Bad parameters'})
@@ -14,7 +14,7 @@ function validateParams() {
 
 function getActivateCode(helpers) {
   return function(req, res, next) {
-    helpers.Database.ORDER.find({uid: `= ${req.uid}`, number: `= ${req.body.number}`})
+    helpers.Database.ORDER.find({uid: `= ${req.uid}`, createdAt: `= ${parseInt(req.body.createdAt)}`})
     .then( data => {
       if (data && data.length > 0) {
         req.code = data[0].activationCode
@@ -37,10 +37,10 @@ function getActivateCode(helpers) {
 function deleteOrder(helpers) {
   return function(req, res, next) {
     const uid = req.uid
-    const number = req.body.number
+    const createdAt = req.body.createdAt
     helpers.Database.batchWrite({
       ORDER: {
-        remove: [{uid, number}]
+        remove: [{uid, createdAt}]
       },
       ACTIVECODE: {
         remove: [{ code: req.code }]

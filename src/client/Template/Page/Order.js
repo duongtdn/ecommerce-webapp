@@ -586,7 +586,7 @@ export default class Order extends Component {
           items: storage.get(storage.key.CART).filter( item => item.checked )
         }
         this.props.showPopup('info', { icon: 'fas fa-spinner', message: 'creating order...' })
-        xhttp.post('/data/order', { order }, {authen: true,  timeout: 300000})
+        xhttp.post('/me/order', { order }, {authen: true,  timeout: 300000})
         .then( ({status, responseText}) => {
           this.props.hidePopup()
           if (status === 200) {
