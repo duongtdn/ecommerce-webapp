@@ -67,7 +67,7 @@ class MyCourses extends Component {
                   </div>
                 </div>
                 {/* render in large screen */}
-                <div className="w3-bar-item w3-hide-small w3-hide-medium">
+                <div className="w3-bar-item w3-hide-small w3-hide-medium" style={{maxWidth: '530px'}}>
                   <div className="" style={{fontWeight: 'bold', margin: '6px 0'}} >
                     {tag} <br />
                     <a className="cursor-pointer w3-hover-text-blue" style={{textDecoration: 'none'}} href={`/course/${course.id}`}>
