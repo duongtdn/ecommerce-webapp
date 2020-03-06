@@ -1,7 +1,7 @@
 "use strict"
 
 import React, { Component } from 'react'
-import {FormattedMessage} from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 
 import xhttp from '@realmjs/xhttp-request'
 
@@ -223,7 +223,7 @@ class Delivery extends Component {
   render() {
     return (
       <div style={{marginBottom: '32px'}} >
-        <h3 className="w3-text-blue"> Delivery
+        <h3 className="w3-text-blue"> <FormattedMessage id="order.label.delivery" />
           <span className="w3-text-grey cursor-pointer w3-small"
                 style={{marginLeft: '6px', display: this.props.editDelivery? 'none' : 'inline'}}
                 onClick={this.props.enableEditDelivery}> <i className = "fa fa-edit" /> <FormattedMessage id="button.edit" /> </span>
@@ -333,7 +333,7 @@ class ConfirmPurchase extends Component {
   render() {
     return (
       <div style={{marginBottom: '32px'}} >
-        <h3 className="w3-text-blue"> Confirm Purchase </h3>
+        <h3 className="w3-text-blue"> <FormattedMessage id="order.label.confirm_purchase" /> </h3>
         <button className="w3-button w3-small w3-right w3-text-grey w3-hover-none" onClick = {this.editCart}> <i className = "fa fa-edit" /> <FormattedMessage id="button.edit_cart" /> </button>
         <ItemsTable simpleUI = {true} />
         <div style={{margin: '32px 0'}}>
@@ -454,7 +454,7 @@ class TabReceipt extends Component {
 }
 TabReceipt.__tabname = 'receipt'
 
-export default class Order extends Component {
+export default injectIntl(class Order extends Component {
   constructor(props) {
     super(props)
 
@@ -572,10 +572,16 @@ export default class Order extends Component {
     this.setState({ delivery })
   }
   placeOrder() {
+    const intl = this.props.intl
     return new Promise( (resolve, reject) => {
       this.saveDelivery().then( _ => {
         if (!this.state.paymentMethod) {
-          this.props.showPopup('info', { closeBtn: true, message: 'please select a payment method', align: 'left' })
+          this.props.showPopup('info', {
+            closeBtn: true,
+            closeBtnLabel: intl.formatMessage({id: "button.close"}),
+            message: intl.formatMessage({id: "popup.message.select_payment_method"}),
+            align: 'left'
+          })
           reject('please select a payment method')
           return
         }
@@ -585,7 +591,7 @@ export default class Order extends Component {
           billTo: {},
           items: storage.get(storage.key.CART).filter( item => item.checked )
         }
-        this.props.showPopup('info', { icon: 'fas fa-spinner', message: 'creating order...' })
+        this.props.showPopup('info', { icon: 'fas fa-spinner', message: intl.formatMessage({id: "popup.message.creating_order"}) })
         xhttp.post('/me/order', { order }, {authen: true,  timeout: 300000})
         .then( ({status, responseText}) => {
           this.props.hidePopup()
@@ -605,12 +611,17 @@ export default class Order extends Component {
           this.props.showPopup('info', { closeBtn: true, message: `Error: Cannot connect to server!`, align: 'left' })
         })
       }).catch( error => {
-        this.props.showPopup('info', { closeBtn: true, message: 'please complete delivery information', align: 'left' })
+        this.props.showPopup('info', {
+          closeBtn: true,
+          closeBtnLabel: intl.formatMessage({id: "button.close"}),
+          message: intl.formatMessage({id: "popup.message.provide_delivery_info"}),
+          align: 'left'
+        })
         reject('delivery must be provided')
       })
     })
   }
-}
+})
 
 function _validateDelivery(delivery) {
   if (delivery) {
