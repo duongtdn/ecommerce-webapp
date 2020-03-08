@@ -70,10 +70,13 @@ function validateOrder(helpers) {
               if (p.type === 'sale' && !_isExpire(p.expireIn) && p.target.indexOf(course.id) !== -1) { deduction += parseInt(p.deduction) }
             })
           })
-          // here also need to check voucher
-          const rewards = data.MEMBER[0].rewards && data.MEMBER[0].rewards.length > 0 ?
-                            data.MEMBER[0].rewards.filter( _reward => _reward.scope.indexOf(course.id) !== -1 )
-                            : []
+          const rewards = []
+          for (let code in data.MEMBER[0].rewards) {
+            const reward = data.MEMBER[0].rewards[code]
+            if (reward.scope.indexOf(course.id) !== -1) {
+              rewards.push(reward)
+            }
+          }
           rewards.forEach( reward => {
             if (reward.type === 'voucher' && !_isExpire(reward.expireIn)) {
               deduction += parseInt(reward.value)
