@@ -124,7 +124,7 @@ const PurchaseBtn = injectIntl(class extends Component {
                   if (reward.type !== 'voucher') { return null }
                   return (
                     <p key = {reward.code} className="w3-text-red">
-                      { `${this.props.intl.formatMessage({id: 'label.money_saving'})} - ${localeString(reward.value, '.')} \u20ab (voucher ${reward.code})`}
+                      { `${this.props.intl.formatMessage({id: 'label.money_saving'})} - ${localeString(reward.value, '.')} \u20ab (voucher ${reward.code.toUpperCase()})`}
                     </p>
                   )
                 })}
