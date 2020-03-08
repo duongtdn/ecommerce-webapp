@@ -54,21 +54,25 @@ class AppShell extends Component {
     const path = this.props.path || 'home'
     this.state = {
       activeRoute: path.split('/')[0],
-      me: { orders: [], enrolls: [], rewards: [] }
+      me: { orders: [], enrolls: [], rewards: [] },
+      isLoadingMe: false
     }
     this.onOrderCreated = this.onOrderCreated.bind(this)
     this.onOrderDeleted = this.onOrderDeleted.bind(this)
     this.onEnrollCreated = this.onEnrollCreated.bind(this)
     /* fetch /user to get user orders, enrolls and rewards */
     this.props.accountClient && this.props.accountClient.on('authenticated', user => {
+      this.setState({ isLoadingMe: true })
       xhttp.get(`/me`, {authen: true})
       .then( ({status, responseText}) => {
+        const isLoadingMe = false
         if (status === 200) {
           const data = JSON.parse(responseText)
           const me = { ...data }
           console.log(me)
-          this.setState({ me })
+          this.setState({ me, isLoadingMe })
         } else {
+          this.setState({ isLoadingMe })
           console.log(`fetching /user failed: return code ${status}`)
         }
       })
@@ -109,6 +113,7 @@ class AppShell extends Component {
                     hidePopup = { _ => this.setState({ activePopup: undefined })}
                     {...this.props}
                     me = {this.state.me}
+                    isLoadingMe = {this.state.isLoadingMe}
                     onOrderCreated = {this.onOrderCreated}
                     onOrderDeleted = {this.onOrderDeleted}
                     onEnrollCreated = {this.onEnrollCreated}

@@ -39,10 +39,10 @@ class MyCourses extends Component {
         }
       })
     })
-    if (courses.length === 0) { return null }
     return (
       <div className="w3-container">
         <h3> <FormattedMessage id="mycourses.label.title" /> </h3>
+        <div className={this.props.isLoadingMe? '': 'w3-hide'}> Loading <i className='fas fa-spinner w3-spin' /> </div>
         <ul className="w3-ul"> {
           courses.sort((a, b)=> b.registeredAt - a.registeredAt).map(course => {
             const d = new Date(parseInt(course.registeredAt))

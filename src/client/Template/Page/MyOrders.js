@@ -224,6 +224,7 @@ export default class MyOrders extends Component {
       <div className="w3-container">
         <div style={{maxWidth: '920px'}}>
           <h3 className="w3-text-blue"> <FormattedMessage id="myorders.label.title" /> </h3>
+          <div className={this.props.isLoadingMe? '': 'w3-hide'}> Loading <i className='fas fa-spinner w3-spin' /> </div>
         </div>
         {
           orders.sort( (a, b) => b.createdAt - a.createdAt ).map(order => (

@@ -65,7 +65,8 @@ export default class MyRewards extends PureComponent {
     if (!this.props.user) { return ( <UnAuthen {...this.props} />) }
     return (
       <div className="w3-container">
-      <h3 style={{maxWidth: '920px'}}> <FormattedMessage id="myrewards.label.title" /> </h3>
+      <h3 className="w3-text-blue" style={{maxWidth: '920px'}}> <FormattedMessage id="myrewards.label.title" /> </h3>
+      <div className={this.props.isLoadingMe? '': 'w3-hide'}> Loading <i className='fas fa-spinner w3-spin' /> </div>
       {
         this.props.me.rewards.map((reward, index) => (
           <RewardCard key={index} reward = {reward} {...this.props} />
