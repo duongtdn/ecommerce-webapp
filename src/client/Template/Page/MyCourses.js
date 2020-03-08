@@ -41,7 +41,7 @@ class MyCourses extends Component {
     })
     return (
       <div className="w3-container">
-        <h3> <FormattedMessage id="mycourses.label.title" /> </h3>
+        <h3 className="w3-text-blue"> <FormattedMessage id="mycourses.label.title" /> </h3>
         <div className={this.props.isLoadingMe? '': 'w3-hide'}> Loading <i className='fas fa-spinner w3-spin' /> </div>
         <ul className="w3-ul"> {
           courses.sort((a, b)=> b.registeredAt - a.registeredAt).map(course => {
