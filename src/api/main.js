@@ -57,6 +57,9 @@ api
     put: require('./me/update-enroll'),
     post: require('./me/create-enroll')
   })
+  .add('/me/reward', {
+    delete: require('./me/delete-reward')
+  })
 
 
 module.exports = api

@@ -71,6 +71,9 @@ class AppShell extends Component {
           const me = { ...data }
           console.log(me)
           this.setState({ me, isLoadingMe })
+          // clean up expired rewards
+          const expired = me.rewards.map(reward => isExpire(reward.expireIn) && reward.code).filter(r => r)
+          expired && expired.length > 0 && this.cleanExpiredRewards(expired)
         } else {
           this.setState({ isLoadingMe })
           console.log(`fetching /user failed: return code ${status}`)
@@ -173,6 +176,11 @@ class AppShell extends Component {
       this.setState({ activePopup: popup, popupArgs: {...args, resolve, reject} })
     })
   }
+  cleanExpiredRewards(rewards) {
+    xhttp.delete('/me/reward', { rewards }, { authen: true })
+    .then( ({status}) => console.log('Clean expired rewards: ' + status))
+    .catch(err => console.lo (err))
+  }
 }
 
 import { UserProvider } from '@realmjs/react-user'
@@ -188,4 +196,12 @@ export default class extends Component {
       </UserProvider>
     )
   }
+}
+
+function isExpire(timestamp) {
+  if (!timestamp) {
+    return false
+  }
+  const now = (new Date()).getTime()
+  return (parseInt(now) > parseInt(timestamp))
 }
