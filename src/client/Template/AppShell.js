@@ -150,9 +150,22 @@ class AppShell extends Component {
   onEnrollCreated(enrolls) {
     if (!enrolls || enrolls.length === 0) { return }
     const me = {...this.state.me}
+    // update enroll
     const _enrolls = [...me.enrolls.filter(_enroll => !enrolls.find(e => e.courseId === _enroll.courseId))]
     _enrolls.push(...enrolls)
+    // update order
+    const _number = _enrolls.map(e => e.order.number)
+    const _orders = me.orders.map(order => {
+      if (_number.indexOf(order.number) === -1) {
+        return {...order}
+      } else {
+        const _order = {...order}
+        _order.status = 'fulfill'
+        return _order
+      }
+    })
     me.enrolls = _enrolls
+    me.orders = _orders
     this.setState({ me })
   }
   showPopup(popup, args) {

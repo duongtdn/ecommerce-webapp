@@ -390,7 +390,7 @@ class TabReceipt extends Component {
     return(
       <div className="w3-text-grey">
         <p className="w3-text-blue-grey"> <FormattedMessage id="order.receipt.message" /> </p>
-        <h4 className="bold w3-text-blue"> <i className="fas fa-receipt" />  <FormattedMessage id="order.receipt.Order" />: #{order.number} </h4>
+        <h4 className="bold w3-text-blue"> <i className="fas fa-receipt" />  <FormattedMessage id="order.receipt.Order" />: #{order.number.split('-')[0]} </h4>
         <p> <FormattedMessage id="order.receipt.created_at" />: {this.getDay(order.createdAt)} </p>
         <p> <FormattedMessage id="order.receipt.status" />: {order.status.toUpperCase()} </p>
 

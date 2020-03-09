@@ -102,8 +102,8 @@ function createEnrollAndProgress(helpers) {
 function updateOrderStatus(helpers) {
   return function(req, res, next) {
     const uid = req.uid
-    const number = req.activation.order
-    helpers.Database.ORDER.update({uid, number}, {
+    const createdAt = req.activation.order.createdAt
+    helpers.Database.ORDER.update({uid, createdAt}, {
       status: 'fulfill',
       fulfillAt: (new Date()).getTime()
     })

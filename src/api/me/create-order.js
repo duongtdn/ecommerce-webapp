@@ -132,7 +132,7 @@ function insertOrderToDB(helpers) {
   return function(req, res, next) {
     const now = new Date()
     const order = req.body.order
-    order.number = _rand().toString()
+    order.number = `${_rand()}-${_ustring(12)}`
     order.uid = req.uid
     order.status = 'new'
     order.createdAt = now.getTime()
@@ -173,7 +173,12 @@ function insertActivationCodeToDB(helpers) {
           })
         }
       })
-      const code = { uid: req.uid, code: order.activationCode, order: order.number, courses }
+      const code = {
+        uid: req.uid,
+        code: order.activationCode,
+        order: {number: order.number, createdAt: order.createdAt},
+        courses
+      }
       helpers.Database.ACTIVECODE.insert(code)
       .then(_ => next())
       .catch(err => {

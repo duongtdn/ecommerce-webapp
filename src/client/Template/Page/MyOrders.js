@@ -56,7 +56,7 @@ const OrderCard = injectIntl(class extends Component {
           <div className="w3-cell-row">
             <div className="w3-cell">
               <h6 className="bold" style={{textDecoration: order.status === 'deleted'? 'line-through' : 'none'}}>
-                <i className="fas fa-receipt" />  #{order.number} <Tag label={order.status.toUpperCase()} />
+                <i className="fas fa-receipt" />  #{order.number.split('-')[0]} <Tag label={order.status.toUpperCase()} />
               </h6>
             </div>
             <div className="w3-cell" style={{textAlign: 'right'}}>
