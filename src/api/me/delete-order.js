@@ -43,24 +43,6 @@ function getOrderAndActivateCode(helpers) {
       })
       res.status(500).json({ reason: 'Failed to Access Database' })
     })
-
-    // helpers.Database.ORDER.find({uid: `= ${req.uid}`, createdAt: `= ${parseInt(req.body.createdAt)}`})
-    // .then( data => {
-    //   if (data && data.length > 0) {
-    //     req.code = data[0].activationCode
-    //     next()
-    //   } else {
-    //     res.status(404).json({ error: 'Not found'})
-    //   }
-    // })
-    // .catch(err => {
-    //   helpers.alert && helpers.alert({
-    //     message: 'Database operation failed',
-    //     action: 'FIND order',
-    //     error: err
-    //   })
-    //   res.status(500).json({ reason: 'Failed to Access Database' })
-    // })
   }
 }
 
