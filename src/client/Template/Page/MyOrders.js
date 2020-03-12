@@ -202,7 +202,7 @@ const OrderCard = injectIntl(class extends Component {
     const createdAt = order.createdAt
     const reason = this.state.cancelReason
     this.props.showPopup('info', { message: 'Deleting order...'})
-    xhttp.delete('/me/order', {createdAt, reason}, {authen: true, timeout: 300000})
+    xhttp.delete('/me/order', {orders:[createdAt], reason}, {authen: true, timeout: 300000})
     .then( ({status}) => {
       this.props.hidePopup()
       if (status === 200) {

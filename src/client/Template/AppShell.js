@@ -72,8 +72,11 @@ class AppShell extends Component {
           console.log(me)
           this.setState({ me, isLoadingMe })
           // clean up expired rewards
-          const expired = me.rewards.map(reward => isExpire(reward.expireIn) && reward.code).filter(r => r)
-          expired && expired.length > 0 && this.cleanExpiredRewards(expired)
+          const expiredRewards = me.rewards.map(reward => isExpire(reward.expireIn) && reward.code).filter(r => r)
+          expiredRewards && expiredRewards.length > 0 && this.cleanExpiredRewards(expiredRewards)
+          const ORDER_EXPIRE_TIME = 1296000000  // 2weeks + 1 day
+          const expiredOrders = me.orders.map(order => isExpire(order.createdAt + ORDER_EXPIRE_TIME) && order.status === 'new' && order.createdAt).filter(o => o)
+          expiredOrders && expiredOrders.length > 0 && this.cleanExpiredOrders(expiredOrders)
         } else {
           this.setState({ isLoadingMe })
           console.log(`fetching /user failed: return code ${status}`)
@@ -179,7 +182,15 @@ class AppShell extends Component {
   cleanExpiredRewards(rewards) {
     xhttp.delete('/me/reward', { rewards }, { authen: true })
     .then( ({status}) => console.log('Clean expired rewards: ' + status))
-    .catch(err => console.lo (err))
+    .catch(err => console.log (err))
+  }
+  cleanExpiredOrders(orders) {
+    xhttp.delete('/me/order', { orders }, { authen: true })
+    .then( ({status}) => {
+      console.log('Clean expired orders:' + status)
+      orders.forEach(order => this.onOrderDeleted(order))
+    })
+    .catch(err => console.log (err))
   }
 }
 
