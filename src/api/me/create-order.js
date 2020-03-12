@@ -3,8 +3,8 @@
 const jwt = require('jsonwebtoken')
 const {authen} = require('../lib/authen')
 
-function _rand() {
-  return Math.floor(100000 + Math.random() * 900000)
+function _rand(min, max) {
+  return Math.floor(min + Math.random() * max)
 }
 
 function _ustring(ln) {
@@ -132,12 +132,13 @@ function insertOrderToDB(helpers) {
   return function(req, res, next) {
     const now = new Date()
     const order = req.body.order
-    order.number = `${_rand()}-${_ustring(12)}`
+    order.number = `${_rand(100000, 900000)}-${_ustring(12)}`
     order.uid = req.uid
     order.status = 'new'
     order.createdAt = now.getTime()
     order.notes = {}
     order.notes[now.getTime()] = 'new order created'
+    order.gsi = _rand(1, 5)
     if (order.paymentMethod === 'cod') {
       order.activationCode = _ustring(8).toUpperCase()
     }
