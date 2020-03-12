@@ -50,6 +50,7 @@ const OrderCard = injectIntl(class extends Component {
     const intl = this.props.intl
     const order = this.props.order
     const subTotal = order.items.reduce( (acc, cur) => acc + (cur.checked ? cur.price : 0), 0 )
+    const expireAt = this.calculateOrderExpireTimestamp(order)
     return (
       <div className="w3-card w3-padding" style={{margin: '16px auto',}}>
         <div className={order.status ==='deleted'?'w3-text-grey italic':'w3-text-blue'}>
@@ -58,6 +59,9 @@ const OrderCard = injectIntl(class extends Component {
               <h6 className="bold" style={{textDecoration: order.status === 'deleted'? 'line-through' : 'none'}}>
                 <i className="fas fa-receipt" />  #{order.number.split('-')[0]} <Tag label={order.status.toUpperCase()} />
               </h6>
+              {
+                order.status === 'new'? <p> <FormattedMessage id="order.receipt.expire_at" />: {getDay(expireAt)} </p> : ''
+              }
             </div>
             <div className="w3-cell" style={{textAlign: 'right'}}>
               <label className="italic w3-small"> {getDay(order.createdAt)} </label>
@@ -211,6 +215,10 @@ const OrderCard = injectIntl(class extends Component {
     .catch( err=> {
       this.props.showPopup('info', { closeBtn: true, message: `Error: Cannot connect to server!`, align: 'left' })
     })
+  }
+  calculateOrderExpireTimestamp(order) {
+    const ORDER_EXPIRE_TIME = 1209600000  // 2weeks
+    return order.createdAt + ORDER_EXPIRE_TIME
   }
 })
 

@@ -387,11 +387,13 @@ class TabReceipt extends Component {
     const order = this.props.me.orders[0]
     if (!order) { return null }
     const subTotal = order.items.reduce( (acc, cur) => acc + (cur.checked ? cur.price : 0), 0 )
+    const expireAt = this.calculateOrderExpireTimestamp(order)
     return(
       <div className="w3-text-grey">
         <p className="w3-text-blue-grey"> <FormattedMessage id="order.receipt.message" /> </p>
         <h4 className="bold w3-text-blue"> <i className="fas fa-receipt" />  <FormattedMessage id="order.receipt.Order" />: #{order.number.split('-')[0]} </h4>
         <p> <FormattedMessage id="order.receipt.created_at" />: {this.getDay(order.createdAt)} </p>
+        <p> <FormattedMessage id="order.receipt.expire_at" />: {this.getDay(expireAt)} </p>
         <p> <FormattedMessage id="order.receipt.status" />: {order.status.toUpperCase()} </p>
 
         <p className="w3-card w3-padding">
@@ -450,6 +452,10 @@ class TabReceipt extends Component {
     // return `${weekday[date.getDay()]} ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
     // temporary not include ưeekday
     return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+  }
+  calculateOrderExpireTimestamp(order) {
+    const ORDER_EXPIRE_TIME = 1209600000  // 2weeks
+    return order.createdAt + ORDER_EXPIRE_TIME
   }
 }
 TabReceipt.__tabname = 'receipt'

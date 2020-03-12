@@ -78,6 +78,7 @@
   "order.receipt.message": "Cảm ơn bạn đã sử dụng dịch vụ. Thông tin Đơn hàng của bạn như sau",
   "order.receipt.Order": "Đơn hàng",
   "order.receipt.created_at": "Thời gian tạo",
+  "order.receipt.expire_at": "Ngày hết hạn",
   "order.receipt.status": "Trạng thái",
   "order.receipt.item_lists": "Danh sách khóa học",
   "mycourses.label.title": "Khóa học đã đăng ký",

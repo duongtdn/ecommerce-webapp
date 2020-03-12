@@ -78,6 +78,7 @@
   "order.receipt.message": "Thank you for purchasing our service. Your order information is as below",
   "order.receipt.Order": "Order",
   "order.receipt.created_at": "Created at",
+  "order.receipt.expire_at": "Expired at",
   "order.receipt.status": "Status",
   "order.receipt.item_lists": "Item lists",
   "mycourses.label.title": "My courses",
