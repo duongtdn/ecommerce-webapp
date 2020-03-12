@@ -66,30 +66,34 @@ function getOrderAndActivateCode(helpers) {
 
 function deleteOrder(helpers) {
   return function(req, res, next) {
-    const params = {
-      ORDER: {
-        remove: req.orders.map( order => {
-          return {uid: req.uid, createdAt: order}
-        })
-      },
-    }
-    if (req.code && req.code.length > 0) {
-      params.ACTIVECODE = {
-        remove: req.code.map(code => {
-          return { code }
-        })
+    if (req.orders && req.orders.length > 0) {
+      const params = {
+        ORDER: {
+          remove: req.orders.map( order => {
+            return {uid: req.uid, createdAt: order}
+          })
+        },
       }
-    }
-    helpers.Database.batchWrite(params)
-    .then( () => res.status(200).json({ status: 'success' }))
-    .catch(err => {
-      helpers.alert && helpers.alert({
-        message: 'Database operation failed',
-        action: 'DELETE /me/order',
-        error: err
+      if (req.code && req.code.length > 0) {
+        params.ACTIVECODE = {
+          remove: req.code.map(code => {
+            return { code }
+          })
+        }
+      }
+      helpers.Database.batchWrite(params)
+      .then( () => res.status(200).json({ status: 'success' }))
+      .catch(err => {
+        helpers.alert && helpers.alert({
+          message: 'Database operation failed',
+          action: 'DELETE /me/order',
+          error: err
+        })
+        res.status(500).json({ reason: 'Failed to Access Database' })
       })
-      res.status(500).json({ reason: 'Failed to Access Database' })
-    })
+    } else {
+      res.status(200).json({ status: 'not changed' })
+    }
   }
 }
 
