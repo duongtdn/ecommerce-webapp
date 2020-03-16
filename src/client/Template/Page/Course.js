@@ -136,33 +136,6 @@ const PurchaseBtn = injectIntl(class extends Component {
                     </p>
                   )
                 })}
-                <p className="w3-small w3-text-grey" style={{ display: hasVouchers? 'block' : 'none'}}> <FormattedMessage id="label.vouchers_can_use" /> </p>
-                { rewards.map( (reward,index) => {
-                  if (reward.type !== 'voucher') { return null }
-                  const isAdded = this.state.usedVouchers.indexOf(reward.__code) !== -1
-                  const textStyle = isAdded ? 'w3-text-green' : 'w3-text-grey italic'
-                  const bgColor = isAdded ? 'w3-red' : 'w3-light-grey'
-                  return (
-                    <div key = {index} className={`w3-small w3-cell-row w3-border w3-border-grey w3-round ${bgColor} ${textStyle}`} style={{marginBottom: '8px', paddingLeft: '4px'}}>
-                      <div className={`w3-cell w3-white ${textStyle}`} style={{padding: '4px 8px'}}>
-                        <label className="bold" style={{marginRight: '6px'}}> {reward.code.toUpperCase()} </label>
-                        <label className="w3-small italic" > <FormattedMessage id={isAdded?'label.use':'label.not_use'} /> </label>
-                        <br/>
-                        { `${this.props.intl.formatMessage({id: 'label.value'})}: ${localeString(reward.value, '.')} \u20ab`}
-                        {
-                          reward.expireIn ?
-                            <span className="w3-text-red italic"> <br /> <FormattedMessage id="label.valid_till" />: {getDay(reward.expireIn)} </span>
-                            : null
-                        }
-                      </div>
-                      <div  className={`w3-cell cursor-pointer ${isAdded? 'w3-text-white' : 'w3-text-black'}`}
-                            onClick = {e => this.useVoucher(reward.__code)}
-                            style={{ width: '40px', textAlign: 'center', verticalAlign: 'middle'}}>
-                        { isAdded ? 'x' : '+' }
-                      </div>
-                    </div>
-                  )
-                })}
               </div>
               :
               <p>
@@ -171,6 +144,33 @@ const PurchaseBtn = injectIntl(class extends Component {
                 </span>
               </p>
           }
+          <p className="w3-small w3-text-grey" style={{ display: hasVouchers? 'block' : 'none'}}> <FormattedMessage id="label.vouchers_can_use" /> </p>
+          { rewards.map( (reward,index) => {
+            if (reward.type !== 'voucher') { return null }
+            const isAdded = this.state.usedVouchers.indexOf(reward.__code) !== -1
+            const textStyle = isAdded ? 'w3-text-green' : 'w3-text-grey italic'
+            const bgColor = isAdded ? 'w3-red' : 'w3-light-grey'
+            return (
+              <div key = {index} className={`w3-small w3-cell-row w3-border w3-border-grey w3-round ${bgColor} ${textStyle}`} style={{marginBottom: '8px', paddingLeft: '4px'}}>
+                <div className={`w3-cell w3-white ${textStyle}`} style={{padding: '4px 8px'}}>
+                  <label className="bold" style={{marginRight: '6px'}}> {reward.code.toUpperCase()} </label>
+                  <label className="w3-small italic" > <FormattedMessage id={isAdded?'label.use':'label.not_use'} /> </label>
+                  <br/>
+                  { `${this.props.intl.formatMessage({id: 'label.value'})}: ${localeString(reward.value, '.')} \u20ab`}
+                  {
+                    reward.expireIn ?
+                      <span className="w3-text-red italic"> <br /> <FormattedMessage id="label.valid_till" />: {getDay(reward.expireIn)} </span>
+                      : null
+                  }
+                </div>
+                <div  className={`w3-cell cursor-pointer ${isAdded? 'w3-text-white' : 'w3-text-black'}`}
+                      onClick = {e => this.useVoucher(reward.__code)}
+                      style={{ width: '40px', textAlign: 'center', verticalAlign: 'middle'}}>
+                  { isAdded ? 'x' : '+' }
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     )
