@@ -54,7 +54,7 @@ function getMember(helpers) {
       req.rewards = []
       if (member.rewards) {
         for (let code in member.rewards) {
-          req.rewards.push({code, ...member.rewards[code]})
+          req.rewards.push({__code: code, ...member.rewards[code]})
         }
       }
       next()

@@ -137,9 +137,23 @@ class AppShell extends Component {
   }
   onOrderCreated(order) {
     const me = {...this.state.me}
+    // update order to local state
     const orders = [...me.orders.filter(_order => _order.number !== order.number)]
     orders.unshift(order)
     me.orders = orders
+    // update rewards (vouchers) to local state
+    const usedVoucher = []
+    order.items.forEach(item => {
+      item.vouchers && item.vouchers.forEach(code => {
+        const reward = me.rewards.find(r => r.__code === code)
+        if (reward && !reward.unlimited && usedVoucher.indexOf(code) === -1) {
+          usedVoucher.push(code)
+        }
+      })
+    })
+    const rewards = [...me.rewards.filter(reward => usedVoucher.indexOf(reward.__code) === -1)]
+    me.rewards = rewards
+    // update state
     this.setState({ me })
   }
   onOrderDeleted(createdAt) {

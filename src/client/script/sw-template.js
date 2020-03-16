@@ -71,7 +71,7 @@ workbox.routing.registerRoute(
     cacheName: 'data-cache',
     plugins: [
       new workbox.expiration.Plugin({
-        maxAgeSeconds: 60*5,
+        maxAgeSeconds: 60*60*24,
       }),
     ]
   })

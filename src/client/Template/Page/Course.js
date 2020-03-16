@@ -46,6 +46,21 @@ class CourseInfo extends Component {
 const PurchaseBtn = injectIntl(class extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      usedVouchers: [],
+      sync: false
+    }
+  }
+  static getDerivedStateFromProps(props, state) {
+    if (props.me.rewards.length > 0 && state.usedVouchers.length === 0 && !state.sync) {
+      const course = props.course
+      const rewards = [...props.me.rewards.filter( _reward=> _reward.type === 'voucher' && _reward.scope.indexOf(course.id) !== -1 && !isExpire(_reward.expireIn))]
+      return {
+        sync: true,
+        usedVouchers: rewards.map(reward => reward.__code)
+      }
+    }
+    return null
   }
   render() {
     const course = this.props.course
@@ -91,7 +106,8 @@ const PurchaseBtn = injectIntl(class extends Component {
       origin: course.price,
       offer: course.price - promo.deduction
     }
-    const rewards = this.props.me && this.props.me.rewards ? this.props.me.rewards.filter( _reward=> _reward.scope.indexOf(course.id) !== -1 ) : []
+    const rewards = this.props.me && this.props.me.rewards ? this.props.me.rewards.filter( _reward=> _reward.scope.indexOf(course.id) !== -1 && !isExpire(_reward.expireIn)) : []
+    const hasVouchers = rewards.some( reward => reward.type === 'voucher')
     return (
       <div style={{marginBottom: '32px'}} >
         <div>
@@ -120,12 +136,26 @@ const PurchaseBtn = injectIntl(class extends Component {
                     </p>
                   )
                 })}
-                { rewards.map( reward => {
+                <p className="w3-small w3-text-grey" style={{ display: hasVouchers? 'block' : 'none'}}> <FormattedMessage id="label.vouchers_can_use" /> </p>
+                { rewards.map( (reward,index) => {
                   if (reward.type !== 'voucher') { return null }
+                  const isAdded = this.state.usedVouchers.indexOf(reward.__code) !== -1
+                  const textStyle = isAdded ? 'w3-text-green' : 'w3-text-grey italic'
+                  const bgColor = isAdded ? 'w3-red' : 'w3-light-grey'
                   return (
-                    <p key = {reward.code} className="w3-text-red">
-                      { `${this.props.intl.formatMessage({id: 'label.money_saving'})} - ${localeString(reward.value, '.')} \u20ab (voucher ${reward.code.toUpperCase()})`}
-                    </p>
+                    <div key = {index} className={`w3-small w3-cell-row w3-border w3-border-grey w3-round ${bgColor} ${textStyle}`} style={{marginBottom: '8px', paddingLeft: '4px'}}>
+                      <div className={`w3-cell w3-white ${textStyle}`} style={{padding: '4px 8px'}}>
+                        <label className="bold" style={{marginRight: '6px'}}> {reward.code.toUpperCase()} </label>
+                        <label className="w3-small italic" > <FormattedMessage id={isAdded?'label.use':'label.not_use'} /> </label>
+                        <br/>
+                        { `${this.props.intl.formatMessage({id: 'label.value'})}: ${localeString(reward.value, '.')} \u20ab`}
+                      </div>
+                      <div  className={`w3-cell cursor-pointer ${isAdded? 'w3-text-white' : 'w3-text-black'}`}
+                            onClick = {e => this.useVoucher(reward.__code)}
+                            style={{ width: '40px', textAlign: 'center', verticalAlign: 'middle'}}>
+                        { isAdded ? 'x' : '+' }
+                      </div>
+                    </div>
                   )
                 })}
               </div>
@@ -148,8 +178,8 @@ const PurchaseBtn = injectIntl(class extends Component {
       if (p.type === 'sale' && !isExpire(p.expireIn)) { promo.deduction += parseInt(p.deduction) }
       if (p.type === 'gift' && !isExpire(p.expireIn)) { promo.gifts = true }
     })
-    if (me && me.rewards) {
-      const rewards = me.rewards.filter( _reward => _reward.scope.indexOf(course.id) !== -1 )
+    if (this.state.usedVouchers) {
+      const rewards = me.rewards.filter( reward => this.state.usedVouchers.indexOf(reward.__code) !== -1 && reward.scope.indexOf(course.id) !== -1)
       rewards.forEach( reward => {
         if (reward.type === 'voucher' && !isExpire(reward.expireIn)) {
           promo.deduction += parseInt(reward.value)
@@ -157,6 +187,16 @@ const PurchaseBtn = injectIntl(class extends Component {
       })
     }
     return promo
+  }
+  useVoucher(code) {
+    const usedVouchers = [...this.state.usedVouchers]
+    const index = usedVouchers.indexOf(code)
+    if ( index === -1) {
+      usedVouchers.push(code)
+    } else {
+      usedVouchers.splice(index, 1)
+    }
+    this.setState({ usedVouchers })
   }
   onPurchase(price) {
     const course = this.props.course
@@ -168,6 +208,9 @@ const PurchaseBtn = injectIntl(class extends Component {
       checked: true,
       promotion,
       price
+    }
+    if (this.state.usedVouchers && this.state.usedVouchers.length > 0) {
+      item.vouchers = this.state.usedVouchers
     }
     this.props.onPurchase && this.props.onPurchase(item)
   }

@@ -60,6 +60,7 @@ function validateOrder(helpers) {
       const promos = data.PROMOTE
       // compare price for each item
       let error = ''
+      req.usedVouchers = []
       order.items.forEach( item => {
         if (item.type === 'course') {
           const course = courses.find(c => c.id === item.code)
@@ -70,16 +71,16 @@ function validateOrder(helpers) {
               if (p.type === 'sale' && !_isExpire(p.expireIn) && p.target.indexOf(course.id) !== -1) { deduction += parseInt(p.deduction) }
             })
           })
-          const rewards = []
-          for (let code in data.MEMBER[0].rewards) {
-            const reward = data.MEMBER[0].rewards[code]
-            if (reward.scope.indexOf(course.id) !== -1) {
-              rewards.push(reward)
-            }
-          }
-          rewards.forEach( reward => {
-            if (reward.type === 'voucher' && !_isExpire(reward.expireIn)) {
-              deduction += parseInt(reward.value)
+          const rewards =  data.MEMBER[0].rewards
+          item.vouchers && item.vouchers.forEach(code => {
+            if (rewards[code]) {
+              const reward = rewards[code]
+              if (reward.type === 'voucher' && reward.scope.indexOf(course.id) !== -1 && !_isExpire(reward.expireIn)) {
+                deduction += parseInt(reward.value)
+                if (!reward.unlimited && req.usedVouchers.indexOf(code) === -1) {
+                  req.usedVouchers.push(code)
+                }
+              }
             }
           })
           const offerPrice = course.price - deduction
@@ -124,12 +125,10 @@ function validateOrder(helpers) {
   }
 }
 
-
-/*
-  order.billTo is ignored for the time being
-*/
-function insertOrderToDB(helpers) {
+function insertToDB(helpers) {
   return function(req, res, next) {
+    const params = {}
+    // prepare order
     const now = new Date()
     const order = req.body.order
     order.number = `${_rand(100000, 900000)}-${_ustring(12)}`
@@ -142,26 +141,10 @@ function insertOrderToDB(helpers) {
     if (order.paymentMethod === 'cod') {
       order.activationCode = _ustring(8).toUpperCase()
     }
-    helpers.Database.ORDER.insert(order)
-    .then(_ => next())
-    .catch(err => {
-      console.log(err)
-      helpers.alert && helpers.alert({
-        message: 'Database operation failed',
-        action: 'Inser to ORDER',
-        error: err
-      })
-      res.status(500).json({ reason: 'Failed to Access Database' })
-    })
-  }
-}
+    params.ORDER = { insert: [order] }
 
-function insertActivationCodeToDB(helpers) {
-  return function(req, res, next) {
-    const order = req.body.order
-    if (order.paymentMethod !== 'cod') {
-      next()
-    } else {
+    // prepare activation code if needed
+    if (order.paymentMethod === 'cod') {
       const courses = []
       order.items.forEach( item => {
         if (item.type === 'course') {
@@ -180,16 +163,42 @@ function insertActivationCodeToDB(helpers) {
         order: {number: order.number, createdAt: order.createdAt},
         courses
       }
-      helpers.Database.ACTIVECODE.insert(code)
-      .then(_ => next())
+      params.ACTIVECODE = { insert: [code] }
+    }
+
+    helpers.Database.batchWrite(params)
+    .then(() => next())
+    .catch(err => {
+      helpers.alert && helpers.alert({
+        message: 'Database operation failed',
+        action: 'BatchWrite ORDER, ACTIVECODE',
+        error: err
+      })
+      res.status(500).json({ reason: 'Failed to Access Database' })
+    })
+
+  }
+}
+
+function removeUsedVouchers(helpers) {
+  return function(req, res, next) {
+    if (req.usedVouchers && req.usedVouchers.length > 0) {
+      const uid = req.uid
+      const rewards = req.usedVouchers.map(reward => {
+        return `rewards.${reward}`
+      })
+      helpers.Database.MEMBER.remove({ uid }, rewards)
+      .then(() => next())
       .catch(err => {
         helpers.alert && helpers.alert({
           message: 'Database operation failed',
-          action: 'Insert to ACTIVECODE',
+          action: 'MEMBER remove rewards',
           error: err
         })
-        res.status(500).json({ reason: 'Failed to Access Database' })
+        next()
       })
+    } else {
+      next()
     }
   }
 }
@@ -202,7 +211,7 @@ function sendNotification(helpers) {
       recipient: token,
       data: req.body.order
     })
-    .then(next)
+    .then(() => next())
     .catch(err => {
       helpers.alert && helpers.alert({
         message: 'Cannot send notification',
@@ -219,8 +228,9 @@ function reponse() {
     const order = {...req.body.order}
     delete order.uid
     delete order.activationCode
+    delete order.gsi
     res.status(200).json({ order })
   }
 }
 
-module.exports = [authen, validateOrder, insertOrderToDB, insertActivationCodeToDB, sendNotification, reponse]
+module.exports = [authen, validateOrder, insertToDB, removeUsedVouchers, sendNotification, reponse]
