@@ -5,7 +5,7 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 
 import xhttp from '@realmjs/xhttp-request'
 
-import { localeString } from '../../lib/util'
+import { getDay, localeString } from '../../lib/util'
 
 import storage from '../../lib/storage'
 
@@ -149,6 +149,11 @@ const PurchaseBtn = injectIntl(class extends Component {
                         <label className="w3-small italic" > <FormattedMessage id={isAdded?'label.use':'label.not_use'} /> </label>
                         <br/>
                         { `${this.props.intl.formatMessage({id: 'label.value'})}: ${localeString(reward.value, '.')} \u20ab`}
+                        {
+                          reward.expireIn ?
+                            <span className="w3-text-red italic"> <br /> <FormattedMessage id="label.valid_till" />: {getDay(reward.expireIn)} </span>
+                            : null
+                        }
                       </div>
                       <div  className={`w3-cell cursor-pointer ${isAdded? 'w3-text-white' : 'w3-text-black'}`}
                             onClick = {e => this.useVoucher(reward.__code)}

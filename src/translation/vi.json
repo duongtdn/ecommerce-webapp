@@ -41,6 +41,7 @@
   "label.value": "Trị giá",
   "label.use": "Đang sử dụng",
   "label.not_use": "Chưa sử dụng",
+  "label.valid_till": "Hiệu lực đến",
   "popup.require_login_to_purchase": "Đăng nhập để tiến hành đăng ký khóa học",
   "tag.pending": "Chưa kích hoạt",
   "tag.studying": "Đang học",

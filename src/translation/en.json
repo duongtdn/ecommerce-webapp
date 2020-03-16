@@ -41,6 +41,7 @@
   "label.value": "Value",
   "label.use": "Use",
   "label.not_use": "Not use",
+  "label.valid_till": "Valid till",
   "popup.require_login_to_purchase": "Please login to make purchase",
   "tag.pending": "Pending",
   "tag.studying": "Studying",
