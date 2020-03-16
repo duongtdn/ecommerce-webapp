@@ -144,6 +144,7 @@ const PurchaseBtn = injectIntl(class extends Component {
                 </span>
               </p>
           }
+          <p className="w3-text-grey" style={{display: this.props.isLoadingMe? 'block' : 'none'}}> Loading <i className="fas fa-spinner w3-spin" /> </p>
           <p className="w3-small w3-text-grey" style={{ display: hasVouchers? 'block' : 'none'}}> <FormattedMessage id="label.vouchers_can_use" /> </p>
           { rewards.map( (reward,index) => {
             if (reward.type !== 'voucher') { return null }
