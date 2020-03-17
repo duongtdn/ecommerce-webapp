@@ -76,7 +76,7 @@ class MyCourses extends Component {
                     </a>
                   </div>
                   <span className="w3-small w3-text-grey"> {course.snippet} </span>
-                  <p className="w3-small w3-text-grey italic" > Registered on: {`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`} </p>
+                  <p className="w3-small w3-text-grey italic" > <FormattedMessage id="label.registered_on" />: {`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`} </p>
                 </div>
                 <div className="w3-bar-item w3-right w3-hide-small w3-hide-medium" style={{textAlign:'center', paddingTop: '36px'}}>
                   <button className="w3-button w3-border w3-text-blue" style={{fontWeight:'bold'}} onClick={() => this.onClickStudyNowBtn(course)}>
