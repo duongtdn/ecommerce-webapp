@@ -2,3 +2,6 @@ src/clients
 node_modules/
 npm-debug.*
 build/app.js
+example/
+webpack.*
+.env
