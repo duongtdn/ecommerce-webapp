@@ -495,7 +495,7 @@ export default injectIntl(class Order extends Component {
     this.props.page.on('enter', () => this.setState({ progress: {}, tab: 'cart', paymentMethod: null, }))
   }
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.user && !prevState.user) {
+    if (nextProps.user && nextProps.user !== prevState.user) {
       const user = nextProps.user
       const delivery =  {
         fullName: user.profile.fullName || '',
@@ -507,7 +507,7 @@ export default injectIntl(class Order extends Component {
             delivery.phone && delivery.phone.length > 0 &&
             delivery.address && delivery.address.length > 0 ? false : true
       const error = _validateDelivery(delivery)
-      return { delivery, error, editDelivery, user }
+      return { delivery, error, editDelivery, user, tab: 'cart' }
     } else {
       return null
     }

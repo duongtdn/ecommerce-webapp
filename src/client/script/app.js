@@ -73,8 +73,9 @@ if (acc) {
   acc.on('unauthenticated', () => {
     navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage({ type: 'BROADCAST', action: 'signout' })
   })
-  acc.on('authenticated', () => {
+  acc.on('authenticated', (user) => {
     navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage({ type: 'BROADCAST', action: 'signin' })
+    console.log(user)
   })
 }
 
