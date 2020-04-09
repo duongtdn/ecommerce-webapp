@@ -50,7 +50,7 @@ function registerTests(helpers) {
   }
 }
 
-function createEnrollAndProgress(helpers) {
+function createEnrollAndRemoveActiveCode(helpers) {
   return function(req, res, next) {
     const uid = req.uid
     const courses = req.activation.courses
@@ -65,20 +65,9 @@ function createEnrollAndProgress(helpers) {
         comments: [{by: 'system', message: 'user activate course by code'}],
       }
     })
-    const progresses = courses.map( course => {
-      return {
-        uid,
-        id: course,
-        study: {},
-        test: req.tests[course]
-      }
-    })
     helpers.Database.batchWrite({
       ENROLL: {
         insert: enrolls
-      },
-      PROGRESS: {
-        insert: progresses
       },
       ACTIVECODE: {
         remove: [{ code: req.body.code }]
@@ -149,4 +138,4 @@ function response() {
   }
 }
 
-module.exports = [authen, validateCode, registerTests, createEnrollAndProgress, updateOrderStatus, sendNotification, response]
+module.exports = [authen, validateCode, registerTests, createEnrollAndRemoveActiveCode, updateOrderStatus, sendNotification, response]
